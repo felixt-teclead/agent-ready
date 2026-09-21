@@ -1,0 +1,35 @@
+# Paths that Template sync must not carry from the blueprint into this repo.
+# gitignore syntax. Everything listed here is repo-specific; everything left out
+# is a convention the template owns and may overwrite.
+#
+# This file is never synced itself: the action keeps the downstream copy and
+# reverts template changes to it. Edit it here, per repo.
+
+# Names and describes THIS project; the template's copy describes the template
+# and its bootstrap command.
+README.md
+
+# The project's own orientation doc, written per repo by /domain-modeling.
+CONTEXT.md
+
+# Decisions of this project. The template ships the ADR format, not the records.
+docs/adr/
+
+# Written against this codebase; the template has no architecture to index.
+docs/architecture/
+
+# Per-repo ignores and attributes accumulate (build output, tooling, local
+# scratch). A sync that overwrote them would break the working tree.
+.gitignore
+.gitattributes
+
+# Path-scoped rules cite this repo's files. The template's copies point at paths
+# that do not exist here, and citations that cannot resolve are exactly what the
+# doc guards fail on.
+.claude/rules/
+
+# Not a convention: the template's own issue/PR templates and CODEOWNERS are
+# about maintaining the blueprint.
+.github/CODEOWNERS
+.github/ISSUE_TEMPLATE/
+.github/PULL_REQUEST_TEMPLATE.md
