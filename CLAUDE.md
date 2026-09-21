@@ -1,5 +1,13 @@
 # CLAUDE.md
 
+## Single source of truth
+
+Every statement has one home. Do not write it a second time. Point at the home instead.
+
+## Code review
+
+At code review, read `docs/agents/coding-standards.md`.
+
 ## Agent skills
 
 ### Issue tracker
