@@ -1,0 +1,62 @@
+# Opt-in escape hatch for pulling a later blueprint change into this repo.
+#
+# This is NOT the primary propagation channel. Guard scripts arrive as a
+# published package (a fix is a version bump, no merge); markdown conventions
+# are copied once at generation time and are meant to diverge. Reach for this
+# workflow only when a convention fix is worth forcing on an existing repo.
+#
+# It runs on manual dispatch only — never on a schedule, never on push. A weekly
+# PR nobody merges is worse than no sync at all.
+#
+# Setup before the first run: see README.md, "Pulling a later blueprint change".
+name: Template sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Compute the sync but push nothing and open no PR"
+        type: boolean
+        default: false
+      source_branch:
+        description: "Branch of the template to sync from"
+        type: string
+        default: main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: template-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Open a template-sync PR
+    runs-on: ubuntu-latest
+    steps:
+      # TEMPLATE_SYNC_TOKEN is a PAT (or GitHub App token) with read access to
+      # the private template and contents + workflow write on this repo. The
+      # built-in GITHUB_TOKEN cannot do either job: it cannot read a private
+      # source repo, and it is refused when a push touches
+      # .github/workflows/**.
+      - name: Check out this repository
+        uses: actions/checkout@v6.1.0
+        with:
+          token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
+          fetch-depth: 0
+
+      - name: Sync from the template
+        uses: AndreasAugustin/actions-template-sync@v2.6.0
+        with:
+          source_repo_path: felixt-teclead/blueprint
+          source_branch: ${{ inputs.source_branch }}
+          upstream_branch: ${{ github.event.repository.default_branch }}
+          source_gh_token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
+          target_gh_token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
+          is_dry_run: ${{ inputs.dry_run }}
+          is_pr_cleanup: true
+          pr_title: "chore(template): pull later blueprint changes"
+          pr_labels: template_sync
+          pr_commit_msg: "chore(template): merge blueprint changes"
