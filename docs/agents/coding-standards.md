@@ -14,8 +14,8 @@ Do not change behaviour while you review. Change only how the code does it.
 
 ## Comments and documentation
 
-Comments are in scope for review. The defaults are in `CLAUDE.md` §"Comments"; the tests a comment must pass and the procedure to write one are in `.claude/skills/comment-write/`.
+Review the comments as well as the code. `CLAUDE.md` §"Comments" holds the defaults. `.claude/skills/comment-write/` holds the tests a comment must pass and the procedure to write one.
 
 ---
 
-Add your own sections below. Do not leave a heading empty.
+Add your own sections below this line. Do not leave a heading empty.

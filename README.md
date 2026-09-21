@@ -15,6 +15,23 @@ make a generated repo public without checking what the conventions carry.
 
 To retrofit an existing repo instead, follow `docs/retrofit.md`.
 
+## Make the steering gate blocking (optional)
+
+A diff to the steering files changes the rules the agents work by, so a human
+decides it. The rule lives in `CLAUDE.md` and stops an agent before it merges;
+`.github/CODEOWNERS` requests a review from the owner you name there.
+
+Neither refuses a merge. To make GitHub refuse one, run the bootstrap once:
+
+```sh
+sh .github/bootstrap-steering-ruleset.sh <owner>/<name>
+```
+
+It adds the ruleset in `.github/steering-ruleset.json`: a pull request with a
+code-owner approval, and no bypass actor. A private repo on a Free account
+cannot hold a ruleset, so the script says so and exits 0. The gate then stays
+advisory, and a human merges every steering diff by hand.
+
 ## Pulling a later blueprint change
 
 A generated repo is a starting point, not a dependency. Its markdown is meant to

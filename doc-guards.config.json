@@ -41,6 +41,10 @@
       {
         "path": "docs/ARCHITECTURE.md",
         "reason": "cited by the comment skills and created on demand; this repo's architecture doc is still unwritten"
+      },
+      {
+        "path": "AGENTS.md",
+        "reason": "the stub is charted but unwritten; the steering rule names it as a steering file already"
       }
     ]
   }

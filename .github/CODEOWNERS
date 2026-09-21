@@ -1,0 +1,14 @@
+# Owners of the steering files. This file only requests a review — it does not
+# block a merge. The gate is the rule in CLAUDE.md §"Steering files": an agent
+# never merges a steering diff, and a human merges it by hand.
+#
+# REPLACE @STEERING-OWNER-PLACEHOLDER with a GitHub handle or @org/team that has
+# write access. An unresolvable owner is silent at the gate: GitHub assigns no
+# owner, requests no review, and reports nothing at merge time.
+
+/CLAUDE.md             @STEERING-OWNER-PLACEHOLDER
+/AGENTS.md             @STEERING-OWNER-PLACEHOLDER
+/docs/agents/          @STEERING-OWNER-PLACEHOLDER
+/docs/ARCHITECTURE.md  @STEERING-OWNER-PLACEHOLDER
+/docs/architecture/    @STEERING-OWNER-PLACEHOLDER
+/.github/CODEOWNERS    @STEERING-OWNER-PLACEHOLDER
