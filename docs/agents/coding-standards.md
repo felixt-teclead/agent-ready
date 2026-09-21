@@ -14,9 +14,7 @@ Do not change behaviour while you review. Change only how the code does it.
 
 ## Comments and documentation
 
-Do not write a comment that repeats the code.
-
-A reason that is true for one place stays a comment at that place. A reason that is true in two or more places goes in a doc section, and the comments point at that section.
+Comments are in scope for review. The defaults are in `CLAUDE.md` §"Comments"; the tests a comment must pass and the procedure to write one are in `.claude/skills/comment-write/`.
 
 ---
 
