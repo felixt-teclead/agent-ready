@@ -29,8 +29,9 @@ later claim is measured against these numbers.
 
 Five measurements, all mechanical:
 
-1. **Citation failures.** Run the doc guard in report mode over the repo. Keep
-   the tuned defaults, so bare directory citations stay off.
+1. **Citation failures.** Run `doc-guards check` over the repo from outside it,
+   with `--root`, so the repo stays untouched. Keep the tuned defaults, so bare
+   directory citations stay off.
 2. **Line count per doc**, against the 400-line prompt.
 3. **Inbound pointers per doc.** Count the files that cite each doc. A doc with
    no inbound pointer is a candidate for deletion. A doc with many is expensive
