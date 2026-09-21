@@ -1,0 +1,35 @@
+{
+  "scan": {
+    "exempt": [
+      {
+        "glob": "docs/research/**",
+        "reason": "dated records of what was true then, not live instructions"
+      },
+      {
+        "glob": "docs/adr/**",
+        "reason": "a superseded ADR keeps its original citations; forcing them green would edit history"
+      },
+      {
+        "glob": "bin/doc-guards.mjs",
+        "reason": "the file that contains the citation patterns"
+      },
+      {
+        "glob": "doc-guards.config.json",
+        "reason": "the ledger itself; its globs are patterns, not citations"
+      }
+    ]
+  },
+  "citations": {
+    "minCitations": 4,
+    "allowMissing": [
+      {
+        "path": "CONTEXT.md",
+        "reason": "created lazily by /domain-modeling; steering files cite it before it exists"
+      },
+      {
+        "path": "CONTEXT-MAP.md",
+        "reason": "multi-context repos only; absent by default"
+      }
+    ]
+  }
+}

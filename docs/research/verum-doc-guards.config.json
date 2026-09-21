@@ -1,0 +1,22 @@
+{
+  "scan": {
+    "exempt": [
+      { "glob": "docs/superpowers/**", "reason": "plans and specs record what was true at the time" },
+      { "glob": "docs/planning/**", "reason": "dated lane plans, not live instructions" },
+      { "glob": "docs/meeting-notes/**", "reason": "transcripts; never edited after the meeting" },
+      { "glob": "docs/audits/**", "reason": "point-in-time audits" },
+      { "glob": "docs/backlog/**", "reason": "dated tickets; informal references stay as written" },
+      { "glob": "archive/**", "reason": "superseded prototype material" },
+      { "glob": "references/**", "reason": "client-supplied requirements, quoted verbatim" },
+      { "glob": "supabase/migrations/**", "reason": "forward-only; a comment is never edited after the push" }
+    ]
+  },
+  "citations": {
+    "minCitations": 100,
+    "resolveRoots": [".claude/skills"],
+    "allowMissing": [
+      { "path": "client-input/arbeitsstand-2026-08-12.md", "reason": "gitignored client folder; not present in a clone" }
+    ]
+  },
+  "index": { "file": "docs/ARCHITECTURE.md", "domainDir": "docs/architecture" }
+}
