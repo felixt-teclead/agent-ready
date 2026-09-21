@@ -16,6 +16,10 @@
       {
         "glob": "doc-guards.config.json",
         "reason": "the ledger itself; its globs are patterns, not citations"
+      },
+      {
+        "glob": "docs/retrofit.md",
+        "reason": "the procedure names paths in the repo being retrofitted, not in this one"
       }
     ]
   },
@@ -29,6 +33,14 @@
       {
         "path": "CONTEXT-MAP.md",
         "reason": "multi-context repos only; absent by default"
+      },
+      {
+        "path": "docs/DESIGN.md",
+        "reason": "example target in a skill's EXAMPLES.md; it names a doc in the repo that uses the skill"
+      },
+      {
+        "path": "docs/ARCHITECTURE.md",
+        "reason": "cited by the comment skills and created on demand; this repo's architecture doc is still unwritten"
       }
     ]
   }
