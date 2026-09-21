@@ -13,8 +13,7 @@ file snapshot of `main` as one commit — no history, no issues, no secrets, no
 settings. Its visibility is yours to choose; this template is private, so do not
 make a generated repo public without checking what the conventions carry.
 
-To retrofit an existing repo instead, see the retrofit procedure (not yet
-written).
+To retrofit an existing repo instead, follow `docs/retrofit.md`.
 
 ## Pulling a later blueprint change
 
