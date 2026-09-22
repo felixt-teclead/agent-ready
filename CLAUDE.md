@@ -8,6 +8,8 @@ Every statement has one home. Do not write it a second time. Point at the home i
 
 The steering files are `CLAUDE.md`, `AGENTS.md`, `.github/CODEOWNERS`, `docs/agents/`, `docs/ARCHITECTURE.md` and `docs/architecture/`.
 
+Two more paths are guarded with them, because each one disarms the guard in a single line: `doc-guards.config.json` and `.github/workflows/doc-guards.yml`.
+
 Never merge a diff that touches one. Stop, state plainly what the diff decides, write that exchange into the pull request, and leave the merge to a human. The merge click is the approval, and every real human is a pass.
 
 This rule guards itself: a diff that edits it is a steering diff.

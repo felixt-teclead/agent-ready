@@ -22,7 +22,12 @@ jobs:
   doc-guards:
     runs-on: ubuntu-latest
     steps:
+      # Full history: the steering guard diffs against the base ref to report
+      # whether this pull request touches a guarded path, and a depth-1 checkout
+      # does not hold that commit.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
