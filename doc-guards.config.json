@@ -10,10 +10,6 @@
         "reason": "a superseded ADR keeps its original citations; forcing them green would edit history"
       },
       {
-        "glob": "bin/doc-guards.mjs",
-        "reason": "the file that contains the citation patterns"
-      },
-      {
         "glob": "doc-guards.config.json",
         "reason": "the ledger itself; its globs are patterns, not citations"
       },

@@ -1,13 +1,8 @@
 # Documentation guards on every pull request.
 #
-# The guards are a standalone Node script, not part of the repo's test suite, so
+# The guards are a published npm package, not part of the repo's test suite, so
 # a Python or Go repo gets them without adopting a JS test runner. It still needs
 # Node on the runner — that is the cost of this choice.
-#
-# Today the script is copied into the repo at bin/doc-guards.mjs. Once it is
-# published (#8), this step becomes a thin caller:
-#   npx @teclead/doc-guards@^1 check --format github
-# and a guard fix arrives as a version bump instead of a template sync.
 name: Doc guards
 
 on:
@@ -37,4 +32,4 @@ jobs:
       # floor was missed or the config is invalid — and it fails the job too,
       # because "found nothing to check" must never read as "everything is fine".
       - name: Run doc guards
-        run: node bin/doc-guards.mjs check --format github
+        run: npx --yes doc-guards@^0 check --format github
