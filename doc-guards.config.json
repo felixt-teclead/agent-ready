@@ -43,5 +43,8 @@
         "reason": "the stub is charted but unwritten; the steering rule names it as a steering file already"
       }
     ]
+  },
+  "steering": {
+    "enabled": true
   }
 }

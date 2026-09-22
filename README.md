@@ -15,13 +15,34 @@ make a generated repo public without checking what the conventions carry.
 
 To retrofit an existing repo instead, follow `docs/retrofit.md`.
 
-## Make the steering gate blocking (optional)
+## Name a steering owner (optional)
 
 A diff to the steering files changes the rules the agents work by, so a human
-decides it. The rule lives in `CLAUDE.md` and stops an agent before it merges;
-`.github/CODEOWNERS` requests a review from the owner you name there.
+decides it. The rule lives in `CLAUDE.md` and stops an agent before it merges.
+Three layers can stand behind it, and you choose how many you want.
 
-Neither refuses a merge. To make GitHub refuse one, run the bootstrap once:
+**Layer one, always on.** The doc-guards steering guard says on every run who
+owns the steering files and how much enforcement is real. Out of the box
+`.github/CODEOWNERS` names `@STEERING-OWNER-PLACEHOLDER`, so nobody owns
+anything: anyone with write access can change a steering file, and the guard
+warns on every run without failing. That is a supported state — a repo with one
+maintainer has nobody to review anyway.
+
+**Layer two: name owners.** Replace the placeholder with a handle or `@org/team`
+that has **write access to this repo**, then set `requireOwners` in
+`doc-guards.config.json`:
+
+```json
+"steering": { "enabled": true, "requireOwners": true }
+```
+
+GitHub now requests a review from the owner on every steering diff, and the
+guard fails the build if a guarded path loses its owner. A handle *without*
+write access is worse than the placeholder: GitHub assigns no owner, requests
+nothing, and says nothing at merge time.
+
+**Layer three: make it blocking.** Layers one and two still do not refuse a
+merge. To make GitHub refuse one, run the bootstrap once:
 
 ```sh
 sh .github/bootstrap-steering-ruleset.sh <owner>/<name>
@@ -31,6 +52,10 @@ It adds the ruleset in `.github/steering-ruleset.json`: a pull request with a
 code-owner approval, and no bypass actor. A private repo on a Free account
 cannot hold a ruleset, so the script says so and exits 0. The gate then stays
 advisory, and a human merges every steering diff by hand.
+
+Two paths are guarded alongside the steering files, because each one disarms the
+guard in a single line: `doc-guards.config.json` and
+`.github/workflows/doc-guards.yml`.
 
 ## Pulling a later blueprint change
 
