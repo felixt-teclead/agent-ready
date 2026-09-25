@@ -14,7 +14,7 @@
     "steering_gate": {
       "type": "boolean",
       "title": "Steering gate",
-      "description": "Write CODEOWNERS and the ruleset bootstrap so a human must approve every change to a steering file. Blocks only on a Team or public repo.",
+      "description": "Write CODEOWNERS and the ruleset bootstrap so a human must approve every change to a steering file, and block gh pr merge on a steering diff. The ruleset blocks only on a Team or public repo.",
       "required": true
     }
   }
