@@ -33,6 +33,9 @@ gh api repos/felixt-teclead/blueprint/tarball/main |
 mkdir -p .claude && ln -s ../.agents/skills .claude/skills
 ```
 
+Later, `/update-matt-pocock-skills` pulls in what blueprint changed and asks
+before it touches a file you edited.
+
 ## Name a steering owner (optional)
 
 A diff to the steering files changes the rules the agents work by, so a human
