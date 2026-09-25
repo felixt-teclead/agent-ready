@@ -24,6 +24,14 @@ the `cleanup` skill's job.
 Run [measure.md](measure.md). It gives the channel, the switches, and one
 status per row.
 
+Plugin channel switch values, filled in when the skill loads. A value still
+in `${…}` form is unset:
+
+- `comment_review`: `${user_config.comment_review}`
+- `steering_gate`: `${user_config.steering_gate}`
+- `cleanup_comments`: `${user_config.cleanup_comments}`
+- `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
+
 Done when every row is `home`, `misplaced`, `missing`, `n/a` or
 `not measured`.
 

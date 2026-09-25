@@ -7,7 +7,8 @@ Shared by `setup-codebase-for-agents` and `scan-codebase-for-agents`. Read
 
 - **Channel.** This skill's folder sits inside the repo (`.agents/skills/` or
   `.claude/skills/`) → no plugin. Anywhere else → plugin.
-- **Switches.** Plugin: `${user_config.<key>}`. No plugin: the `env` block of
+- **Switches.** Plugin: the values the calling skill lists; only a skill's
+  own `SKILL.md` gets `${user_config.<key>}` filled in. No plugin: the `env` block of
   `.claude/settings.json`, then `.claude/settings.local.json`. Not there →
   unset.
 
