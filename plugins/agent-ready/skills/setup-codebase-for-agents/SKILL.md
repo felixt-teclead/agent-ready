@@ -16,8 +16,9 @@ not written yet. The repo is coherent after every commit.
 The **gap list** holds every row left unwritten, with the reason. An
 unanswered question puts its row on the gap list. It never gets a default.
 
-This skill writes only rows that are missing. Changing existing content is
-the `cleanup` skill's job.
+This skill writes only rows that are missing, plus the home file of a
+`fixed` row that is misplaced, so `cleanup` has somewhere to move its
+statements. Changing existing content is the `cleanup` skill's job.
 
 ## 1. Measure
 
@@ -89,16 +90,16 @@ leave the file out and put its row on the gap list.
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
    place.
-4. **AFK files** from answer F: `docs/agents/environment.md` and
+4. **Commands** from answer A into the manifest scripts. **`README.md`** from
+   answer B.
+5. **Each tool** the owner accepted in answer C: the tool, its config, its
+   script. One commit per tool.
+6. **AFK files** from answer F: `docs/agents/environment.md` and
    `docs/agents/afk-handback.md`, plus the `### AFK runs` part of the block.
-5. **`docs/CODING_CONVENTIONS.md`**:
+7. **`docs/CODING_CONVENTIONS.md`**:
    [the header](templates/docs/CODING_CONVENTIONS.md), then
    [the comments section](templates/docs/CODING_CONVENTIONS.comments.md) when
    `comment_review` is `false`, then the lines from answer D.
-6. **Commands** from answer A into the manifest scripts. **`README.md`** from
-   answer B.
-7. **Each tool** the owner accepted in answer C: the tool, its config, its
-   script. One commit per tool.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
 9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. No-plugin
