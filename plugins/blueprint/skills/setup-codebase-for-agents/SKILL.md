@@ -28,7 +28,7 @@ On a fresh repo, read the repo yourself:
 - `AGENTS.md`, `CLAUDE.md`, `.agents/skills/`, `.claude/skills/`,
   `docs/agents/`, `CONTEXT.md`, `docs/adr/`.
 - The `userConfig` switches: comments, steering gate.
-- Whether the blueprint skills are already available, from the plugin.
+- Whether the blueprint skills are already available: `$CLAUDE_PLUGIN_ROOT` is set.
 
 Done when every row of the table is marked present, missing, or found elsewhere.
 
@@ -66,7 +66,7 @@ an existing file keeps its text.
 6. Any tool the owner accepted in answer C: tool, config, script.
 7. The architecture pointer line in `AGENTS.md`, when step 1 found an
    architecture doc.
-8. `.claude/settings.json`: auto-memory off.
+8. `.claude/settings.json`: `"autoMemoryEnabled": false`.
 9. Steering gate on: `.github/CODEOWNERS`, `.github/steering-ruleset.json`,
    `.github/bootstrap-steering-ruleset.sh`.
 
