@@ -1,23 +1,22 @@
 # Owners of the steering files. This file only requests a review — it does not
-# block a merge. The gate is the rule in CLAUDE.md §"Steering files": an agent
+# block a merge. The gate is the rule in AGENTS.md §"Steering files": an agent
 # never merges a steering diff, and a human merges it by hand.
 #
-# Naming an owner is optional. Left as it is, nobody owns these paths, anyone
-# with write access can change them, and the doc-guards steering guard warns on
-# every run. See README §"Name a steering owner".
+# Naming an owner is optional. Left as it is, nobody owns these paths, and
+# anyone with write access can change them. See README §"Name a steering owner".
 #
 # To name one, replace @STEERING-OWNER-PLACEHOLDER with a GitHub handle or
 # @org/team that has write access here. A handle without write access is worse
 # than the placeholder: GitHub assigns no owner, requests no review, and reports
 # nothing at merge time.
 
-/CLAUDE.md             @STEERING-OWNER-PLACEHOLDER
-/AGENTS.md             @STEERING-OWNER-PLACEHOLDER
-/docs/agents/          @STEERING-OWNER-PLACEHOLDER
-/docs/ARCHITECTURE.md  @STEERING-OWNER-PLACEHOLDER
-/docs/architecture/    @STEERING-OWNER-PLACEHOLDER
-/.github/CODEOWNERS    @STEERING-OWNER-PLACEHOLDER
+/AGENTS.md                  @STEERING-OWNER-PLACEHOLDER
+/CLAUDE.md                  @STEERING-OWNER-PLACEHOLDER
+/docs/agents/               @STEERING-OWNER-PLACEHOLDER
+/docs/CODING_CONVENTIONS.md @STEERING-OWNER-PLACEHOLDER
+/.github/CODEOWNERS         @STEERING-OWNER-PLACEHOLDER
+/.agents/skills/            @STEERING-OWNER-PLACEHOLDER
 
-# Not steering files, but each disarms the steering guard in one line.
-/doc-guards.config.json           @STEERING-OWNER-PLACEHOLDER
-/.github/workflows/doc-guards.yml @STEERING-OWNER-PLACEHOLDER
+# Not steering files, but each switches a safeguard off in every installed repo.
+/plugins/agent-ready/.claude-plugin/plugin.json @STEERING-OWNER-PLACEHOLDER
+/plugins/agent-ready/hooks/                     @STEERING-OWNER-PLACEHOLDER
