@@ -1,15 +1,15 @@
 ---
 name: comment-review
-description: Rewrite and check the comments a branch adds, then stamp HEAD so git push and gh pr create go through. Use when the comment-review hook blocks a push or a pull request, or before either.
+description: Review the comments a branch adds and stamp HEAD. Use before git push or gh pr create, or when the comment-review hook blocks one.
 ---
 
 **Goal: every comment on the branch earns its place, and none that mattered is
-lost.** Writers with no session context rewrite the comments from the code
-alone; you judge what they dropped. Rules: [`RULES.md`](RULES.md). Writer
+lost.** Blind writers rewrite the comments from the code alone; you judge
+what they dropped. Rules: [`RULES.md`](RULES.md). Writer
 brief: [`subagent.md`](subagent.md).
 
-You are the parent and the only writer into the repository. Writers run on
-Opus, one per file, in parallel. `<work>` is a scratch directory outside the
+You are the parent and the only writer into the repository. Blind writers
+run on Opus, one per file, in parallel. `<work>` is a scratch directory outside the
 repository (`mktemp -d`); nothing in it is committed. `<skill>` is this
 directory.
 
@@ -47,15 +47,15 @@ directives (lint, type checker, formatter, coverage, licence) and tracked
 markers (`TODO:`, `FIXME(`).
 
 Record each removed comment, with its line and anchor code, in
-`<work>/original/<path>.md`. Writers never see this file.
+`<work>/original/<path>.md`. It is what keeps the writers blind: it stays
+out of every brief.
 
 Check the copy: `diff <path> <work>/stripped/<path>` shows deletions only, and
 every deleted character is comment text.
 
 ## 3. Brief and dispatch
 
-Per file, write a brief a stranger can work from. The writer knows nothing
-of this session. Give it:
+Per file, write a brief a blind writer can work from. Give it:
 
 - what the change does and why, in behaviour terms
 - the constraints you know that the code does not show: a gateway quirk, a
@@ -63,8 +63,9 @@ of this session. Give it:
 - the docs that own shared rules, by path
 - `path`, `work`, `repo`, `skill`
 
-Never quote or paraphrase a removed comment. A brief that carries one hands
-the writer the answer, and the comparison in step 4 then measures nothing.
+Build the brief from the code and the change. A removed comment in it,
+quoted or paraphrased, hands the writer the answer, and step 4 then measures
+nothing.
 
 Dispatch one writer per file in one turn: the text of `subagent.md`, then the
 brief. Wait for every `<work>/proposed/<path>.md`.
@@ -75,19 +76,21 @@ Per file, set `original/` against `proposed/`, anchor by anchor.
 
 - **Proposed passes `RULES.md`** → write it.
 - **Proposed fails a rule** → drop it or fix its wording yourself.
-- **An original fact the writer did not recover** → apply the no-op test. It
-  passes → restore it in the original words, reworded only to meet
-  `RULES.md`. List it under "Restored" in the report. Its loss means the code
-  cannot carry it, so it is exactly what a comment is for.
-- **An original fact that fails a rule** → it stays out.
+- **An original fact the writer missed** → restore it if it passes
+  `RULES.md`, in the original words, reworded only to meet the rules. List it
+  under "Restored" in the report. Its loss means the code cannot carry it, so
+  it is exactly what a comment is for.
+- **`RENAME`** → apply it if it passes the no-op test: the name and every
+  reference to it, nothing else.
 
-Writer findings (`BUG`, `UNSURE`, `REDESIGN`, `WANTS DOC`) go to the report.
-You never fix a bug here.
+Every other finding goes to the report.
+
+Done when every anchor in `original/` and `proposed/` has a verdict.
 
 ## 5. Call sites
 
-List the exports on the branch whose behaviour changed. A rename or a move is
-not a behaviour change. Per export:
+List every export in the diff whose body changed, minus pure renames and
+moves. Per export:
 
 ```bash
 git grep -n '<export>'
@@ -99,8 +102,9 @@ refactor: report it.
 
 ## 6. Gates
 
-1. `git diff` against `HEAD` adds and removes comment lines only. A code line
-   in it is your mistake: revert it.
+1. `git diff` against `HEAD` changes comment lines, plus lines that differ
+   only by an applied `RENAME`. Any other code line is your mistake: revert
+   it.
 2. Typecheck and lint, by the names the project manifest gives them.
 3. Re-read each written line against the code. A named symbol exists and is
    used as stated. A stated number or direction holds. A claim you cannot

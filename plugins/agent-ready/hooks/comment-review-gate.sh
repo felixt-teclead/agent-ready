@@ -16,5 +16,5 @@ git_dir=$(git rev-parse --git-dir 2>/dev/null) || exit 0
 head=$(git rev-parse HEAD 2>/dev/null) || exit 0
 [ "$(cat "$git_dir/comment-review-ok" 2>/dev/null)" = "$head" ] && exit 0
 
-echo "Comments on this branch are unreviewed. Run the comment-review skill; it stamps HEAD when done, then retry." >&2
+echo "Comments on this branch are unreviewed. Run the comment-review skill, then retry." >&2
 exit 2

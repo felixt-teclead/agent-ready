@@ -10,9 +10,8 @@ Every other rule applies only to a comment that survives this one.
 - **Interface comments are owed.** Every export carries one. It holds one plain
   statement per slot its types do not answer. A slot is never dropped for
   being obvious, and a good name does not answer it.
-- **Implementation comments default to no.** One earns its place only when it
-  says what the code cannot, loses that when deleted, and changes what the
-  next reader does.
+- **Implementation comments default to no.** Each one must pass the no-op
+  test.
 
 ## Interface slots
 
@@ -33,21 +32,22 @@ allowed; say what null *means*, or nothing.
 ## What an implementation comment may say
 
 - **A constraint the code answers to**: a unit, a bound, a gateway quirk, a
-  framework default the code departs from. Name where to verify it.
+  framework default the code departs from.
 - **A summary above a large block** (eight lines or more) that says what the
   block accomplishes, so a reader can skip it.
 - **A trap**: what breaks when someone changes this. Name the test that pins it.
 
-Try a better name or a narrower type first. Use them only when the change
-stays inside the file. A change that would ripple to callers becomes a
-one-line comment at the definition instead.
+A better name beats a comment. A rename changes the name and every reference
+to it, nothing else; propose it as `RENAME`. A fact a narrower type would
+carry is a `TYPE` finding and gets a one-line comment at the definition.
 
 ## Cut these
 
-- **History and process**: what the code used to do, how it got here, who
-  decided, when.
+- **History**: what the code used to do, how it got here, who decided, when,
+  or which ticket, PR or review round. Keep the reason, drop the id.
 - **Restates**: every word is readable from the line, its names or its
-  signature.
+  signature. A sentence that describes the code's response to a constraint,
+  rather than the constraint, restates.
 - **Derivable**: a type, a callee signature or a test states it. A fact hidden
   inside a callee body is not derivable.
 - **How, at an interface**: implementation steps a caller must not depend on.
@@ -62,24 +62,18 @@ one-line comment at the definition instead.
 - **Shared** (a rule other files obey, a contract across files, a repo-wide
   trap): one existing doc owns it. The comment is `See <doc path>`, no
   anchor. `docs/adr/` is never a pointer target. No doc fits → keep it as a
-  comment and list it in the report as "wants a doc". Never create a doc.
+  comment and file `WANTS DOC`. Never create a doc.
 
-## The five tests for a sentence
+## Two tests for a sentence
 
-1. **Still true after the line is rewritten?** State the constraint, not the
-   mechanics.
-2. **Names where to verify it?** The gateway, the framework, the test, the
+1. **Names where to verify it?** The gateway, the framework, the test, the
    invariant.
-3. **States the constraint alone?** The code's response is visible in the
-   code.
-4. **A stranger could not write it from the adjacent code?** At an interface,
+2. **A stranger could not write it from the adjacent code?** At an interface,
    the adjacent code is the signature alone.
-5. **Stands alone without a tracker?** No ticket, PR, review round or person.
-   Keep the reason, drop the id.
 
 ```
 // Gateway field order varies per request.          passes
-// Stable stringify so the cache key stays stable.  fails 1 and 3
+// Stable stringify so the cache key stays stable.  restates
 ```
 
 ## Voice and form
@@ -94,5 +88,15 @@ cents", not "don't pass euros". Present tense.
 - **Private function**: what it accomplishes, briefly.
 - **More than three lines** is a doc section, not a comment.
 
-Something you cannot state in a few plain sentences marks a bad abstraction.
-Report it as `REDESIGN`; do not write the paragraph.
+## Findings
+
+Reported in the pull request body, never fixed by this review.
+
+- `BUG`: the code contradicts its test, a doc or its own types.
+- `UNSURE`: the fact could not be established.
+- `REDESIGN`: it resists a statement of a few plain sentences, which marks a
+  bad abstraction. Say what you tried to state.
+- `WANTS DOC`: a shared fact with no doc to own it.
+- `TYPE`: a narrower type would carry the fact.
+- `RENAME`: a name that would carry the fact, with every reference to change.
+  The one finding the parent applies.
