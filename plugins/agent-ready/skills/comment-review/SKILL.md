@@ -9,7 +9,7 @@ alone; you judge what they dropped. Rules: [`RULES.md`](RULES.md). Writer
 brief: [`subagent.md`](subagent.md).
 
 You are the parent and the only writer into the repository. Writers run on
-Sonnet, one per file, in parallel. `<work>` is a scratch directory outside the
+Opus, one per file, in parallel. `<work>` is a scratch directory outside the
 repository (`mktemp -d`); nothing in it is committed. `<skill>` is this
 directory.
 
