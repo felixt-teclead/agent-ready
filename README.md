@@ -15,6 +15,20 @@ claude plugin install agent-ready@teclead
 Then turn on auto-update under `/plugin` → Marketplaces. Every merge to `main`
 ships.
 
+## Set up a repo without the plugin
+
+Stream the setup skill into the repo, then run `/setup-codebase-for-agents`.
+It copies the other skills and the hooks itself. Nothing else is written.
+
+```sh
+mkdir -p .agents/skills
+w=; tar --version | grep -q 'GNU tar' && w=--wildcards
+gh api repos/felixt-teclead/blueprint/tarball/main |
+  tar xzf - -C .agents/skills --strip-components=4 $w \
+    '*/plugins/agent-ready/skills/setup-codebase-for-agents'
+mkdir -p .claude && ln -s ../.agents/skills .claude/skills
+```
+
 ## Name a steering owner (optional)
 
 A diff to the steering files changes the rules the agents work by, so a human

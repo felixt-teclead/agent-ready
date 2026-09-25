@@ -1,0 +1,16 @@
+# Owners of the steering files. This file only requests a review — it does not
+# block a merge. The gate is the rule in AGENTS.md §"Steering files": an agent
+# never merges a steering diff, and a human merges it by hand.
+#
+# An owner must have write access to this repo. A handle without it is worse
+# than none: GitHub assigns no owner, requests no review, and reports nothing
+# at merge time.
+
+/AGENTS.md                  <owner>
+/CLAUDE.md                  <owner>
+/docs/agents/               <owner>
+/docs/CODING_CONVENTIONS.md <owner>
+/.github/CODEOWNERS         <owner>
+/.agents/skills/            <owner>
+/.agents/hooks/             <owner>
+/.claude/settings.json      <owner>
