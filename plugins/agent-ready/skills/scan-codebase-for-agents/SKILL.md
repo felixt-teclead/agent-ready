@@ -106,6 +106,8 @@ Name the ones you find. Say nothing about the rest.
 
 ## Report
 
+Open with this block, in a code fence, before any other text:
+
 ```
 rows   X of Y in their home
 lines  A of J pass
