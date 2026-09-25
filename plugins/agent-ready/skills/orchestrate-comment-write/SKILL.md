@@ -1,7 +1,6 @@
 ---
 name: orchestrate-comment-write
-description: Write missing comments over a set of files, one subagent per file, docs held here.
-disable-model-invocation: true
+description: "Called by agent-ready:cleanup during a refactor phase: write missing comments over a set of files, one subagent per file."
 ---
 
 You hold the repo docs; the subagents hold one file each and never open a
