@@ -68,7 +68,7 @@ Take the first class with a finding, in this order:
 2. Always-loaded lines that fail a test.
 3. Misplaced statements.
 
-Name one change that fits one pull request. Say which file it touches and what it removes or moves.
+Name one change that fits one pull request. Say which file it touches and what it removes or moves. If it touches a steering path, say: steering diff, a human merges.
 
 If that change alone does not fit one pull request, do not shrink it. Say the gap is a phase, and point at the cleanup skill's refactor mode.
 
