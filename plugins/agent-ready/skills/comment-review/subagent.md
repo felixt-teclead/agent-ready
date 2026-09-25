@@ -1,4 +1,4 @@
-# Writer brief
+# Writer prompt
 
 The parent pastes the quoted text into each writer dispatch, with the values
 filled in. The writer is **blind**: everything it knows comes from here, the
@@ -31,7 +31,8 @@ stripped file and the repository.
 > `comment text` set to `<FINDING>: …`.
 >
 > Re-read every row against the code: a named symbol exists and is used as
-> stated, a stated number or direction holds. Delete a claim you cannot check.
+> stated, a stated number or direction holds. A claim you cannot check
+> becomes an `UNSURE` row.
 >
 > Done when every export in your ranges has an interface row, and every block
 > of eight lines or more has been judged. Return only the path.

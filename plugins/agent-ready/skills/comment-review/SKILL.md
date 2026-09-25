@@ -6,7 +6,7 @@ description: Review the comments a branch adds, restore any that mattered, and s
 **Goal: every comment on the branch earns its place, and none that mattered is
 lost.** Blind writers rewrite the comments from the code alone; you judge
 what they dropped. Rules: [`RULES.md`](RULES.md). Writer
-brief: [`subagent.md`](subagent.md).
+prompt: [`subagent.md`](subagent.md).
 
 You are the parent and the only writer into the repository. Blind writers
 run on Opus, one per file, in parallel. `<work>` is a scratch directory outside the
@@ -15,10 +15,13 @@ directory.
 
 ## 1. Scope
 
+The working tree is clean (`git status --porcelain` prints nothing), so every
+later diff is this review's own. Not clean → stop and say so.
+
 ```bash
 default=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main)
 base=$(git merge-base HEAD "$default")
-git diff --name-only --diff-filter=AM "$base"...HEAD
+git diff --name-only --diff-filter=d "$base"...HEAD
 ```
 
 On the default branch itself, use `@{upstream}` as `base`.
@@ -42,7 +45,9 @@ git diff -U0 "$base"...HEAD -- <path> | grep '^@@'
 
 into `<work>/lines/<path>.txt`. Copy the file to `<work>/stripped/<path>` and
 remove every comment that sits on an added line: line comments, block
-comments, doc comments, and docstrings where the language uses them. Keep tool
+comments, doc comments, and docstrings where the language uses them. A line
+that held only a comment becomes an empty line, so line numbers match the
+repository file. Keep tool
 directives (lint, type checker, formatter, coverage, licence) and tracked
 markers (`TODO:`, `FIXME(`).
 
@@ -50,8 +55,8 @@ Record each removed comment, with its line and anchor code, in
 `<work>/original/<path>.md`. It is what keeps the writers blind: it stays
 out of every dispatch.
 
-Check the copy: `diff <path> <work>/stripped/<path>` shows deletions only, and
-every deleted character is comment text.
+Check the copy: `diff <path> <work>/stripped/<path>` shows the same number of
+lines, and every changed line lost comment text only.
 
 ## 3. Dispatch
 
@@ -118,5 +123,6 @@ after it.
 
 A `## Comment review` section for the pull request body: files reviewed,
 comments written, restored comments with `file:line` and their words, then
-the findings as a to-do list. An open pull request → `gh pr edit --body`.
+the findings as a to-do list. An open pull request → read its body, replace
+or append that section only, and write it back with `gh pr edit --body-file`.
 No pull request yet → carry it into `gh pr create`.

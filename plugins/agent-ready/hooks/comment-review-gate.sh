@@ -10,7 +10,7 @@ else
   cmd=$input
 fi
 
-printf '%s' "$cmd" | grep -Eq '(^|[^[:alnum:]_-])(git( -C [^ ]+)? push|gh pr create)([^[:alnum:]_-]|$)' || exit 0
+printf '%s' "$cmd" | grep -Eq '(^|[^[:alnum:]_-])(git( -[Cc] [^ ]+)* push|gh pr create)([^[:alnum:]_-]|$)' || exit 0
 
 git_dir=$(git rev-parse --git-dir 2>/dev/null) || exit 0
 head=$(git rev-parse HEAD 2>/dev/null) || exit 0
