@@ -2,7 +2,7 @@
 # Optional. Adds a branch ruleset that makes the steering gate blocking: a pull
 # request with a code-owner approval, and no bypass actor.
 #
-# The gate works without it. CLAUDE.md §"Steering files" stops the agent, and a
+# The gate works without it. AGENTS.md §"Steering files" stops the agent, and a
 # human merges by hand. This step adds the GitHub half, which needs a plan that
 # sells it: a public repo, or Pro, Team or Enterprise. On a private repo owned by
 # a Free account the API answers 403. That is a plan, not a fault, so the script
