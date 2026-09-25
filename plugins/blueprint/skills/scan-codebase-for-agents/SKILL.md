@@ -17,9 +17,9 @@ List every file an agent loads or is pointed at:
 
 - Always loaded: `AGENTS.md`, `CLAUDE.md`, nested `CLAUDE.md`/`AGENTS.md`, `.claude/rules/*.md` without a `paths:` list.
 - Loaded on a trigger: `.claude/rules/*.md` with a `paths:` list, `.agents/skills/`, `.claude/skills/`, `docs/agents/`, the review-rules doc.
+- Pointed at: every doc an always-loaded file cites.
 
 Skip gitignored paths.
-- Pointed at: every doc an always-loaded file cites.
 
 For each: line count, and whether an always-loaded file cites it.
 
