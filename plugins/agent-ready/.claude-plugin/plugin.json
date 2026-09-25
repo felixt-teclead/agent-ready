@@ -16,6 +16,19 @@
       "title": "Steering gate",
       "description": "Write CODEOWNERS and the ruleset bootstrap so a human must approve every change to a steering file, and block gh pr merge on a steering diff. The ruleset blocks only on a Team or public repo.",
       "required": true
+    },
+    "cleanup_comments": {
+      "type": "boolean",
+      "title": "Cleanup comments",
+      "description": "During a refactor phase, give every cleaned file a full comment pass. Costly: several subagents per file.",
+      "default": true
+    },
+    "cleanup_comments_max_files": {
+      "type": "number",
+      "title": "Cleanup comments: files per PR",
+      "description": "Most files one cleanup PR gives the comment pass. The rest stay on the path list.",
+      "default": 20,
+      "min": 1
     }
   }
 }

@@ -1,7 +1,6 @@
 ---
 name: comment-write
-description: Optimize documentation by writing the comments a codebase is missing.
-disable-model-invocation: true
+description: "Called by agent-ready:cleanup during a refactor phase: write the comments a file is missing."
 ---
 
 **Goal: comments where the code cannot say it.** Two kinds of fact go

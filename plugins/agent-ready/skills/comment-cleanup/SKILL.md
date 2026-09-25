@@ -1,7 +1,6 @@
 ---
 name: comment-cleanup
-description: Optimize documentation by improving comments.
-disable-model-invocation: true
+description: "Called by agent-ready:cleanup during a refactor phase: prune and improve the comments in a file set."
 ---
 
 **Goal: single source of truth, reachable when necessary.** Every fact sits in
