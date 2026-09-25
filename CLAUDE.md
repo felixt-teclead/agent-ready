@@ -10,6 +10,8 @@ The steering files are `CLAUDE.md`, `AGENTS.md`, `.github/CODEOWNERS`, `docs/age
 
 Two more paths are guarded with them, because each one disarms the guard in a single line: `doc-guards.config.json` and `.github/workflows/doc-guards.yml`.
 
+Two plugin paths are guarded too, because one line in either switches a safeguard off in every installed repo: `plugins/agent-ready/.claude-plugin/plugin.json` and `plugins/agent-ready/hooks/`.
+
 Never merge a diff that touches one. Stop, state plainly what the diff decides, write that exchange into the pull request, and leave the merge to a human. The merge click is the approval, and every real human is a pass.
 
 This rule guards itself: a diff that edits it is a steering diff.

@@ -1,0 +1,14 @@
+{
+  "name": "teclead",
+  "owner": {
+    "name": "Teclead"
+  },
+  "description": "Teclead's Claude Code plugins.",
+  "plugins": [
+    {
+      "name": "agent-ready",
+      "source": "./plugins/agent-ready",
+      "description": "Sets up a codebase for coding agents, or measures an existing one and cleans it up step by step."
+    }
+  ]
+}
