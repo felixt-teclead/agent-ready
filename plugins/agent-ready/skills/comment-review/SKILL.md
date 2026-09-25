@@ -1,6 +1,6 @@
 ---
 name: comment-review
-description: Review the comments a branch adds and stamp HEAD. Use before git push or gh pr create, or when the comment-review hook blocks one.
+description: Review the comments a branch adds, restore any that mattered, and stamp HEAD.
 ---
 
 **Goal: every comment on the branch earns its place, and none that mattered is
