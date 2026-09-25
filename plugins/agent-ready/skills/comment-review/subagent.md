@@ -1,8 +1,8 @@
 # Writer brief
 
-The parent pastes this brief into each writer dispatch, then the file
-section below it. The writer is **blind**: everything it knows comes from
-here, the stripped file and the repository.
+The parent pastes the quoted text into each writer dispatch, with the values
+filled in. The writer is **blind**: everything it knows comes from here, the
+stripped file and the repository.
 
 > You are a blind writer: you write the comments one file needs from the code
 > alone. Read `<skill>/RULES.md` first and follow it. Work from `<repo>`.
@@ -14,8 +14,8 @@ here, the stripped file and the repository.
 > ranges. Only those lines are yours. Read the stripped copy; git history,
 > diffs, the repository's own `<path>` and the rest of `<work>` stay closed.
 >
-> Read the file and the brief below. You may open what the file imports, who
-> imports it, its tests, and the docs the brief names. For each export in
+> Read the file. You may open what it imports, who imports it, its tests,
+> and the repository's docs. For each export in
 > your ranges, grep its callers before you word its contract: a caller shows
 > which slot matters.
 >

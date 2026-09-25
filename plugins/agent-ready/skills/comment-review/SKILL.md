@@ -48,27 +48,17 @@ markers (`TODO:`, `FIXME(`).
 
 Record each removed comment, with its line and anchor code, in
 `<work>/original/<path>.md`. It is what keeps the writers blind: it stays
-out of every brief.
+out of every dispatch.
 
 Check the copy: `diff <path> <work>/stripped/<path>` shows deletions only, and
 every deleted character is comment text.
 
-## 3. Brief and dispatch
+## 3. Dispatch
 
-Per file, write a brief a blind writer can work from. Give it:
-
-- what the change does and why, in behaviour terms
-- the constraints you know that the code does not show: a gateway quirk, a
-  requirement, a caller outside the repository
-- the docs that own shared rules, by path
-- `path`, `work`, `repo`, `skill`
-
-Build the brief from the code and the change. A removed comment in it,
-quoted or paraphrased, hands the writer the answer, and step 4 then measures
-nothing.
-
-Dispatch one writer per file in one turn: the text of `subagent.md`, then the
-brief. Wait for every `<work>/proposed/<path>.md`.
+Dispatch one writer per file in one turn: the text of `subagent.md` with
+`path`, `work`, `repo` and `skill` filled in, nothing else. Anything you add
+from this session hands the writer an answer, and step 4 then measures
+nothing. Wait for every `<work>/proposed/<path>.md`.
 
 ## 4. Judge and write
 
@@ -80,6 +70,9 @@ Per file, set `original/` against `proposed/`, anchor by anchor.
   `RULES.md`, in the original words, reworded only to meet the rules. List it
   under "Restored" in the report. Its loss means the code cannot carry it, so
   it is exactly what a comment is for.
+- **A fact this session knows that neither side carries** → write it if it
+  passes `RULES.md`: a gateway quirk, a requirement, a caller outside the
+  repository.
 - **`RENAME`** → apply it if it passes the no-op test: the name and every
   reference to it, nothing else.
 
