@@ -9,6 +9,15 @@
       "name": "agent-ready",
       "source": "./plugins/agent-ready",
       "description": "Sets up a codebase for coding agents, or measures an existing one and cleans it up step by step."
+    },
+    {
+      "name": "mattpocock-skills",
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills",
+        "ref": "v1.2.3"
+      },
+      "description": "Matt Pocock's skills, pinned to a tag. agent-ready depends on it."
     }
   ]
 }

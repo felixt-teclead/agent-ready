@@ -4,6 +4,7 @@
   "author": {
     "name": "Teclead"
   },
+  "dependencies": ["mattpocock-skills"],
   "userConfig": {
     "comment_review": {
       "type": "boolean",
