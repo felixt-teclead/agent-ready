@@ -1,6 +1,6 @@
 ---
 name: scan-codebase-for-agents
-description: Measure a codebase against the routing table and name the one next change. Use when the user asks how agent-ready a repo is, wants to start cleaning up its steering files, or before /setup-codebase-for-agents writes anything.
+description: Measure a codebase against the routing table and name the one next change. Use when the user asks how agent-ready a repo is or wants to continue cleaning up its steering files. Runs only after /setup-codebase-for-agents.
 ---
 
 <!-- PROTOTYPE — throwaway draft for "The scan skill" ticket. Not shipped. -->
@@ -10,6 +10,12 @@ description: Measure a codebase against the routing table and name the one next 
 You measure. You do not edit. The output is a report in chat.
 
 Read `../../reference/routing-table.md` first. Every check below is against it.
+
+## 0. Setup has run
+
+If `AGENTS.md` is missing, stop. Tell the user to run `/setup-codebase-for-agents` first and push.
+
+Read the install switches from `userConfig`. A switched-off row is **n/a**.
 
 ## 1. Inventory
 
@@ -29,8 +35,8 @@ For each routing-table row, give one status:
 
 - **home** — the statements of this kind live in their home.
 - **misplaced** — some live elsewhere. Give up to three examples, `file:line`.
-- **missing** — a `fixed` row has no home.
-- **n/a** — a `lazy` or switched-off row the repo does not need.
+- **missing** — a `fixed` row has no home, and no statement of its kind exists anywhere. If statements exist elsewhere, the row is **misplaced**.
+- **n/a** — a switched-off row, or a `lazy` row the repo does not need.
 - **not measured** — the comments row. Scan does not read comments; that audit is costly and belongs to a cleanup phase.
 
 A skill that production code loads at runtime is not an agent procedure. Report it as misplaced: it belongs in a tooling folder in the source tree, not in `.claude/` or `.agents/`.
@@ -58,10 +64,9 @@ Three numbers, nothing weighted:
 
 Take the first class with a finding, in this order:
 
-1. Steering index: `AGENTS.md` is not the real file, or `CLAUDE.md` is not a symlink to it.
+1. Setup regressed: `CLAUDE.md` is no longer a symlink to `AGENTS.md`, or a `fixed` row is missing.
 2. Always-loaded lines that fail a test.
 3. Misplaced statements.
-4. Missing `fixed` rows.
 
 Name one change that fits one pull request. Say which file it touches and what it removes or moves.
 
