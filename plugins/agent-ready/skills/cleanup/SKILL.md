@@ -85,7 +85,9 @@ Next step only after this PR merges.
 
 `cleanup_comments` = `${user_config.cleanup_comments}`, cap =
 `${user_config.cleanup_comments_max_files}`. Still in `${…}` form (no
-plugin) → on, cap 20.
+plugin) → `CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS` and
+`CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS_MAX_FILES` from the environment;
+unset → on, cap 20.
 
 `false` → skip the pass; the files still leave the path list. Past the cap,
 the rest stay on the list and go into the PR body under "Not cleaned: over
