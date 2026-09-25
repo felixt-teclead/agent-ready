@@ -1,87 +1,84 @@
 ---
 name: setup-codebase-for-agents
-description: "Set a codebase up to the blueprint routing table: interview the owner, then write AGENTS.md, the skills folder, the tracker docs, CODING_CONVENTIONS.md and the switched-on extras. Use on a new repo, or on an existing one after the scan."
+description: "Interview the owner and write the blueprint structure into a codebase."
 disable-model-invocation: true
 ---
 
-<!-- PROTOTYPE for #28. Throwaway. Rough take to react to, not the shipped skill. -->
+<!-- PROTOTYPE for #28, second take. Throwaway. Decisions are in the #28 resolution. -->
 
 # Set up a codebase for agents
 
-Interview, then write. Never copy a payload: the repo's stack decides the
-commands, not this skill.
+Write each row of the [routing table](routing-table.md) from the owner's
+answers and the repo's own stack. The file texts are in [templates/](templates/).
 
-## Rules
+**Coherent** means: every pointer resolves, and no file cites a file not yet
+written. The repo is coherent after every commit.
 
-- Write only what the owner gave you. A row with no answer stays absent and
-  goes on the gap list. A defaulted command is silently wrong.
-- Merge, never overwrite. An existing file keeps its text.
-- The repo is coherent after every step. One commit per step.
-- Every step touches a steering path, so the branch is a steering diff. Open
-  the PR, state what it decides, and leave the merge to a human.
+The **gap list** holds every row left unwritten, with the reason. An unanswered
+row goes there; it never gets a default.
 
-## 1. Explore (read-only)
+## 1. Measure
 
-- `git remote -v`: GitHub, GitLab, none.
-- `AGENTS.md`, `CLAUDE.md`: which exists, is one a symlink, what they hold.
-- The manifest: `package.json`, `pyproject.toml`, `Cargo.toml`, `Makefile`, ...
-  Which scripts exist for lint, typecheck, test.
-- `README.md`: present, what it says about running the code.
-- An architecture doc anywhere (`ARCHITECTURE.md`, `docs/architecture*`).
-- `.claude/skills/`, `.agents/skills/`, `docs/agents/`, `CONTEXT.md`,
-  `docs/adr/`.
-- The `userConfig` switches: `comments`, `steering_gate`.
+On a repo with existing steering content, run the scan steps in
+[scan.md](../scan/scan.md) and take its per-row result.
+On a fresh repo, read the repo yourself:
 
-**Existing steering content found?** Run the scan skill first and write only
-the rows it reports missing. Restructuring what exists is cleanup, not setup.
-<!-- OPEN Q1: is this the one-command-set seam, and does retrofit.md retire? -->
+- `git remote -v`, the manifest (`package.json`, `pyproject.toml`, ...) and
+  its scripts, `README.md`, any architecture doc.
+- `AGENTS.md`, `CLAUDE.md`, `.agents/skills/`, `.claude/skills/`,
+  `docs/agents/`, `CONTEXT.md`, `docs/adr/`.
+- The `userConfig` switches: comments, steering gate.
+- Whether the blueprint skills are already available, from the plugin.
+
+Done when every row of the table is marked present, missing, or found elsewhere.
 
 ## 2. Interview
 
-One section, one answer. Lead with the recommendation. Skip a section the
-exploration already settled.
+Ask only about rows marked missing. One section, one answer, the
+recommendation first.
 
-A. **Commands.** "Which command runs lint / typecheck / test?" Each must live
-   in the manifest. Never restated in prose.
-B. **README.** "Does the code need setup before it runs?" Yes: README with
-   how to run. No: no README from this skill.
-C. **Mechanical rules.** Which of lint, typecheck, test exist. A missing one
-   is a gap. <!-- OPEN Q5: report the gap, or propose installing one? -->
-D. **CODING_CONVENTIONS.md.** "Which mistakes do agents make here?" One line
-   each. <!-- OPEN Q3: what a fresh repo gets when the answer is "none yet" -->
-E. **Tracker.** GitHub (default when the remote is GitHub), local markdown,
-   Linear. Triage labels: the five defaults unless overridden.
-   <!-- OPEN Q2: vendor Pocock's templates into the plugin, or call his skill? -->
+A. **Commands**: which command runs lint, typecheck, test.
+B. **README**: does the code need setup before it runs?
+C. **Mechanical checks**: for each missing one, report it with the stack's
+   usual tool and offer to install it. A decline puts it on the gap list.
+D. **Coding conventions**: which mistakes do agents make here?
+E. **Tracker**: GitHub (default when the remote is GitHub), local markdown,
+   Linear. Triage labels: the five defaults unless the owner overrides them.
 
-## 3. Write, in this order
+Done when every missing row has an answer or a gap-list entry.
 
-Each step is one commit and leaves the repo coherent.
+## 3. Write
 
-1. `AGENTS.md`: single source of truth, the agent-skills block. If a
-   `CLAUDE.md` exists, its text moves into `AGENTS.md`. Then `CLAUDE.md`
-   becomes a symlink to `AGENTS.md`.
-2. `.agents/skills/`: move any `.claude/skills/` content in, then
-   `.claude/skills` becomes a symlink.
-3. `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`.
-4. `docs/CODING_CONVENTIONS.md` from answer D.
-5. The manifest scripts from answer A; `README.md` from answer B.
-6. The architecture pointer line in `AGENTS.md`, only if exploration found an
+One branch, one pull request, one commit per step. Merge into existing files;
+an existing file keeps its text.
+
+1. `AGENTS.md` from its template: single source of truth, the steering rule,
+   the agent-skills block. An existing `CLAUDE.md` is renamed to `AGENTS.md`
+   and the blocks merged in. `CLAUDE.md` becomes a symlink to it.
+2. `.agents/skills/`, with `.claude/skills` as a symlink. Existing
+   `.claude/skills/` content moves in unchanged. Without the plugin, copy the
+   blueprint skills in from `felixt-teclead/blueprint` and record a hash per
+   file in `.agents/skills/.blueprint-manifest.json`.
+3. `docs/agents/issue-tracker.md`, `triage-labels.md`, `domain.md` from answer E.
+4. `docs/CODING_CONVENTIONS.md`: the header, the lines from answer D, and the
+   comment line when the comments switch is off.
+5. Commands from answer A into the manifest scripts. `README.md` from answer B.
+6. Any tool the owner accepted in answer C: tool, config, script.
+7. The architecture pointer line in `AGENTS.md`, when step 1 found an
    architecture doc.
-7. `.claude/settings.json`: auto-memory off.
-8. If `steering_gate`: the steering rule in `AGENTS.md`, `.github/CODEOWNERS`,
-   `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh`.
-   Last, because from here on every edit to the files above is a steering diff.
-   <!-- `comments` needs no write: the plugin's push hook reads the switch. -->
+8. `.claude/settings.json`: auto-memory off.
+9. Steering gate on: `.github/CODEOWNERS`, `.github/steering-ruleset.json`,
+   `.github/bootstrap-steering-ruleset.sh`.
+
+Done when every commit leaves the repo coherent and each written row matches
+its answer.
 
 ## 4. Verify
 
-- Run each command from answer A. It exits, it does not prompt.
+- Each command from answer A exits and does not prompt.
 - `CLAUDE.md` and `.claude/skills` resolve.
-- No-op test on every `AGENTS.md` line: delete it; if behaviour does not
-  change, it goes.
 
-## 5. Report
+## 5. Hand over
 
-What was written, one line per step. The gap list: each row not filled, and
-why. Next step: run the scan skill later to measure drift.
-<!-- OPEN Q4: one PR with a commit per step, or one PR per step as retrofit.md does? -->
+Open the pull request. Its body lists what each commit decides, then the gap
+list. The branch touches steering files, so a human merges it.
