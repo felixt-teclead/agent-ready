@@ -12,13 +12,17 @@ claude plugin marketplace add felixt-teclead/blueprint
 claude plugin install agent-ready@teclead
 ```
 
+This installs `mattpocock-skills@teclead` too: Matt Pocock's skills, pinned to
+the tag in `.claude-plugin/marketplace.json`, as `/mattpocock-skills:<name>`.
+
 Then turn on auto-update under `/plugin` → Marketplaces. Every merge to `main`
-ships.
+ships. Pocock's skills move only when a merge bumps the tag.
 
 ## Set up a repo without the plugin
 
 Stream the setup skill into the repo, then run `/setup-codebase-for-agents`.
-It copies the other skills and the hooks itself. Nothing else is written.
+It copies the other skills, Pocock's skills at the pinned tag, and the hooks
+itself. Nothing else is written.
 
 ```sh
 mkdir -p .agents/skills
