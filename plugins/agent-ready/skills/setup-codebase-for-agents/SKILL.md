@@ -50,12 +50,12 @@ next. Put the recommended answer first, so the owner can accept it in a word.
 - **C. Mechanical checks.** For each missing lint, typecheck or test tool:
   name the stack's usual tool and offer to install it. A decline puts it on
   the gap list.
-- **D. Coding conventions.** Which mistakes do agents make here? One line
+- **D. Coding standards.** Which mistakes do agents make here? One line
   each. None known → the header only.
 - **E. Tracker.** GitHub when the remote is GitHub, GitLab when it is GitLab,
   else local markdown. "Other" (Jira, Linear, ...) → the owner describes the
-  workflow in one paragraph. Triage labels: the five defaults unless the owner
-  names others. Domain docs: single-context, unless the repo is a monorepo.
+  workflow in one paragraph. Triage labels: defaults, renamed, or none?
+  Renamed: the owner names the string per role; a dropped role is `—`.
 - **F. AFK environment.** Env vars and where their values come from,
   services and network egress the `check` script needs.
 - **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
@@ -75,9 +75,10 @@ keeps its text. Placeholders in a template are `<...>`; fill each one, or
 leave the file out and put its row on the gap list.
 
 1. **`AGENTS.md`** from [the template](templates/AGENTS.md), without the
-   `## Agent skills` block; step 3 adds it. An existing `CLAUDE.md` is
-   renamed to `AGENTS.md` (`git mv`) and keeps its text. `CLAUDE.md` becomes
-   a symlink: `ln -s AGENTS.md CLAUDE.md`.
+   `## Agent skills` block (step 3 adds it) and the `## Verify` section
+   (step 4 adds it). An existing `CLAUDE.md` is renamed to `AGENTS.md`
+   (`git mv`) and keeps its text. `CLAUDE.md` becomes a symlink:
+   `ln -s AGENTS.md CLAUDE.md`.
 2. **Skills.** `.agents/skills/`, and `ln -s ../.agents/skills .claude/skills`.
    Existing `.claude/skills/` content moves into `.agents/skills/` unchanged.
    Plugin channel with no skills in the repo: skip this step. No-plugin
@@ -87,19 +88,19 @@ leave the file out and put its row on the gap list.
    deletes them; then run it again.
 3. **`docs/agents/`** from answer E: `issue-tracker.md` from
    `templates/docs/agents/issue-tracker-<github|gitlab|local>.md`, or from the
-   owner's paragraph; `triage-labels.md`; `domain.md`. Add the
+   owner's paragraph; `triage-labels.md` only for renamed labels. Add the
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
    place.
-4. **Commands** from answer A into the manifest scripts. **`README.md`** from
-   answer B.
+4. **Commands** from answer A into the manifest scripts, and the
+   `## Verify` section into `AGENTS.md`. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
    script. One commit per tool.
 6. **AFK files** from answer F: `docs/agents/environment.md` and
    `docs/agents/afk-handback.md`, plus the `### AFK runs` part of the block.
-7. **`docs/CODING_CONVENTIONS.md`**:
-   [the header](templates/docs/CODING_CONVENTIONS.md), then
-   [the comments section](templates/docs/CODING_CONVENTIONS.comments.md) when
+7. **`docs/CODING_STANDARDS.md`**:
+   [the header](templates/docs/CODING_STANDARDS.md), then
+   [the comments section](templates/docs/CODING_STANDARDS.comments.md) when
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
@@ -127,7 +128,9 @@ its answer.
 
 - `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves.
 - Every path in backticks in `AGENTS.md` and `docs/agents/*.md` exists,
-  except the steering list and the ones a template names as examples.
+  except the steering list, the ones a template names as examples, and the
+  domain files (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`), which skills
+  create when a term or decision first needs a home.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
@@ -139,8 +142,9 @@ Done when each check passes or is on the gap list with its output.
 
 ## 5. Hand over
 
-- GitHub tracker: run [labels.sh](labels.sh). It creates the
-  labels that are missing and keeps existing ones.
+- GitHub tracker with triage labels: run [labels.sh](labels.sh). It
+  creates the labels that are missing, with the strings from
+  `triage-labels.md` when that file exists, and keeps existing ones.
 - Open the pull request. Its body lists what each commit decides, then the
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run

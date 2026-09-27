@@ -1,15 +1,13 @@
 # Triage Labels
 
-The skills speak in terms of five canonical triage roles. This file maps those roles to the actual label strings used in this repo's issue tracker.
+The skills speak in terms of five canonical triage roles. This file maps each role to the label string in this repo's tracker.
 
-| Label in mattpocock/skills | Label in our tracker | Meaning                                  |
-| -------------------------- | -------------------- | ---------------------------------------- |
-| `needs-triage`             | `needs-triage`       | Maintainer needs to evaluate this issue  |
-| `needs-info`               | `needs-info`         | Waiting on reporter for more information |
-| `ready-for-agent`          | `ready-for-agent`    | Fully specified, ready for an AFK agent  |
-| `ready-for-human`          | `ready-for-human`    | Requires human implementation            |
-| `wontfix`                  | `wontfix`            | Will not be actioned                     |
+| Role              | Label in our tracker | Meaning                                  |
+| ----------------- | -------------------- | ---------------------------------------- |
+| `needs-triage`    | <label, or —>        | Maintainer needs to evaluate this issue  |
+| `needs-info`      | <label, or —>        | Waiting on reporter for more information |
+| `ready-for-agent` | <label, or —>        | Fully specified, ready for an AFK agent  |
+| `ready-for-human` | <label, or —>        | Requires human implementation            |
+| `wontfix`         | <label, or —>        | Will not be actioned                     |
 
-When a skill mentions a role (e.g. "apply the AFK-ready triage label"), use the corresponding label string from this table.
-
-Edit the right-hand column to match whatever vocabulary you actually use.
+When a skill applies a role, use its label string. A role marked `—` has no label: skip that labeling step.

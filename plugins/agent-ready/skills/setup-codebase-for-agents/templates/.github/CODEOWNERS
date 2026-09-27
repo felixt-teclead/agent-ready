@@ -9,7 +9,7 @@
 /AGENTS.md                  <owner>
 /CLAUDE.md                  <owner>
 /docs/agents/               <owner>
-/docs/CODING_CONVENTIONS.md <owner>
+/docs/CODING_STANDARDS.md   <owner>
 /.github/CODEOWNERS         <owner>
 /.agents/skills/            <owner>
 /.agents/hooks/             <owner>
