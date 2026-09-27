@@ -136,7 +136,7 @@ line in `.agents/deviations.md`, class `old setup`: "kept while
 `<framework>` runs".
 
 A deleted or moved folder's pointers change in the same commit, as
-[Moving a statement](../cleanup/SKILL.md#moving-a-statement) in `cleanup`
+[Moving a statement](../setup-codebase-for-agents/pointers.md#moving-a-statement)
 says. Architecture docs stay; `route-codebase-docs` handles them. Tick the
 row and commit.
 

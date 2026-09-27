@@ -92,7 +92,7 @@ in both; neither is a freeze.
   its own cleanup pull request
   ([Merging a cleanup PR](../cleanup/SKILL.md#merging-a-cleanup-pr)); rules
   for `docs/CODING_STANDARDS.md` wait for a human-merged batch
-  ([Rule queue](../cleanup/SKILL.md#rule-queue)).
+  ([Rule queue](../cleanup/comment-pass.md#rule-queue)).
 - **Continuous**: no extra stream of pull requests, and cleanup follows the
   work; files nobody touches wait. To finish, switch to fast
   ([End](../cleanup/SKILL.md#7-end)).

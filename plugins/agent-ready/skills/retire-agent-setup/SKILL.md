@@ -107,8 +107,8 @@ confirmation is the only one. Every change waits for it: Plugins through
 Scratch build the list, [Apply](#8-apply) changes the repo.
 
 A struck plugin, override, skill or hook stays: its line goes into
-`.agents/deviations.md`, as the scan's
-[Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)
+`.agents/deviations.md`, as
+[Accepted deviations](../setup-codebase-for-agents/accepted-deviations.md)
 says, class `old setup`. A repo-specific item gets a line with class
 `repo-specific`. Later runs skip both.
 

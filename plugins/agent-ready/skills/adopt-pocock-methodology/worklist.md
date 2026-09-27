@@ -32,8 +32,8 @@ that need them, and shown again where they act, open to change:
 
 For a check's findings: propose a fix for each, apply the ones
 the user accepts, then ask fix or keep for each remaining one. A kept one
-gets its line in `.agents/deviations.md`, as the scan's
-[Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)
+gets its line in `.agents/deviations.md`, as
+[Accepted deviations](../setup-codebase-for-agents/accepted-deviations.md)
 says, with the check's class.
 
 ## Start or resume

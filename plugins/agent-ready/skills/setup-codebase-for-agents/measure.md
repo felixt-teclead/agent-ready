@@ -65,7 +65,7 @@ A Specs row made `misplaced` by a specs and plans hit of
 scan's `old` line names; `cleanup` never moves it.
 
 Statuses skip `docs/archive/`, which holds history, and a path
-`.agents/deviations.md` keeps whole: its quoted text is the path itself.
+`.agents/deviations.md` keeps whole.
 
 Each old file in the routing table that exists makes the row it names
 `misplaced`; it is one of that row's examples. It adds no row of its own.

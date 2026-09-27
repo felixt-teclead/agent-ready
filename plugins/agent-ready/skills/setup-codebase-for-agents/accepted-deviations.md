@@ -13,7 +13,8 @@ To keep a whole file or folder, the quoted text is its path.
 [One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step), or a
 check of another skill:
 
-- `old setup`: an old-setup plugin, skill, hook, override or folder kept;
+- `old setup`: an old-setup plugin, skill, hook, override or folder kept
+  (measure.md's [Old setup](measure.md#4-old-setup));
 - `repo-specific`: an item `retire-agent-setup` found that only this repo
   needs;
 - `fit check`: `model-codebase-domain`;

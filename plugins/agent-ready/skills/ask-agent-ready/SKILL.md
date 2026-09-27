@@ -66,7 +66,7 @@ team's state is on `origin/<default>` (`git show origin/<default>:<path>`);
   Stubborn.
 - **Kept findings**: `.agents/deviations.md`, one line per finding the team
   kept, with its class
-  ([Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)).
+  ([Accepted deviations](../setup-codebase-for-agents/accepted-deviations.md)).
 - **Migration**: the branches `adopt-pocock-methodology`,
   `retire-agent-setup`, `model-codebase-domain` and `route-codebase-docs`,
   local and on `origin`; each one's pull request
@@ -75,7 +75,7 @@ team's state is on `origin/<default>` (`git show origin/<default>:<path>`);
   What each combination means: the worklist's
   [Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume).
 - **Phase**: `.agents/refactor.md` and `.agents/refactor.local`; their keys:
-  cleanup's [Files](../cleanup/SKILL.md#files). The session-start hook
+  [phase-files.md](../cleanup/phase-files.md). The session-start hook
   printed the files left; for a fresh count, run it from the repo root:
   `sh <this skill's folder>/../../hooks/refactor-phase.sh`. Open cleanup
   pull requests: `gh pr list --state open --label cleanup`.

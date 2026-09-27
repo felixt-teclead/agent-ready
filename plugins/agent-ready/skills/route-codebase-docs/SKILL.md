@@ -103,7 +103,7 @@ are is no target. Per row:
   the code breaks today, goes back to [Route, per topic](#3-route-per-topic)
   as a home route.
 - **Pointers**: fix them in the same commit, as
-  [Moving a statement](../cleanup/SKILL.md#moving-a-statement) in `cleanup`
+  [Moving a statement](../setup-codebase-for-agents/pointers.md#moving-a-statement)
   says.
 - An architecture doc with every statement routed: before the first one
   goes, show `architecture:` again; its statements have homes now, so the

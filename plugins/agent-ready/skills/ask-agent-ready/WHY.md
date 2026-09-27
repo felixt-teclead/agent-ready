@@ -95,12 +95,12 @@ touches no steering file
 ([Merging a cleanup PR](../cleanup/SKILL.md#merging-a-cleanup-pr)). The
 review rules a pass finds are steering, so they wait in the phase's issue
 for a human-merged batch
-([Rule queue](../cleanup/SKILL.md#rule-queue)).
+([Rule queue](../cleanup/comment-pass.md#rule-queue)).
 
 ## Why the phase keeps its state in files
 
 A path list written once, plus one done file per pull request
-([Files](../cleanup/SKILL.md#files)): no two pull requests edit the same
+([Files](../cleanup/phase-files.md)): no two pull requests edit the same
 file, so they never conflict, and it works on any tracker.
 
 ## Why the architecture review is a reminder
@@ -130,15 +130,15 @@ answers that.
 - **New code**: `comment-review` checks the comments each branch adds before
   it is pushed.
 - **Old code**: a phase gives every file one full comment pass, per task in
-  continuous mode, in batches of `cap:` files in fast mode (cleanup's
-  [Comment pass](../cleanup/SKILL.md#5-comment-pass)). Rules the pass finds
-  land in `docs/CODING_STANDARDS.md` in batches (cleanup's
-  [Rule queue](../cleanup/SKILL.md#rule-queue)).
+  continuous mode, in batches of `cap:` files in fast mode
+  ([Comment pass](../cleanup/comment-pass.md)). Rules the pass finds
+  land in `docs/CODING_STANDARDS.md` in batches
+  ([Rule queue](../cleanup/comment-pass.md#rule-queue)).
 - **Docs**: the scan names one next change and `cleanup` lands it, until the
   scan is green (the scan's
   [One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step)). A
-  pull request that moves a statement fixes its pointers (cleanup's
-  [Moving a statement](../cleanup/SKILL.md#moving-a-statement)); the scan's
+  pull request that moves a statement fixes its pointers
+  ([Moving a statement](../setup-codebase-for-agents/pointers.md#moving-a-statement)); the scan's
   Dead pointers class catches the misses.
 - **Design**: after a pull request opens, a hook offers
   `/improve-codebase-architecture` when no review merged within the window.
