@@ -1,7 +1,8 @@
 # Measure a repo against the routing table
 
-Shared by `setup-codebase-for-agents` and `scan-codebase-for-agents`. Read
-[routing-table.md](routing-table.md) first. You read; you do not edit.
+Shared by `setup-codebase-for-agents` and `scan-codebase-for-agents`;
+`retire-agent-setup` reads §4. Read [routing-table.md](routing-table.md)
+first. You read; you do not edit.
 
 ## 1. Channel and switches
 
@@ -40,3 +41,34 @@ For each file: its line count, and whether an always-loaded file cites it.
   cleanup phase does it.
 
 Done when every row has a status.
+
+## 4. Old setup
+
+List every agent artifact setup did not write. Setup wrote the `agent-ready`
+and `mattpocock-skills` plugin entries, the files in
+`.agents/agent-ready-manifest.json`, the hooks that run
+`.agents/hooks/` scripts, and the template files. Judge each artifact by what
+it does, never by which framework it names.
+
+A **hit** is any of these:
+
+- **Plugin:** an `enabledPlugins` or `extraKnownMarketplaces` entry in
+  `.claude/settings.json` or `.claude/settings.local.json` that is neither
+  setup's.
+- **Skill:** a folder in `.agents/skills/` or `.claude/skills/` the manifest
+  does not list, and any file in `.claude/commands/` or `.claude/agents/`.
+- **Hook:** a `hooks` entry in either settings file whose command runs
+  anything other than a `.agents/hooks/` script, and the script it runs.
+- **Specs and plans:** a folder of dated documents (`YYYY-MM-DD-*.md`) or a
+  folder named for specs, plans or designs, outside `docs/adr/`.
+- **Framework section:** a section of `AGENTS.md` or `CLAUDE.md` that routes
+  the agent through another hit ("use skill X first", "plans go to
+  `docs/plans/`").
+
+**Scratch** is listed too, but is not a hit on its own: a top-level dot folder
+that holds agent run state or worktrees, tracked or gitignored, plus the
+`.gitignore` lines that name it. For each: tracked or not, and whether any
+file in it is modified or unpushed.
+
+Per item: its path, and for a hook its event and matcher. Done when every
+settings file, skill folder and top-level folder is checked.
