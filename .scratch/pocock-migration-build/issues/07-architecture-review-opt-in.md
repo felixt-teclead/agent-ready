@@ -4,10 +4,10 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Setup asks once in both channels and writes the env
-- [ ] Label created, kept if present
-- [ ] Hook adds context on skill call and on typed command
-- [ ] Hook silent when setting unset
-- [ ] No-plugin wiring in setup step 9 covers the new hook
+- [x] Setup asks once in both channels and writes the env
+- [x] Label created, kept if present
+- [x] Hook adds context on skill call and on typed command
+- [x] Hook silent when setting unset
+- [x] No-plugin wiring in setup step 9 covers the new hook

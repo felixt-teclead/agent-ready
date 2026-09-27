@@ -62,6 +62,9 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   `steering_gate` (no recommendation: the owner decides), `cleanup_comments`
   (on), `cleanup_comments_max_files` (10). In the plugin channel each user
   set them at install; do not ask.
+  Both channels, unless `env` already sets it: "Remind the team to run an
+  architecture review every N days?" (7). The cadence is a team decision, so
+  it lives in `env`, not `userConfig`. No → leave it unset.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
 
@@ -103,16 +106,19 @@ leave the file out and put its row on the gap list.
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
-9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. No-plugin
+9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`, and `env`
+   `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` from answer G as a string. No-plugin
    channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
      `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
      `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`, which is
      `\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/` inside the JSON string. Merge
      it into existing `hooks`: append each entry to the group with the same
-     event and matcher, or add that group.
+     event and matcher, or add that group. A group without a matcher
+     (`SessionStart`, `UserPromptSubmit`) matches one without.
      With the plugin, write none: each hook would fire twice.
-   - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per answer from G, as a string.
+   - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per switch answer from G, as a
+     string.
    - `.gitignore`: add `.agents/refactor.local`.
 10. **Steering gate,** when `steering_gate` is on and answer H exists:
     [`CODEOWNERS`](templates/.github/CODEOWNERS) with the owner,
@@ -133,7 +139,9 @@ its answer.
 - `.claude/settings.json` parses as JSON.
 - No-plugin channel: each hook script runs. For the push gate:
   `echo '{"tool_input":{"command":"git push"}}' | .agents/hooks/comment-review-gate.sh`
-  exits 2 until `comment-review` has stamped `HEAD`.
+  exits 2 until `comment-review` has stamped `HEAD`. For the review branch:
+  `echo '{"prompt":"/improve-codebase-architecture"}' | AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-branch.sh`
+  prints the branch and label instruction.
 
 Done when each check passes or is on the gap list with its output.
 
