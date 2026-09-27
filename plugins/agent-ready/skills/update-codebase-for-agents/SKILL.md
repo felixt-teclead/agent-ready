@@ -141,8 +141,9 @@ Start from a clean tree on a new branch, `move-off-plugin`.
    review window in `env`: as under **Newer setup writes** in
    [Settings](#2-settings).
    Commit `.claude/settings.json` and `.gitignore`.
-3. **Verify.** Run the `settings.json` and no-plugin checks of setup's
-   Verify section.
+3. **Verify.** Run setup's Verify checks for `settings.json` and the hooks,
+   the hooks with the copy,
+   `sh .agents/skills/setup-codebase-for-agents/verify-hooks.sh`.
 
 Open one pull request. Its body names the switch values and says both plugins
 are off for this repo; `/update-codebase-for-agents` refreshes the copies from

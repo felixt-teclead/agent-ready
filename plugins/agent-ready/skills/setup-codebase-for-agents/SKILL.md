@@ -153,28 +153,10 @@ its answer.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
-- `command -v jq` and `gh auth status` succeed: the hooks need both.
-- No-plugin channel: each hook script runs, from the repo root.
-  - Push gate:
-    `echo '{"tool_input":{"command":"git push"}}' | .agents/hooks/comment-review-gate.sh`
-    exits 2 until `comment-review` has stamped `HEAD`.
-  - Steering gate:
-    `echo '{"tool_input":{"command":"gh api -X PUT repos/o/r/pulls/1/merge"}}' | .agents/hooks/steering-merge-gate.sh`
-    exits 2, or 0 when `steering_gate` is `false`.
-  - Review branch:
-    `echo '{"prompt":"/improve-codebase-architecture"}' | AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-branch.sh | grep -q architecture-review/`
-    exits 0.
-  - PR reminder, against a stub `gh` that finds no review, prints `pass`:
-
-    ```sh
-    stamp="$(git rev-parse --git-common-dir)/agent-ready-review-offered"
-    stub=$(mktemp -d); printf '#!/bin/sh\necho 0\n' >"$stub/gh"; chmod +x "$stub/gh"
-    in='{"hook_event_name":"PostToolUse","tool_input":{"command":"gh pr create"},"tool_response":{"stdout":"https://github.com/o/r/pull/1"}}'
-    rem() { echo "$in" | PATH="$stub:$PATH" AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-reminder.sh; }
-    rm -f "$stamp"
-    rem | grep -q improve-codebase-architecture && [ -f "$stamp" ] && [ -z "$(rem)" ] && echo pass
-    rm -f "$stamp"
-    ```
+- `sh <this skill's folder>/verify-hooks.sh` from the repo root: each line
+  reads `ok`. [The script](verify-hooks.sh) runs every hook beside this skill
+  (`.agents/hooks/`, or the plugin's) in a throwaway repo, and checks `jq` and,
+  on a GitHub remote, `gh auth status`. Each `FAIL` line goes on the gap list.
 
 Done when each check passes or is on the gap list with its output.
 
