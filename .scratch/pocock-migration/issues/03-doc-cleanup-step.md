@@ -1,7 +1,7 @@
 # How /writing-for-agents shapes the doc-cleanup step
 
 Type: grilling
-Status: open
+Status: claimed (Efte)
 Blocked by: 01, 02
 
 ## Question

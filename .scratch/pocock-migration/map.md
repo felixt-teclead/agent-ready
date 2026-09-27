@@ -20,7 +20,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - **The chain**: `/domain-modeling` → doc cleanup (with `/writing-for-agents`) → `/improve-codebase-architecture`. Always in this order. A housekeeping preflight runs before it (see [What migrating the current setup covers](issues/01-migration-scope.md)).
 - **Allowed Pocock skills**: `/domain-modeling`, `/writing-for-agents`, `/improve-codebase-architecture`, `/ask-matt`. The plugin's own skills stay usable.
 - **`/ask-matt` is not a step.** The skill points the user to it when they are unsure what comes next, why a step comes next, or where they are in the migration.
-- **Recurring architecture review**: a Claude Code hook on `gh pr create` checks whether `/improve-codebase-architecture` ran in the last N days. If not, it offers to run it. No CI job: map #1 decided "no doc CI", and CI cannot run an interactive skill. N defaults to 14 and is a `userConfig` setting; setup suggests 7.
+- **Recurring architecture review**: a Claude Code hook on `gh pr create` checks whether `/improve-codebase-architecture` ran in the last N days. If not, it offers to run it. No CI job: map #1 decided "no doc CI", and CI cannot run an interactive skill. N defaults to 14; setup suggests 7. Where N lives: see [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md).
 - **Steering paths**: the hook lands in `plugins/agent-ready/hooks/`, so a human merges it.
 - **Parallel AFK agents**: one git worktree each.
 
@@ -29,7 +29,8 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - [What Superpowers leaves in a repo](issues/06-superpowers-footprint.md) — no repo steering: install touches at most `enabledPlugins` in `.claude/settings.json`, never `CLAUDE.md`/`AGENTS.md`; use leaves committed specs and plans in `docs/superpowers/` (project knowledge) plus `.superpowers/` and `.worktrees/` scratch
 - [What migrating the current setup covers](issues/01-migration-scope.md) — soft push gate + retire plugins/skills/hooks/scratch in a preflight; specs fold into `CONTEXT.md`/ADRs/issues, then delete (archive if declined); detection by generic inventory, listing hits
 - [What /domain-modeling produces during migration](issues/02-domain-modeling-step.md) — agent-invokable `migrate-*` skill copies on the migration branch; code is truth, old docs give language only; `CONTEXT.md` entries approved by topic; gitignored `CONTEXT.local.md` for personal wording; settings asked at start and end
-- [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md) — committed `.agents/architecture-review` date, written only in the review's own PR, read from `origin/<default>`; its existence is the opt-in; a skill-start hook tells the agent to stamp
+- [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md) — `gh pr list` for a merged PR labelled `architecture-review` in the last N days; N and opt-in in committed `.claude/settings.json` `env`; a skill-start hook tells the agent to label (reopened by 07, marker file dropped)
+- [What the repo keeps so the plugin can be switched off](issues/07-plugin-switch-off.md) — reuse the no-plugin channel (`fetch.sh` + settings wiring); a new `update-codebase-for-agents` step moves a repo off the plugin; hooks stay in `plugins/agent-ready/hooks/`
 
 ## Not yet specified
 

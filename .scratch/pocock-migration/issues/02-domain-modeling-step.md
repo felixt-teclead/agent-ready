@@ -36,4 +36,4 @@ A behaviour conflict between a spec and the code: the code wins, no question. A 
 
 **Done**: every worklist row is done, the fit check is answered, and the user has answered delete-or-archive for each folder.
 
-**Settings**: asked once at the start, with defaults shown. Shown again at the end, where the user can still change them, with emphasis on choices that only make sense after the work: delete or archive specs, scratch or keep architecture docs. Architecture docs default to scratch: step 1 mines them, step 2 deletes them. Settings live in the worklist, not `userConfig`, which is kept for recurring settings such as the hook window.
+**Settings**: asked once at the start, with defaults shown. Shown again at the end, where the user can still change them, with emphasis on choices that only make sense after the work: delete or archive specs, scratch or keep architecture docs. Architecture docs default to scratch: step 1 mines them, step 2 deletes them. Settings live in the worklist, not `userConfig`, which is kept for recurring settings.
