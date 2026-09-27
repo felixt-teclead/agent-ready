@@ -4,9 +4,9 @@
 
 **Blocked by:** 07: Opt in to recurring architecture reviews
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Each skip case exits silently
-- [ ] Offer appears once per clone per day
-- [ ] Wired in plugin hooks and no-plugin setup step 9
-- [ ] Verify step in setup §4 covers it
+- [x] Each skip case exits silently
+- [x] Offer appears once per clone per day
+- [x] Wired in plugin hooks and no-plugin setup step 9
+- [x] Verify step in setup §4 covers it
