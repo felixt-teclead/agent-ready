@@ -1,15 +1,15 @@
 ---
 name: update-codebase-for-agents
-description: Refresh the skills and hooks that setup copied into .agents/ to blueprint's current main, and rewire .claude/settings.json. User-invoked, in a repo set up without the plugin.
+description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. User-invoked, in a repo set up without the plugin.
 disable-model-invocation: true
 ---
 
 # Update a codebase for agents
 
-**Goal: the copied skills and hooks match blueprint's `main`, no local edit is
+**Goal: the copied skills and hooks match agent-ready's `main`, no local edit is
 lost without the owner saying so, and whoever merges knows what changes.**
 
-No `.agents/blueprint-manifest.json`: stop. With the plugin, auto-update
+No `.agents/agent-ready-manifest.json` (or `agent-ready-manifest.json`, its old name): stop. With the plugin, auto-update
 under `/plugin` → Marketplaces does this job. Without the plugin, run
 `/setup-codebase-for-agents` first.
 
@@ -24,11 +24,11 @@ sh .agents/skills/setup-codebase-for-agents/fetch.sh
 
 - **Exit 0, "Up to date"**: tell the owner, delete the branch, stop.
 - **Exit 3**: each listed file was edited here and changed or dropped in
-  blueprint. Show its diff and ask the owner: keep or replace. One file per
-  question. Then run it again with the printed `BLUEPRINT_REF=<sha>` in front
+  agent-ready. Show its diff and ask the owner: keep or replace. One file per
+  question. Then run it again with the printed `AGENT_READY_REF=<sha>` in front
   and one `--keep <path>` or `--replace <path>` per file.
 - **Exit 1**: show the output and stop. A file outside the manifest blocks
-  the path blueprint now uses; the owner renames or deletes it.
+  the path agent-ready now uses; the owner renames or deletes it.
 
 The last run prints the old and new commits and every file as `written`,
 `deleted` or `kept`. Keep that output for step 3. Commit `.agents/`.
@@ -60,7 +60,7 @@ at the old and the new commit:
 
 ```sh
 gh api -H 'Accept: application/vnd.github.raw' \
-  "repos/felixt-teclead/blueprint/contents/plugins/agent-ready/.claude-plugin/plugin.json?ref=<sha>" \
+  "repos/felixt-teclead/agent-ready/contents/plugins/agent-ready/.claude-plugin/plugin.json?ref=<sha>" \
   --jq .userConfig
 ```
 
@@ -79,12 +79,12 @@ file list:
   allows. Per skill added or removed: what it does, from its description.
 - **Switches.** New keys with the chosen value; removed keys.
 - **Kept edits.** Every `kept` file and kept hook entry. Each now differs from
-  blueprint and is asked about again when blueprint changes it again.
-- **Why.** The blueprint commits that touch `plugins/agent-ready/`, newest
+  agent-ready and is asked about again when agent-ready changes it again.
+- **Why.** The agent-ready commits that touch `plugins/agent-ready/`, newest
   first; stop at the old commit, which the list also holds:
 
   ```sh
-  gh api --paginate "repos/felixt-teclead/blueprint/commits?sha=<new>&path=plugins/agent-ready" \
+  gh api --paginate "repos/felixt-teclead/agent-ready/commits?sha=<new>&path=plugins/agent-ready" \
     --jq '.[] | "\(.sha[:7]) \(.commit.message | split("\n")[0])"'
   ```
 

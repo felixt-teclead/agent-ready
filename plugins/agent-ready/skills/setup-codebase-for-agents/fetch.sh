@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
-# Copies the agent-ready skills and hooks from felixt-teclead/blueprint into
+# Copies the agent-ready skills and hooks from felixt-teclead/agent-ready into
 # .agents/, for a repo without the plugin. Adds Pocock's skills at the tag
-# blueprint's marketplace.json pins for mattpocock-skills, each folder flat in
+# agent-ready's marketplace.json pins for mattpocock-skills, each folder flat in
 # .agents/skills/, with his MIT notice. Records a hash per file in
-# .agents/blueprint-manifest.json. Run it from the repo root.
+# .agents/agent-ready-manifest.json. Run it from the repo root.
 #
 # The first run installs, every later run refreshes. For each path the
 # manifest or the fetch knows, with L the local hash, M the manifest's and
@@ -20,7 +20,7 @@
 # nothing.
 #
 # Usage: fetch.sh [--keep .agents/<path>]... [--replace .agents/<path>]...
-# BLUEPRINT_REF picks the blueprint commit, default main.
+# AGENT_READY_REF picks the agent-ready commit, default main.
 
 set -eu
 
@@ -36,8 +36,8 @@ while [ $# -gt 0 ]; do
 done
 has() { case " $1 " in *" $2 "*) return 0 ;; esac; return 1; }
 
-src=felixt-teclead/blueprint
-sha=$(gh api "repos/$src/commits/${BLUEPRINT_REF:-main}" --jq .sha)
+src=felixt-teclead/agent-ready
+sha=$(gh api "repos/$src/commits/${AGENT_READY_REF:-main}" --jq .sha)
 raw='Accept: application/vnd.github.raw'
 
 pin=$(gh api -H "$raw" "repos/$src/contents/.claude-plugin/marketplace.json?ref=$sha" \
@@ -83,7 +83,10 @@ else
   hash() { shasum -a 256 "$1" | cut -d' ' -f1; }
 fi
 
-manifest=.agents/blueprint-manifest.json
+manifest=.agents/agent-ready-manifest.json
+# The repo was called blueprint; an install from then has the old name.
+[ -f .agents/blueprint-manifest.json ] && [ ! -f "$manifest" ] &&
+  mv .agents/blueprint-manifest.json "$manifest"
 touch "$tmp/old"
 [ -f "$manifest" ] &&
   sed -n 's/^ *"\(\.agents\/[^"]*\)": "\([0-9a-f]*\)",\{0,1\}$/\1 \2/p' "$manifest" >"$tmp/old"
@@ -130,7 +133,7 @@ if [ -n "$open" ]; then
     diff -u -L "$p (here)" -L "$p (fetched)" "$old" "$new" >&2 || :
   done
   echo >&2
-  echo "Rerun with BLUEPRINT_REF=$sha and one --keep or --replace per file." >&2
+  echo "Rerun with AGENT_READY_REF=$sha and one --keep or --replace per file." >&2
   exit 3
 fi
 
