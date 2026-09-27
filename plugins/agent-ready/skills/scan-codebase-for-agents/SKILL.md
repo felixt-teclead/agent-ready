@@ -60,6 +60,13 @@ in the [routing table](../setup-codebase-for-agents/routing-table.md). When
 Judge each line by its meaning, not by keyword counts. A duplicate you did
 not find is a pass.
 
+**Review rules.** Judge the lines of `docs/CODING_STANDARDS.md` (or the old
+`docs/CODING_CONVENTIONS.md`) by the same tests and by the routing table's
+`docs/CODING_STANDARDS.md` section. Leave out the lines setup copies from its
+[templates](../setup-codebase-for-agents/templates/docs/). A line that is no
+review rule, such as a command or a note to the editor, fails as no-op.
+These lines count in `lines`, not in `load`.
+
 Done when every judged line has a verdict, and each failure names its reason
 and, for single source of truth, the other file.
 
@@ -81,7 +88,7 @@ Take the first class with a finding:
    `.claude/skills` is not a symlink. Regressed or never written, the step
    is the same: re-run `/setup-codebase-for-agents`. It writes missing rows
    only.
-2. **Failing always-loaded lines.**
+2. **Failing lines,** always-loaded lines first, then review rules.
 3. **Misplaced statements and old files.**
 
 Name one change that fits one pull request: the files it touches, and what it
