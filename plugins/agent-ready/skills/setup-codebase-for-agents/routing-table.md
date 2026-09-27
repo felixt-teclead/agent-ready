@@ -31,6 +31,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Specs | issues, closed once shipped; never kept in the repo | fixed |
 | Tracker | `docs/agents/issue-tracker.md` | interviewed |
 | Triage labels | the `### Triage labels` line in `AGENTS.md`; renamed labels also `docs/agents/triage-labels.md` | interviewed |
+| Which skill runs each step while Superpowers is installed | `docs/agents/superpowers.md`, its pointer line in `AGENTS.md`, `.superpowers/` in `.gitignore`, `Skill(superpowers:…)` entries in `permissions.deny` of `.claude/settings.json` | interviewed |
 | What an AFK run needs: env vars, services, egress, token scopes | `docs/agents/environment.md` | interviewed |
 | What an AFK run hands back | `docs/agents/afk-handback.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |

@@ -64,6 +64,12 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   set them at install; do not ask.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
+- **I. Framework.** Ask unless the Superpowers row is `home`: keep your
+  framework (Superpowers override), migrate to Pocock (when the migration
+  skill exists), or neither? Recommend keep when measure found a Superpowers
+  trace, else neither. Migrate puts the row on the gap list until
+  felixt-teclead/agent-ready#58 ships the skill. Neither leaves the row
+  `n/a`.
 
 Done when every missing row has an answer or a gap-list entry.
 
@@ -91,7 +97,9 @@ leave the file out and put its row on the gap list.
    owner's paragraph; `triage-labels.md` only for renamed labels. Add the
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
-   place.
+   place. Answer I is keep: also `superpowers.md` from the template, the
+   `### Superpowers` part of the block, and `.superpowers/` in `.gitignore`.
+   Any other answer: the block goes without the `### Superpowers` part.
 4. **Commands** from answer A into the manifest scripts, and the
    `## Verify` section into `AGENTS.md`. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
@@ -104,8 +112,10 @@ leave the file out and put its row on the gap list.
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
-9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. No-plugin
-   channel also:
+9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. Answer I is
+   keep: merge the `permissions.deny` entries of
+   [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
+   into existing `permissions.deny`. No-plugin channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
      `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
      `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`, which is
@@ -128,9 +138,10 @@ its answer.
 
 - `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves.
 - Every path in backticks in `AGENTS.md` and `docs/agents/*.md` exists,
-  except the steering list, the ones a template names as examples, and the
-  domain files (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`), which skills
-  create when a term or decision first needs a home.
+  except the steering list, the ones a template names as examples,
+  gitignored paths, and the domain files (`CONTEXT.md`, `CONTEXT-MAP.md`,
+  `docs/adr/`), which skills create when a term or decision first needs a
+  home.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
@@ -149,5 +160,8 @@ Done when each check passes or is on the gap list with its output.
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
+- Answer I is keep: tell the owner that a Superpowers user runs
+  [the smoke run](smoke-superpowers.md) once after the merge, and again
+  after each Superpowers update.
 - Next: `scan-codebase-for-agents` measures the result after the merge.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.

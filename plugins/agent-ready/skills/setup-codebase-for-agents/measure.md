@@ -39,6 +39,11 @@ For each file: its line count, and whether an always-loaded file cites it.
 - **not measured**: the comments row. Reading every comment is costly; a
   cleanup phase does it.
 
+The Superpowers row is **n/a** when `docs/agents/superpowers.md` is absent
+and the repo shows no Superpowers trace: no `docs/superpowers/`, no
+`.superpowers/`, no `superpowers@` key in the `enabledPlugins` of
+`.claude/settings.json`.
+
 Each old file in the routing table that exists gets the status its row
 names.
 
