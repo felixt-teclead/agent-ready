@@ -44,10 +44,12 @@ carry is a `TYPE` finding and gets a one-line comment at the definition.
 
 - **Local to this code**: a comment at the line.
 - **Shared fact** (a rule other files obey, a contract across files, a
-  repo-wide gotcha or trap): one existing doc owns it. The comment is a
-  [code pointer](../setup-codebase-for-agents/pointers.md#writing-a-code-pointer).
-  `docs/adr/` is never a pointer target. No doc fits → keep it as a comment
-  and file `WANTS DOC`. Never create a doc.
+  repo-wide gotcha or trap): one existing doc owns it, an ADR for a
+  decision. The comment is a
+  [code pointer](../setup-codebase-for-agents/pointers.md#writing-a-code-pointer)
+  to a heading or bold lead-in the doc already has; none fits →
+  `See <doc path>`. No doc fits → keep it as a comment and file `WANTS DOC`.
+  Never create or edit a doc.
 
 ## Two tests for a sentence
 

@@ -36,7 +36,7 @@ An agent merges its own `cleanup` PR when all of these hold:
 - `comment-review`'s stamp is on the PR's head
   ([Stamp](../comment-review/SKILL.md#7-stamp)); with `comment_review` off,
   no stamp is needed;
-- the project manifest's `check` script exits 0 on that head;
+- the `check` command in the manifest or task runner exits 0 on that head;
 - the PR's required checks on the remote pass.
 
 Otherwise the body says why ("steering diff, a human merges" for a steering
@@ -151,15 +151,14 @@ it.
 
 ## 4. Fast: one child issue per step
 
-1. **Pick**, the first branch that fits:
-   - An open `cleanup` PR whose body says `Closes #<step>` or
-     `Closes #<parent>` → name it and stop: the next step waits for its
-     merge.
-   - Re-run the scan, unless the last merged `cleanup/step-…` PR says
-     `Scan green at <sha>` and `git diff --name-only <sha>` names no file
-     that measure.md's
-     [Inventory](../setup-codebase-for-agents/measure.md#2-inventory)
-     lists. A [next step](#next-step) → one pull request's worth of it.
+1. **Pick.** An open `cleanup` PR whose body says `Closes #<step>` or
+   `Closes #<parent>` → name it and stop: the next step waits for its merge.
+   Otherwise re-run the scan, unless the last merged `cleanup/step-…` PR
+   says `Scan green at <sha>` and `git diff --name-only <sha>` names no file
+   that measure.md's
+   [Inventory](../setup-codebase-for-agents/measure.md#2-inventory) lists.
+   Then the first branch that fits:
+   - A [next step](#next-step) → one pull request's worth of it.
    - No next step, and no files left or `comments: false` → [End](#7-end).
    - No next step → the next files left that are not held, up to `cap:`, for
      the comment pass. Held files stay files left for a later step. Only held

@@ -18,8 +18,8 @@ anchor.
 
 ## Steps
 
-In this order, over the step's files: Strip and Merge back per file, Write
-and Prune once over the whole set.
+Steps 1 to 6 in order. Strip and Merge back run per file; Write and Prune
+run once over the whole set.
 
 1. **Strip.** Remove every comment. Keep tool directives (lint, type checker,
    formatter, coverage, licence) and tracked markers (`TODO:`, `FIXME(`). A
@@ -60,9 +60,9 @@ and the report is ready for the PR body.
 
 ## Rule queue
 
-Comment-pass PRs touch no steering file. A shared fact for
-`docs/CODING_STANDARDS.md` that has no section yet stays a comment at its
-anchors for now. It goes into the parent issue as a checklist item (local
+Comment-pass PRs touch no steering file. A new sentence for
+`docs/CODING_STANDARDS.md`, in a new section or an existing one, stays a
+comment at its anchors for now. It goes into the parent issue as a checklist item (local
 tracker: the parent's ticket file):
 
 ```
