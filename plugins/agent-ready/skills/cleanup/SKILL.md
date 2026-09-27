@@ -71,8 +71,11 @@ between two stacked cleanup PRs are expected; resolve them by hand.
 ## 3. Fast: one child issue per step
 
 1. Re-run the scan. Take its next step, in its class order: setup regressed,
-   failing always-loaded lines, misplaced statements. Scan green → comment
-   pass over the next files on the path list, up to the cap (§4).
+   failing always-loaded lines, misplaced statements and old files. An old
+   file gets the action its row in the
+   [routing table](../setup-codebase-for-agents/routing-table.md) names.
+   Scan green → comment pass over the next files on the path list, up to the
+   cap (§4).
 2. Open the step as a sub-issue of `parent:`, label `cleanup`.
 3. One branch, one PR, `Closes #<step>`. A step on a steering path: say
    "steering diff, a human merges" in the body.

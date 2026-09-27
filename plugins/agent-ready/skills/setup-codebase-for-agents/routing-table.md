@@ -37,6 +37,18 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Hooks and switch values, no-plugin channel only | `.agents/hooks/`; `.claude/settings.json` `hooks` and `env` | fixed |
 | Auto-memory | off: `"autoMemoryEnabled": false` in `.claude/settings.json` | fixed |
 
+## Old files
+
+Earlier setups wrote these. Measure gives each one it finds the status
+below, and `cleanup` takes the action.
+
+| Old file | Status | Action |
+|---|---|---|
+| `docs/CODING_CONVENTIONS.md` | misplaced: review rules | `git mv` it to `docs/CODING_STANDARDS.md`, or move its lines there when that file exists. Rename it in the steering list and in `.github/CODEOWNERS`. |
+| `docs/agents/domain.md` | no-op | Delete it. Write the `### Domain docs` line from [templates/AGENTS.md](templates/AGENTS.md). |
+| `docs/agents/triage-labels.md` with each string equal to its role | no-op | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
+| CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | no-op | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
+
 ## `docs/CODING_STANDARDS.md`
 
 - One line per mistake an agent made here. A rule a tool can check goes to
