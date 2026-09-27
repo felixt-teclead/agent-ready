@@ -60,7 +60,7 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   services and network egress the `check` script needs.
 - **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
   `steering_gate` (no recommendation: the owner decides), `cleanup_comments`
-  (on), `cleanup_comments_max_files` (20). In the plugin channel each user
+  (on), `cleanup_comments_max_files` (10). In the plugin channel each user
   set them at install; do not ask.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
