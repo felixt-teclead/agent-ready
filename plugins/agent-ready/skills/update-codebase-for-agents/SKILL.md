@@ -12,9 +12,11 @@ decides every local edit, and whoever merges knows what changes.**
 No `.agents/agent-ready-manifest.json` (or `.agents/blueprint-manifest.json`,
 its old name):
 
-- With the plugin (this skill's folder is outside the repo): ask "Move this
-  repo off the plugin? The skills, hooks and the team's switch values then
-  come with every clone, for teammates and AFK runners without the plugin."
+- With the plugin (measure.md's
+  [Channel](../setup-codebase-for-agents/measure.md#1-channel-and-switches)
+  says plugin): ask "Move this repo off the plugin? The skills, hooks and
+  the team's switch values then come with every clone, for teammates and AFK
+  runners without the plugin."
   Yes → [Move this repo off the plugin](#4-move-this-repo-off-the-plugin).
   No → stop, and tell the owner the plugin stays current only while
   auto-update is on under `/plugin` → Marketplaces.

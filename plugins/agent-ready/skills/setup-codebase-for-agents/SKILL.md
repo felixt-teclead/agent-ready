@@ -190,7 +190,9 @@ row matches its answer.
 - Every [pointer](pointers.md) in `AGENTS.md` and `docs/agents/*.md`
   resolves.
 - The `check` command finishes with `</dev/null` and exits 0. A red run is a
-  finding for the owner, not a reason to change the command.
+  finding for the owner, not a reason to change the command. Timebox it with
+  the shell tool's own time limit, 10 minutes unless the owner names one
+  (`timeout` is missing on macOS); a run past it is a finding too.
 - `.claude/settings.json` parses as JSON. Not written: its gap-list entry
   from [Writing the file](settings.md#writing-the-file) stands.
 - `sh <this skill's folder>/verify-hooks.sh` from the repo root: each line

@@ -4,8 +4,11 @@ Read [routing-table.md](routing-table.md) first. Edit nothing.
 
 ## 1. Channel and switches
 
-- **Channel.** This skill's folder sits inside the repo (`.agents/skills/` or
-  `.claude/skills/`) → no plugin. Anywhere else → plugin.
+- **Channel.** The skill runs from the agent-ready plugin (its name carries
+  the `agent-ready:` prefix, its folder sits in the plugin install under
+  `~/.claude/plugins/`) → plugin. Anything else → no plugin: a copy in the
+  repo (`.agents/skills/` or `.claude/skills/`), or a first install the owner
+  fetched without the plugin.
 - **Switches.** Plugin: the values the calling skill lists. No plugin:
   `CLAUDE_PLUGIN_OPTION_<KEY>` in the `env` of `.claude/settings.local.json`,
   else of `.claude/settings.json`. Not there → unset.
