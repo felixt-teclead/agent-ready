@@ -43,9 +43,12 @@ specs: delete | archive
 - <kept item>: <why>
 ```
 
-- **It exists**: resume on its branch at the first open row. A worklist
-  whose `owner:` is `adopt-pocock-methodology` means a caller owns the
-  branch, the settings and the pull request.
+- **It exists with this section**: resume on its branch at the first open
+  row. `owner: adopt-pocock-methodology` means a caller owns the branch,
+  the settings and the pull request.
+- **It exists without this section**: the owner is another block. Stop and
+  say which run to finish first. When the owner is
+  `adopt-pocock-methodology`, add the section and go on.
 - **It does not exist**: start from a clean tree on a new branch,
   `model-codebase-domain`, from the default branch. Ask the setting
   `specs:`, default `delete`. Write the worklist with `owner:
