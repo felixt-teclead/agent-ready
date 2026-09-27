@@ -210,8 +210,9 @@ Done when each check passes or is on the gap list with its output.
 - GitHub remote: run [labels.sh](labels.sh), with `--review-only` unless
   answer E is a GitHub tracker with triage labels. Each `Failed` line goes
   on the gap list.
-- Open the pull request. Its body lists what each commit decides, then the
-  gap list. The branch touches steering files, so a human merges it.
+- Push and open the pull request (a denied push is a
+  [confirmed step](confirmed-steps.md)). Its body lists what each commit
+  decides, then the gap list. The branch touches steering files, so a human merges it.
 - The Steering gate step wrote its files: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
 - Answer I is Stubborn: paste [the smoke run](smoke-superpowers.md) into the

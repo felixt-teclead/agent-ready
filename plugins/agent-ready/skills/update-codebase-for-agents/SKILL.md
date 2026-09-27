@@ -37,6 +37,9 @@ Start from a clean tree on a new branch, `update-codebase-for-agents`, off
 sh .agents/skills/setup-codebase-for-agents/fetch.sh
 ```
 
+fetch.sh deletes only manifest copies agent-ready dropped, file by file:
+no [confirmed step](../setup-codebase-for-agents/confirmed-steps.md).
+
 - **Exit 0, "Up to date"**: do only **Newer setup writes** in
   [Settings](#2-settings). Nothing to write → tell the owner, delete the
   branch, stop.

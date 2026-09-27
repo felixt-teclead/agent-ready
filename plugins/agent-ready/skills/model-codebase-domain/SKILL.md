@@ -178,7 +178,7 @@ A deleted or moved folder's pointers change in the same commit, as
 says, including those with no new home. The deletes and moves are
 [confirmed steps](../setup-codebase-for-agents/confirmed-steps.md): show
 every folder's `git rm` or `git mv` and the pointer edits in one view. A
-denied one leaves the row open. Architecture docs stay;
+denied one leaves the row open: name the gap and stop. Architecture docs stay;
 `route-codebase-docs` handles them. Tick the row and commit.
 
 ## 5. End

@@ -107,7 +107,9 @@ Per open row, in order, call the block on this branch. When it hands back,
 tick its row, commit with what its bullet puts under the row, and push; then
 its bullet's stop, if any. A block's denied
 [confirmed step](../setup-codebase-for-agents/confirmed-steps.md) leaves its
-row open: name the gap and stop.
+row open: still write what its bullet puts under the row, plus the gap, and
+commit; a re-run appends below, never replaces. Then stop; after a
+preflight that switched something off, with its fresh-session line.
 
 - **preflight**: `retire-agent-setup`. Its summary goes under the row. It
   switched off a plugin or removed an override, skill or hook → after the

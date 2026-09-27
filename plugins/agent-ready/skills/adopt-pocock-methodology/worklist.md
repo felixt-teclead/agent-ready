@@ -4,9 +4,8 @@
 `model-codebase-domain` or `route-codebase-docs` across sessions. It lives
 only on the run's branch: the run commits it after each row, pushes, and
 deletes it in the commit before its pull request. A row is sized to fit one
-commit and one session. A denied push becomes a
-[confirmed step](../setup-codebase-for-agents/confirmed-steps.md): the row
-stays ticked in the local commit, and the push is its gap.
+commit and one session. A denied push, and deleting a remote branch, are
+[confirmed steps](../setup-codebase-for-agents/confirmed-steps.md).
 
 ```
 owner: <the skill that opened the branch>

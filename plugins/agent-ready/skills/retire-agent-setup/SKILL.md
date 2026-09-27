@@ -157,7 +157,8 @@ One commit, `chore: retire old agent setup`. Its message is the summary:
 - the specs, plans and framework sections [Inventory](#1-inventory) found,
   left in place
 
-**Alone:** push and open the PR, body = the summary; who merges: the
+**Alone:** push ([Confirmed steps](../setup-codebase-for-agents/confirmed-steps.md)
+covers a denied one) and open the PR, body = the summary; who merges: the
 worklist's [End](../adopt-pocock-methodology/worklist.md#end). Tell the
 user: "Start a fresh session: this one still carries the retired setup.
 Unsure what's next? Run `/what-to-do`."
