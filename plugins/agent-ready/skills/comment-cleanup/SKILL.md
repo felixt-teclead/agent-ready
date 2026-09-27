@@ -36,7 +36,8 @@ basename. `<skill>` = this directory.
 
 File set = what the conversation names; inferred rather than read → print,
 stop for confirmation. Paths relative to repo root into `<work>/files.txt`.
-Docs = the design doc.
+Docs = the docs the caller names, else those `cleanup`'s
+[Comment pass](../cleanup/SKILL.md#5-comment-pass) names.
 
 ```bash
 node <skill>/strip-comments.mjs --prepare <work>/files.txt <work> <doc> [<doc> ...]
@@ -111,8 +112,8 @@ node <skill>/strip-comments.mjs --finish <work>/files.txt <work>
 ```
 
 Code hunk → revert. Lost marker → restore its original words. Then the
-repository's typecheck and lint, by the names `package.json` gives them. Tests
-only on request.
+repository's typecheck and lint, by the names the project manifest gives
+them. Tests only on request.
 
 ### 8. Report
 

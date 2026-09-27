@@ -134,8 +134,8 @@ One dispatch per file. **To the rewriter:** your dispatch gave `path`,
 >   fact keeps its original words: an unverified claim is never reworded.
 > - `route` answers one question: _where does this reader reach the reason in
 >   time?_ A reason local to this code → `COMMENT`. A rule other files must
->   obey, a contract spanning files, a repo-wide gotcha, a trap → `DOC` into the
->   design doc. Where a control sits or what a pixel value is stays `COMMENT`. An
+>   obey, a contract spanning files, a repo-wide gotcha, a trap → `DOC` into one
+>   of `<docs>`. Where a control sits or what a pixel value is stays `COMMENT`. An
 >   anchor whose facts split across routes gets two rows (`EXAMPLES.md` 10).
 > - On a `COMMENT` row `text` is the comment line. On a `DOC` row it is the doc
 >   sentence, and the code gets only the pointer; leave it empty when the
