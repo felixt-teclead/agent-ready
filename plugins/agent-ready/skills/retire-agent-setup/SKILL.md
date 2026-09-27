@@ -23,9 +23,10 @@ summary back instead of opening a PR.
 
 Run [measure.md](../setup-codebase-for-agents/measure.md)'s
 [Old setup](../setup-codebase-for-agents/measure.md#4-old-setup). No plugin,
-skill or hook hit, no overridden framework and no scratch → say "nothing to
-retire", name any specs, plans and framework sections it found, and stop. As
-a block, hand back an empty summary.
+skill or hook hit, no scratch, and no overridden framework that
+`.agents/deviations.md` does not list → say "nothing to retire", name any
+specs, plans and framework sections it found, and stop. As a block, hand
+back an empty summary.
 
 ## 2. Unpushed work
 

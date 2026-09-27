@@ -48,9 +48,9 @@ framework: active | retired
 - [ ] folders
 ```
 
-Rows, from [measure.md](../setup-codebase-for-agents/measure.md)'s
-[Old setup](../setup-codebase-for-agents/measure.md#4-old-setup) and
-inventory:
+Run [measure.md](../setup-codebase-for-agents/measure.md). Rows, from its
+inventory and its
+[Old setup](../setup-codebase-for-agents/measure.md#4-old-setup):
 
 - **Build**, no `CONTEXT.md` or `CONTEXT-MAP.md`: one `doc:` row per specs
   and plans hit, per architecture doc, and for `docs/adr/`; one `code:` row
@@ -59,14 +59,16 @@ inventory:
   row proposes only what `CONTEXT.md` and `docs/adr/` lack.
 
 Show the list; the user strikes rows. A struck folder is neither folded nor
-removed.
+removed; its line goes into `.agents/deviations.md` as under
+[Folders](#4-folders) keep.
 
 **Framework.** Under `owner: adopt-pocock-methodology` the preflight has
 retired the old framework: `retired`. Alone: `active` when Old setup lists
-a plugin, skill or hook hit or a framework section, else `retired`. An
-overridden framework keeps its live plans in `.superpowers/`, so its
-committed folders fold whole. Write the verdict into the section; tell the
-user when it is `active`.
+a plugin, skill or hook hit or a framework section, or
+`.agents/deviations.md` keeps a plugin, skill or hook; else `retired`. An
+overridden framework keeps its live plans in `.superpowers/`, so it does not
+count, and its committed folders fold whole. Write the verdict into the
+section; tell the user when it is `active`.
 
 Commit the worklist.
 

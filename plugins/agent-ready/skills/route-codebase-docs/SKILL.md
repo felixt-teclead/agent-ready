@@ -21,18 +21,19 @@ out:
 - a skill production code loads (the scan's ruling in its
   [Measure](../scan-codebase-for-agents/SKILL.md#1-measure) section): it
   moves only whole, by its row, and is never rewritten;
-- `CONTEXT.md` and `docs/adr/`: they take new terms in
-  [Rewrite homes](#4-rewrite-homes) and are never rebuilt;
+- `CONTEXT.md` and `docs/adr/`, `model-codebase-domain`'s files: never
+  rebuilt; `CONTEXT.md` takes new terms in [Rewrite homes](#4-rewrite-homes);
 - tool-owned blocks (the scan's
   [Lines](../scan-codebase-for-agents/SKILL.md#2-lines)).
 
 Docs for humans, such as `README.md`, change only where a statement moves
 out or a pointer breaks.
 
-**Setup first.** A `fixed` row `missing`, or `CLAUDE.md` or `.claude/skills`
-not a symlink, is the scan's Missing fixed rows. Stop, and tell the user to
-re-run `/setup-codebase-for-agents`, merge its pull request, then run this
-again.
+**Setup first.** Measure's statuses give a finding of the scan's Missing
+fixed rows class
+([One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step)) →
+stop, and tell the user to re-run `/setup-codebase-for-agents`, merge its
+pull request, then run this again.
 
 ## 1. Worklist
 
@@ -138,7 +139,7 @@ fix-or-keep is answered.
 ## 6. Scan
 
 Run `scan-codebase-for-agents` on the branch and take its report. Per class
-of its [One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step):
+of its One next step:
 
 - **Missing fixed rows**: stop, as under **Setup first**.
 - **Dead pointers**: point each at the statement's home, or remove it.
