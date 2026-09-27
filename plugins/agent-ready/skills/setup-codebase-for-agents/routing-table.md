@@ -15,6 +15,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 |---|---|---|
 | Steering index: single source of truth, the steering rule, the skills block | `AGENTS.md`; `CLAUDE.md` is a symlink to it | fixed |
 | Commands, including the `check` script | the stack's manifest (`package.json`, `pyproject.toml`, ...); never restated in prose | interviewed |
+| How to verify a change | the `## Verify` line in `AGENTS.md` | fixed |
 | Overview, how to run | `README.md`, only if the code needs setup before it runs. Agents find the stack themselves. | interviewed |
 | Why code is this way, locally | a comment, checked by `comment-review` | switch `comment_review` |
 | Formatting, layout | config files and the tree; never restated | fixed |
@@ -32,6 +33,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Which skill runs each step while Superpowers is installed | `docs/agents/superpowers.md`, its pointer line in `AGENTS.md`, `.superpowers/` in `.gitignore`, `Skill(superpowers:…)` entries in `permissions.deny` of `.claude/settings.json` | interviewed |
 | What an AFK run needs: env vars, services, egress, token scopes | `docs/agents/environment.md` | interviewed |
 | What an AFK run hands back | `docs/agents/afk-handback.md` | fixed |
+| When to read the AFK files | the `### AFK runs` line in `AGENTS.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |
 | Hooks and switch values, no-plugin channel only | `.agents/hooks/`; `.claude/settings.json` `hooks` and `env` | fixed |
 | Auto-memory | off: `"autoMemoryEnabled": false` in `.claude/settings.json` | fixed |
@@ -40,12 +42,13 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 
 Earlier setups wrote these.
 
-| Old file | Status | Action |
+| Old file | Row | Action |
 |---|---|---|
-| `docs/CODING_CONVENTIONS.md` | misplaced: review rules | `git mv` it to `docs/CODING_STANDARDS.md`, or move its lines there when that file exists. Rename it in the steering list and in `.github/CODEOWNERS`. |
-| `docs/agents/domain.md` | no-op | Delete it. Write the `### Domain docs` line from [templates/AGENTS.md](templates/AGENTS.md). |
-| `docs/agents/triage-labels.md` with each string equal to its role | no-op | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
-| CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | no-op | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
+| `docs/CODING_CONVENTIONS.md` | Review rules | `git mv` it to `docs/CODING_STANDARDS.md`, or move its lines there when that file exists. Rename it in the steering list and in `.github/CODEOWNERS`. |
+| `docs/agents/domain.md` | Domain definitions | Delete it. Write the `### Domain docs` line from [templates/AGENTS.md](templates/AGENTS.md). |
+| A `### Domain docs` line other than the template's, such as `<single-context or multi-context>. See docs/agents/domain.md.` | Domain definitions | Replace it with the line from [templates/AGENTS.md](templates/AGENTS.md). |
+| `docs/agents/triage-labels.md` with each string equal to its role | Triage labels | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
+| CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | Tracker | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
 
 ## `docs/CODING_STANDARDS.md`
 

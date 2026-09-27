@@ -20,7 +20,7 @@ Verify with the manifest's `check` script.
 
 ### Issue tracker
 
-<one line: where issues live>. See `docs/agents/issue-tracker.md`.
+Issues live in <the tracker: GitHub issues, GitLab issues, `.scratch/`, ...>. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

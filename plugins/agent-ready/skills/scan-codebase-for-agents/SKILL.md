@@ -31,7 +31,7 @@ Two rulings on top of measure.md:
 - A repo's own consent rule ("change this file only with approval") belongs
   to the steering-approval row. Judge it like any other line.
 
-Done when every row and every old file found has a status.
+Done when every row has a status and every old file found has its row.
 
 ## 2. Lines
 
@@ -44,9 +44,11 @@ in the [routing table](../setup-codebase-for-agents/routing-table.md). When
   `next dev` keeps in `AGENTS.md`), count toward `load` but are not judged.
   The next step never edits them.
 - **Single source of truth.** Search the inventory for the line's key terms.
-  When an always-loaded line repeats a file loaded later, the always-loaded
-  copy fails and the other file keeps it. Two always-loaded copies: the one
-  outside the row's home fails.
+  When two files say the same thing, the copy in the row's home passes and
+  the other fails. Neither copy in the home: the always-loaded copy fails and
+  the other file keeps it. A pointer line may carry when to read its target
+  and a gist: one clause per target, naming what the target covers. Anything
+  beyond the gist repeats the target and fails.
 - **No-op.** A line fails when it restates a default, the tree, or what lint,
   typecheck or a test enforces. The tool wins, even when the line would save a
   red run.
@@ -58,6 +60,13 @@ in the [routing table](../setup-codebase-for-agents/routing-table.md). When
 Judge each line by its meaning, not by keyword counts. A duplicate you did
 not find is a pass.
 
+**Review rules.** Judge the lines of `docs/CODING_STANDARDS.md` (or the old
+`docs/CODING_CONVENTIONS.md`) by the same tests and by the routing table's
+`docs/CODING_STANDARDS.md` section. Leave out the lines setup copies from its
+[templates](../setup-codebase-for-agents/templates/docs/). A line that is no
+review rule, such as a command or a note to the editor, fails as no-op.
+These lines count in `lines`, not in `load`.
+
 Done when every judged line has a verdict, and each failure names its reason
 and, for single source of truth, the other file.
 
@@ -66,7 +75,7 @@ and, for single source of truth, the other file.
 Three numbers, none weighted:
 
 - `rows X of Y in their home`: Y leaves out `n/a` and `not measured` rows.
-  Each old file found adds one row to Y and none to X.
+  An old file counts only in its row.
 - `lines A of J pass`: J is the judged lines from §2.
 - `load L lines on every task`: every non-blank always-loaded line, judged
   or not.
@@ -75,9 +84,11 @@ Three numbers, none weighted:
 
 Take the first class with a finding:
 
-1. **Setup regressed.** `CLAUDE.md` or `.claude/skills` is no longer a
-   symlink, or a `fixed` row is `missing`.
-2. **Failing always-loaded lines.**
+1. **Missing fixed rows.** A `fixed` row is `missing`, or `CLAUDE.md` or
+   `.claude/skills` is not a symlink. Regressed or never written, the step
+   is the same: re-run `/setup-codebase-for-agents`. It writes missing rows
+   only.
+2. **Failing lines,** always-loaded lines first, then review rules.
 3. **Misplaced statements and old files.**
 
 Name one change that fits one pull request: the files it touches, and what it
@@ -85,10 +96,13 @@ removes or moves. If it touches a steering file, say "steering diff, a human
 merges", and name any line in the repo that asks for consent before that file
 changes.
 
+The `cleanup` skill (`agent-ready:cleanup` in the plugin channel) runs a
+class 2 or class 3 step as one pull request.
+
 If the change does not fit one pull request, do not shrink it. Call the gap a
-phase, and point at the `cleanup` skill (`agent-ready:cleanup` in the plugin
-channel) to start a refactor phase. When `.agents/refactor.md` exists, a
-phase is already running: give its `mode:` and say `cleanup` takes the step.
+phase, and point at `cleanup` to start a refactor phase. When
+`.agents/refactor.md` exists, a phase is already running: give its `mode:`
+and say `cleanup` takes the step.
 
 ## 5. Writing skills
 
@@ -116,5 +130,5 @@ tools  <writing skills found; leave the line out if none>
 ```
 
 Then the row table (statement, status, up to three `file:line` examples),
-then the old files found with their status and action, then the failing
+then the old files found with their row and action, then the failing
 lines grouped by file, `file:line`, and the reason.
