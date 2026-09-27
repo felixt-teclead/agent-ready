@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Entries approved per topic, nothing unapproved written
-- [ ] Spec folders end deleted or archived with the README
-- [ ] Fit check answered
-- [ ] Copy removed at the end
+- [x] Entries approved per topic, nothing unapproved written
+- [x] Spec folders end deleted or archived with the README
+- [x] Fit check answered
+- [x] Copy removed at the end
