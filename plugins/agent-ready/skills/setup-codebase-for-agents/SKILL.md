@@ -112,8 +112,10 @@ leave the file out and put its row on the gap list.
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
-9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. No-plugin
-   channel also:
+9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. Answer I is
+   keep: merge the `permissions.deny` entries of
+   [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
+   into existing `permissions.deny`. No-plugin channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
      `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
      `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`, which is
@@ -157,5 +159,8 @@ Done when each check passes or is on the gap list with its output.
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
+- Answer I is keep: tell the owner that a Superpowers user runs
+  [the smoke run](smoke-superpowers.md) once after the merge, and again
+  after each Superpowers update.
 - Next: `scan-codebase-for-agents` measures the result after the merge.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.

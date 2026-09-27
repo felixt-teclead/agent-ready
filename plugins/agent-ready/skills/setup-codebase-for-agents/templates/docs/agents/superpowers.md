@@ -1,6 +1,6 @@
 # Superpowers in this repo
 
-This file overrides Superpowers' skills. When a Superpowers skill names another skill, load the skill that the step below names.
+This file overrides Superpowers' skills. When a Superpowers skill names another skill, load the skill that the step below names. `.claude/settings.json` denies each replaced Superpowers skill, so its load fails: load the replacement and continue.
 
 ## Flow
 
