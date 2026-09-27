@@ -42,13 +42,13 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 
 Earlier setups wrote these.
 
-| Old file | Status | Action |
+| Old file | Row | Action |
 |---|---|---|
-| `docs/CODING_CONVENTIONS.md` | misplaced: review rules | `git mv` it to `docs/CODING_STANDARDS.md`, or move its lines there when that file exists. Rename it in the steering list and in `.github/CODEOWNERS`. |
-| `docs/agents/domain.md` | no-op | Delete it. Write the `### Domain docs` line from [templates/AGENTS.md](templates/AGENTS.md). |
-| A `### Domain docs` line other than the template's, such as `<single-context or multi-context>. See docs/agents/domain.md.` | no-op | Replace it with the line from [templates/AGENTS.md](templates/AGENTS.md). |
-| `docs/agents/triage-labels.md` with each string equal to its role | no-op | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
-| CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | no-op | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
+| `docs/CODING_CONVENTIONS.md` | Review rules | `git mv` it to `docs/CODING_STANDARDS.md`, or move its lines there when that file exists. Rename it in the steering list and in `.github/CODEOWNERS`. |
+| `docs/agents/domain.md` | Domain definitions | Delete it. Write the `### Domain docs` line from [templates/AGENTS.md](templates/AGENTS.md). |
+| A `### Domain docs` line other than the template's, such as `<single-context or multi-context>. See docs/agents/domain.md.` | Domain definitions | Replace it with the line from [templates/AGENTS.md](templates/AGENTS.md). |
+| `docs/agents/triage-labels.md` with each string equal to its role | Triage labels | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
+| CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | Tracker | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
 
 ## `docs/CODING_STANDARDS.md`
 

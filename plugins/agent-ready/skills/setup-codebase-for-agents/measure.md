@@ -42,7 +42,7 @@ and the repo shows no Superpowers trace: no `docs/superpowers/`, no
 `.superpowers/`, no `superpowers@` key in the `enabledPlugins` of
 `.claude/settings.json`.
 
-Each old file in the routing table that exists gets the status its row
-names.
+Each old file in the routing table that exists makes the row it names
+`misplaced`; it is one of that row's examples. It adds no row of its own.
 
-Done when every row and every old file found has a status.
+Done when every row has a status and every old file found has its row.

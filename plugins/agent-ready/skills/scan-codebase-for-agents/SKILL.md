@@ -31,7 +31,7 @@ Two rulings on top of measure.md:
 - A repo's own consent rule ("change this file only with approval") belongs
   to the steering-approval row. Judge it like any other line.
 
-Done when every row and every old file found has a status.
+Done when every row has a status and every old file found has its row.
 
 ## 2. Lines
 
@@ -68,7 +68,7 @@ and, for single source of truth, the other file.
 Three numbers, none weighted:
 
 - `rows X of Y in their home`: Y leaves out `n/a` and `not measured` rows.
-  Each old file found adds one row to Y and none to X.
+  An old file counts only in its row.
 - `lines A of J pass`: J is the judged lines from §2.
 - `load L lines on every task`: every non-blank always-loaded line, judged
   or not.
@@ -123,5 +123,5 @@ tools  <writing skills found; leave the line out if none>
 ```
 
 Then the row table (statement, status, up to three `file:line` examples),
-then the old files found with their status and action, then the failing
+then the old files found with their row and action, then the failing
 lines grouped by file, `file:line`, and the reason.
