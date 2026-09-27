@@ -10,6 +10,8 @@ Newcomers to Pocock's methodology face setup's framework question, the migration
 
 ## Answer
 
+**Renamed to `/what-to-do`** by the owner on 2026-09-27.
+
 Decided with the owner on 2026-09-27.
 
 **`/ask-agent-ready`**: a conversational starting point, in `/ask-matt` style. The user states a goal ("we want agents to take tickets unattended", "just fix our docs", "what's next?") or asks where the repo stands. The skill:
