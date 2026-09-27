@@ -40,6 +40,13 @@ and `_`, spaces as `-`, a repeated heading gets `-1`, `-2`. A `§"<heading>"`
 resolves when a heading or bold lead-in in the target matches it verbatim;
 a bold lead-in's closing punctuation does not count.
 
+A code pointer resolves by the repo's own convention too. A repo with its
+own pointer check (a test or script that resolves pointers): run it; what it
+accepts resolves, and its failures are the dead code pointers. Without one, a
+code pointer also resolves when its path uses a path alias the repo's config
+defines (`@/` in `tsconfig.json` `paths`) or names a folder, and when its
+`§"…"` starts a heading or names a symbol defined in the target.
+
 Skip:
 
 - gitignored paths;

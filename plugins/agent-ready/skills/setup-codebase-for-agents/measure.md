@@ -20,7 +20,8 @@ List every file an agent loads or is pointed at. Skip gitignored paths.
   its folder is read), `.claude/rules/*.md` with a `paths:` list,
   `.agents/skills/`, `.claude/skills/`, `docs/agents/`, the review-rules doc.
 - **Pointed at:** every doc an always-loaded file cites. A cited folder
-  pulls in its `README.md` or index file only.
+  pulls in its `README.md` or index file and the docs that file links inside
+  the folder; with neither, the `.md` files directly in the folder.
 - **Repo facts:** `git remote -v`; the manifest and its scripts; `README.md`;
   any architecture doc; `CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`;
   `.claude/settings.json`; `.gitignore`.
