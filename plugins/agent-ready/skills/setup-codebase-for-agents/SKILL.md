@@ -141,7 +141,11 @@ its answer.
   `echo '{"tool_input":{"command":"git push"}}' | .agents/hooks/comment-review-gate.sh`
   exits 2 until `comment-review` has stamped `HEAD`. For the review branch:
   `echo '{"prompt":"/improve-codebase-architecture"}' | AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-branch.sh`
-  prints the branch and label instruction.
+  prints the branch and label instruction. For the PR reminder:
+  `echo '{"hook_event_name":"PostToolUse","tool_input":{"command":"gh pr create"},"tool_response":{"stdout":"https://github.com/o/r/pull/1"}}' | AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-reminder.sh`
+  prints the offer, or nothing when a review PR merged in the last 7 days.
+  A second run prints nothing. Then
+  `rm "$(git rev-parse --git-dir)/agent-ready-review-offered"`.
 
 Done when each check passes or is on the gap list with its output.
 
