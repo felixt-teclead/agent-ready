@@ -59,12 +59,14 @@ hears once that open branches go unchecked.
 
 ## Merging a cleanup PR
 
-An agent merges its own `cleanup` PR when all three hold:
+An agent merges its own `cleanup` PR when all of these hold:
 
 - the diff touches no steering file and not `.agents/deviations.md`;
 - `comment-review`'s stamp is on the PR's head
-  ([Stamp](../comment-review/SKILL.md#7-stamp));
-- the project manifest's `check` script exits 0 on that head.
+  ([Stamp](../comment-review/SKILL.md#7-stamp)); with `comment_review` off,
+  no stamp is needed;
+- the project manifest's `check` script exits 0 on that head;
+- the PR's required checks on the remote pass.
 
 Otherwise the body says why ("steering diff, a human merges" for a steering
 file), and a human merges.
