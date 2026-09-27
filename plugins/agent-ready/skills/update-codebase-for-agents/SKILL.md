@@ -1,6 +1,6 @@
 ---
 name: update-codebase-for-agents
-description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. For a repo set up without the plugin.
+description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. For a repo set up without the plugin, or to move a repo off the plugin.
 disable-model-invocation: true
 ---
 
@@ -12,7 +12,8 @@ lost without the owner saying so, and whoever merges knows what changes.**
 No `.agents/agent-ready-manifest.json` (or `.agents/blueprint-manifest.json`,
 its old name): stop. With the plugin, auto-update under `/plugin` →
 Marketplaces does this job. Without the plugin, run
-`/setup-codebase-for-agents` first.
+`/setup-codebase-for-agents` first. Exception: the owner wants this repo off
+the plugin → [Move this repo off the plugin](#4-move-this-repo-off-the-plugin).
 
 Setup's steps named below are in
 [its SKILL.md](../setup-codebase-for-agents/SKILL.md).
@@ -109,3 +110,43 @@ merges it.
 
 Done when the pull request is open, its body names every behaviour change, and
 every kept edit was the owner's answer.
+
+## 4. Move this repo off the plugin
+
+The repo gets its own copies of the skills and hooks, and both plugins are
+switched off for this project. Any repo set up with the plugin can run this,
+at any time.
+
+Start from a clean tree on a new branch, `move-off-plugin`.
+
+1. **Copies.** Run setup's Skills step as the no-plugin channel does, with
+   the plugin's copy of the script:
+
+   ```sh
+   sh "${CLAUDE_PLUGIN_ROOT}/skills/setup-codebase-for-agents/fetch.sh"
+   ```
+
+   Commit `.agents/` and `.claude/skills`.
+2. **Settings.** Write `.claude/settings.json` as setup's
+   `.claude/settings.json` step does for the no-plugin channel. The switch
+   values in `env` are this user's plugin values:
+
+   - `comment_review`: `${user_config.comment_review}`
+   - `steering_gate`: `${user_config.steering_gate}`
+   - `cleanup_comments`: `${user_config.cleanup_comments}`
+   - `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
+
+   A value still in `${…}` form is unset: ask it as setup's interview G does.
+   Tell the owner these values now hold for everyone who clones the repo. No
+   review window in `env`: as under **Newer setup writes** in
+   [Settings](#2-settings).
+   Commit `.claude/settings.json` and `.gitignore`.
+3. **Verify.** Run the `settings.json` and no-plugin checks of setup's
+   Verify section.
+
+Open one pull request. Its body names the switch values and says both plugins
+are off for this repo; `/update-codebase-for-agents` refreshes the copies from
+now on. It touches steering files: a human merges it.
+
+Done when the pull request is open, every agent-ready hook in `settings.json`
+points into `.agents/hooks/`, and each switch has an `env` value.

@@ -192,3 +192,7 @@ Done when each check passes or is on the gap list with its output.
   after each Superpowers update.
 - Next: `scan-codebase-for-agents` measures the result after the merge.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
+- Plugin channel: `/agent-ready:update-codebase-for-agents` moves the repo
+  off the plugin at any time. Worth it once someone who works here, a person
+  or an AFK runner, has no plugin installed: the copies and the team's switch
+  values then come with every clone.
