@@ -1,7 +1,7 @@
 # Worked examples
 
 A tag, its rung, and the block that follows. The code is invented and the doc
-is `docs/DESIGN.md`; substitute the repository's own.
+is the placeholder `<design-doc>`; substitute the repository's own.
 
 ## 1. `NAME`
 
@@ -12,7 +12,7 @@ const d = items.filter((i) => i.t > cutoff);
 Tag: *what are `d` and `t`? I would invert the test.* `t` is a due timestamp
 and `d` is the due set, not the deleted one.
 
-`NAME`, file-local. Step 5 renames `d → due, t → dueAt`. A comment saying "d is
+`NAME`, file-local. Step 4 renames `d → due, t → dueAt`. A comment saying "d is
 the due set" is a name written in the wrong syntax.
 
 ## 2. `TYPE`
@@ -38,7 +38,7 @@ retries++;
 No wrong edit, so it was never a tag. If it got in, strike every word readable
 from the anchor and nothing is left.
 
-## 4. `DROP` — nameable convention
+## 4. `DROP` — framework default
 
 ```ts
 export async function GET(req: NextRequest): Promise<Response>
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest): Promise<Response>
 Interface slot: failure behaviour is unstated. The answer is the framework's
 documented default — a throw becomes a 500 — and the code follows it.
 
-`DROP`. Nameable, and it would not move when the framework does. Where the
+`DROP`. A framework default, and it would not move when the framework does. Where the
 handler *departs* from the default, the same slot is `WRITE`.
 
 ## 5. `UNSURE`
@@ -77,7 +77,7 @@ src/checkout.ts:18  const hold = placeHold(order);
 ```
 
 Returned. Whoever holds the docs finds §Payments already states the rule, so
-the anchor gets `See docs/DESIGN.md §"Payments"` and nothing enters the doc.
+the anchor gets `See <design-doc> §"Payments"` and nothing enters the doc.
 If §Payments said nothing, the sentence from the block goes into the section
 and the anchor still gets only the pointer.
 

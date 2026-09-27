@@ -18,9 +18,12 @@ substitute them below and work from `<repo>`.
 > Check every one against the repository as it stands: a named symbol exists
 > and is used as described, a named key or flag behaves as stated, a named
 > test asserts what is claimed, a stated direction, ordering or number holds.
-> Every heading named on an added line is in `headings.txt` and its section
-> explains the anchored code. A `§` pointer inside comment text is `WRONG`,
-> fix "route DOC"; a test path inside comment text is a claim like any other.
+> Every heading or bold lead-in a pointer names exists in its doc
+> (`headings.txt` lists the headings; read the section for a lead-in), and
+> its section explains the anchored code. A `§` pointer inside a comment
+> sentence is `WRONG`, fix "route DOC"; a line that is only
+> `See <doc> §"<anchor>"` is a placed pointer: check its section. A test path
+> inside comment text is a claim like any other.
 >
 > Then read every section a pointer targets, whoever wrote it and whenever.
 > Same checks, same rows, with the doc's own `file:line`.

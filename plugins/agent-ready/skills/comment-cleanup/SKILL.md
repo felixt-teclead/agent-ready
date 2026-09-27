@@ -1,11 +1,10 @@
 ---
 name: comment-cleanup
-description: "Called by agent-ready:cleanup during a refactor phase: prune and improve the comments in a file set."
+description: "Prune step of cleanup's comment pass: prune and improve the comments in a file set."
 ---
 
 **Goal: single source of truth, reachable when necessary.** Every fact sits in
-one place, as a reason. Other places point at it. Flags and routing:
-[`steps/judge.md`](steps/judge.md).
+one place, as a reason. Other places point at it.
 
 ## Process
 
@@ -20,8 +19,8 @@ one place, as a reason. Other places point at it. Flags and routing:
 
 ## Agents
 
-**Orchestrator** — you, or one runner per file, Opus. You and the script are
-the only writers into the repository.
+**Orchestrator** — you, Opus. You and the script are the only writers into
+the repository.
 **Reader** — Sonnet: blind, sighted+interface, recite.
 **Rewriter** — Sonnet: one per file. The only judge.
 **Verifier** — Sonnet: one per file, two passes max.
@@ -34,10 +33,12 @@ basename. `<skill>` = this directory.
 
 ### 1. Prepare
 
-File set = what the conversation names; inferred rather than read → print,
-stop for confirmation. Paths relative to repo root into `<work>/files.txt`.
-Docs = the docs the caller names, else those `cleanup`'s
-[Comment pass](../cleanup/SKILL.md#5-comment-pass) names.
+File set = the list the caller passes, else what the conversation names. A
+set you inferred → print it, stop for confirmation. Paths relative to repo
+root into `<work>/files.txt`. Docs = the docs the caller names, else the
+[Docs](../cleanup/comment-pass.md#docs) of `cleanup`'s comment pass.
+Applied = the `NAME` and `TYPE` changes the caller made before this run,
+if it names any.
 
 ```bash
 node <skill>/strip-comments.mjs --prepare <work>/files.txt <work> <doc> [<doc> ...]
@@ -71,8 +72,9 @@ answers anchor is in `ambiguous.txt`.
 ### 4. Apply
 
 First, each `DOC` row with a `text` whose doc the caller marks as queued
-([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)): make it a
-`COMMENT` row with that text, and list it in the report with its anchor.
+([`cleanup`, Rule queue](../cleanup/comment-pass.md#rule-queue)): make it a
+`COMMENT` row with that text, and list it in the report with its anchor and
+the section it belongs in.
 
 ```bash
 node <skill>/strip-comments.mjs <work>/files.txt
@@ -82,7 +84,7 @@ node <skill>/strip-comments.mjs --apply <work>/answers
 Exit 1 prints skipped rows — each goes back to the rewriter. Then the
 worklist by hand: `DOC` sentence after the paragraph its `after` names, pasted
 unchanged; trap write-ups under their heading; `BUG` rows to the report. An
-unplaced sentence is a dead pointer.
+unplaced sentence leaves a pointer to nothing.
 
 ### 5. Verify
 
@@ -115,7 +117,8 @@ doc section or a refactor.
 node <skill>/strip-comments.mjs --finish <work>/files.txt <work>
 ```
 
-Code hunk → revert. Lost marker → restore its original words. Then the
+Code hunk → revert it, unless it is an applied `NAME` or `TYPE` change. Lost
+marker → restore its original words. Then the
 repository's typecheck and lint, by the names the project manifest gives
 them. Tests only on request.
 
@@ -126,7 +129,8 @@ Per file: blocks → facts → cut per flag → `MISLEADING` → `CUT` anchors �
 facts added → `DOC` → verify fixes → recite failures.
 
 Then: doc sentences added; `KEEP?` rows with `file:line` and their words;
-`BUG` and `HARD-TO-DESCRIBE` rows; findings (no doc named, no heading fit,
+`BUG` and `REDESIGN` rows; findings (no doc named, no heading fit,
 `doc-refs.txt` entries, surviving `WRONG`).
 
-Ask whether to delete `<work>`.
+Called by a skill → keep `<work>` and name its path in the report. Otherwise
+ask whether to delete it.

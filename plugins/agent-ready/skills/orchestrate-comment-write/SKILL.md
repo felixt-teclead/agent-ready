@@ -1,6 +1,6 @@
 ---
 name: orchestrate-comment-write
-description: "Called by agent-ready:cleanup during a refactor phase: write missing comments over a set of files, one subagent per file."
+description: "Write step of cleanup's comment pass: missing comments over a file set, one subagent per file."
 ---
 
 You hold the repo docs; the subagents hold one file each and never open a
@@ -14,18 +14,19 @@ Leave the changes uncommitted; git is the undo.
 `<work>` is a scratch directory outside the repository (`mktemp -d`); nothing
 in it is committed.
 
-File set = what the conversation names; inferred rather than read → print,
-stop for confirmation. One path per line in `<work>/files.txt`.
+File set = the list the caller passes, else what the conversation names. A
+set you inferred → print it, stop for confirmation. One path per line in
+`<work>/files.txt`.
 
-Docs = the docs the caller names, else those `cleanup`'s
-[Comment pass](../cleanup/SKILL.md#5-comment-pass) names. List their
+Docs = the docs the caller names, else the
+[Docs](../cleanup/comment-pass.md#docs) of `cleanup`'s comment pass. List their
 sections once, with line ranges, so you fetch one section at a time:
 
 ```bash
 grep -nE '^#{1,4} ' <doc> | tee -a <work>/headings.txt
 ```
 
-Done when `files.txt` is confirmed and `headings.txt` covers every doc.
+Done when `files.txt` holds the file set and `headings.txt` covers every doc.
 
 ## 2. Dispatch
 
@@ -59,18 +60,27 @@ writer also produces — sweep for the sibling yourself before you judge:
 grep -rn '<symbol>' src tests scripts
 ```
 
+First row that fits wins.
+
 | outcome                        | when                                                                      | you do                                                                                              |
 | ------------------------------ | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `DROP`                         | a repo rule file states it and the code follows it                        | nothing                                                                                             |
-| pointer                        | a doc section states it, or the fact is a rule, contract, gotcha or trap  | write the sentence into the section if absent; place `See <doc> §"<anchor>"` at every anchor in the group |
+| pointer                        | a doc section states it, or the fact is shared                            | write the sentence into the section if absent; place `See <doc> §"<anchor>"` at every anchor in the group |
+| new ADR                        | a decision no ADR records                                                 | write it in `/domain-modeling`'s ADR format, add its headings to `headings.txt`, then place the pointer |
 | `WRITE`                        | no doc states it and it is true of that one file alone                    | send the block back to its subagent as `WRITE`                                                      |
 
 A doc the caller marks as queued
-([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)) takes no new
-sentence: send the block back as `WRITE`, and list the sentence with its
-anchors in the report. Its existing sections take pointers as usual.
+([`cleanup`, Rule queue](../cleanup/comment-pass.md#rule-queue)) is
+read-only: point only at a heading or bold lead-in it already has. Any other
+fact goes back as `WRITE`, and the report lists the sentence, the section it
+belongs in and its anchors.
 
-Pointer rules and doc-entry form: [`WRITING.md`](../comment-write/WRITING.md) §"Pointers".
+**Pointers.** The form:
+[Writing a code pointer](../setup-codebase-for-agents/pointers.md#writing-a-code-pointer).
+The sentence goes in the doc, the code gets the pointer alone. For a trap,
+write the full entry: the wrong shape, the right shape, the consequence, one
+example, and keep the pinning test's path in the comment so the reader meets
+the test before the change.
 
 Done when every `DOC?` block has an outcome.
 
@@ -98,16 +108,18 @@ Done when all three pass with nothing to fix.
 ## 5. Names and types
 
 Send every subagent with file-local `NAME` or `TYPE` blocks one message:
-apply them. Then typecheck and lint again.
+apply them. Then typecheck and lint again; revert a rename or brand that
+breaks them and report it.
+
+Done when both pass.
 
 ## Report
 
 Per file: tags → exits and rungs counted → comments written. Then the doc
-sentences you placed with their sections, the exported `NAME` blocks, and
-every `BUG`, `MISLEADING`, `REDESIGN` and `UNSURE` block as a to-do list for
-a human.
+sentences you placed with their sections, the `NAME` and `TYPE` changes
+applied in step 5, the exported `NAME` blocks, the sentences held back for a
+queued doc, and every `BUG`, `MISLEADING`, `REDESIGN` and `UNSURE` block as a
+to-do list for a human.
 
-**Comments written per body tag** is the number to watch. Value tags should
-mostly end in a name, a type or `DROP`; a run that writes a comment for nearly
-every one of them skipped the ladder. Block summaries and interface slots are
-expected to reach the file.
+**Comments written per body tag** is the number to watch. Block summaries and
+interface slots are expected to reach the file.

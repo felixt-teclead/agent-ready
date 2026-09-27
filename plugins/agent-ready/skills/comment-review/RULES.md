@@ -8,26 +8,10 @@ Every other rule applies only to a comment that survives this one.
 ## Two kinds, two defaults
 
 - **Interface comments are owed.** Every export carries one. It holds one plain
-  statement per slot its types do not answer. A slot is never dropped for
-  being obvious, and a good name does not answer it.
+  statement per [interface slot](interface-slots.md) its types do not
+  answer.
 - **Implementation comments default to no.** Each one must pass the no-op
   test.
-
-## Interface slots
-
-Ask each one against the signature alone. The caller never opens the body.
-
-- purpose, when the name does not carry it
-- unit and currency
-- who owns the returned value
-- ordering
-- what null or empty means
-- failure behaviour
-- side effects and argument mutation
-- preconditions
-
-A slot the types answer gets no sentence. `x: T | null` already says null is
-allowed; say what null *means*, or nothing.
 
 ## What an implementation comment may say
 
@@ -38,7 +22,7 @@ allowed; say what null *means*, or nothing.
 - **A trap**: what breaks when someone changes this. Name the test that pins it.
 
 A better name beats a comment. A rename changes the name and every reference
-to it, nothing else; propose it as `RENAME`. A fact a narrower type would
+to it, nothing else; propose it as `NAME`. A fact a narrower type would
 carry is a `TYPE` finding and gets a one-line comment at the definition.
 
 ## Cut these
@@ -59,10 +43,13 @@ carry is a `TYPE` finding and gets a one-line comment at the definition.
 ## Where a fact lives
 
 - **Local to this code**: a comment at the line.
-- **Shared** (a rule other files obey, a contract across files, a repo-wide
-  trap): one existing doc owns it. The comment is `See <doc path>`, no
-  anchor. `docs/adr/` is never a pointer target. No doc fits → keep it as a
-  comment and file `WANTS DOC`. Never create a doc.
+- **Shared fact** (a rule other files obey, a contract across files, a
+  repo-wide gotcha or trap): one existing doc owns it, an ADR for a
+  decision. The comment is a
+  [code pointer](../setup-codebase-for-agents/pointers.md#writing-a-code-pointer)
+  to a heading or bold lead-in the doc already has; none fits →
+  `See <doc path>`. No doc fits → keep it as a comment and file `WANTS DOC`.
+  Never create or edit a doc.
 
 ## Two tests for a sentence
 
@@ -98,5 +85,5 @@ Reported in the pull request body, never fixed by this review.
   bad abstraction. Say what you tried to state.
 - `WANTS DOC`: a shared fact with no doc to own it.
 - `TYPE`: a narrower type would carry the fact.
-- `RENAME`: a name that would carry the fact, with every reference to change.
+- `NAME`: a name that would carry the fact, with every reference to change.
   The one finding the parent applies.

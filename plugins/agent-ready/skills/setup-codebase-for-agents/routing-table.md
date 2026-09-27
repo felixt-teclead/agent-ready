@@ -14,7 +14,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Statement | Home | Kind |
 |---|---|---|
 | Steering index: single source of truth, the steering rule, the skills block | `AGENTS.md`; `CLAUDE.md` is a symlink to it | fixed |
-| Commands, including the `check` script | the stack's manifest (`package.json`, `pyproject.toml`, ...); never restated in prose | interviewed |
+| Commands, including the `check` command | the stack's manifest or task runner (`package.json` scripts, a Gradle task, a root `Makefile`, ...); never restated in prose | interviewed |
 | How to verify a change | the `## Verify` line in `AGENTS.md` | fixed |
 | Overview, how to run | `README.md`, only if the code needs setup before it runs. Agents find the stack themselves. | interviewed |
 | Why code is this way, locally | a comment, checked by `comment-review` | switch `comment_review` |
@@ -51,6 +51,9 @@ Earlier setups wrote these.
 | A `### Domain docs` line other than the template's, such as `<single-context or multi-context>. See docs/agents/domain.md.` | Domain definitions | Replace it with the line from [templates/AGENTS.md](templates/AGENTS.md). |
 | `docs/agents/triage-labels.md` with each string equal to its role | Triage labels | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
 | CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | Tracker | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
+| The older steering rule in `AGENTS.md`: "Never merge a diff that touches one. …", with "every real human is a pass" and "This rule guards itself" | Steering index | Replace it with the rule under `## Steering files` in [templates/AGENTS.md](templates/AGENTS.md). |
+| A `### AFK runs` line other than the template's, such as `Before an AFK run, read ...` | When to read the AFK files | Replace it with the line from [templates/AGENTS.md](templates/AGENTS.md). |
+| The `docs/CODING_STANDARDS.md` header line "One line per mistake an agent made in this repo." | Review rules | Replace it with the line from [the header](templates/docs/CODING_STANDARDS.md). |
 
 ## `docs/CODING_STANDARDS.md`
 

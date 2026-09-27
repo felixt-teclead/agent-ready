@@ -3,9 +3,45 @@
 The record of the documentation and steering conventions for agent-driven repos,
 and the `agent-ready` Claude Code plugin that writes them into a codebase.
 
+## Start here
+
+agent-ready moves a repo to one shared way of working with agents, built on
+[Matt Pocock's skills](https://github.com/mattpocock/skills): one domain
+glossary (`CONTEXT.md`), decisions as ADRs, docs agents can trust, and work as
+tickets agents can take on their own. You don't need to know Pocock's
+methodology first.
+
+1. Install the plugin (below).
+2. In your repo, ask:
+
+   ```
+   /what-to-do what's next for this repo?
+   ```
+
+   It reads the repo's state, recommends one next step, and explains the
+   options and their tradeoffs. State a goal instead if you have one: "agents
+   should take tickets unattended", "just fix our docs", "we use Superpowers".
+
+## Pick how deep you go
+
+Every tier starts with setup and leaves the repo better prepared for agents.
+Go as far as you want; the tiers combine.
+
+| Tier | You get | Commands |
+|---|---|---|
+| **A. Prepare** | Lean steering files: `AGENTS.md` (with `CLAUDE.md` pointing at it) holds only what an agent needs on every task, `docs/CODING_STANDARDS.md` holds the review rules, `CONTEXT.md` names the domain. New comments and docs get reviewed on every pull request from then on. | `/setup-codebase-for-agents`, then `model-codebase-domain`; the scan and `cleanup` trim the steering files one pull request at a time |
+| **B. Keep your framework** | Superpowers stays. agent-ready maps its steps onto the blueprint's flow: design by grilling, specs and tickets by Pocock's skills, plans and execution by Superpowers. Setup calls this answer **Stubborn**. | Setup's framework question: *Stubborn* |
+| **C. Migrate** | One methodology: the old setup retired, old specs and plans folded into `CONTEXT.md`, ADRs and issues, the docs agents read routed to one home each. Best for a team that wants agents to work in parallel and unattended. | Setup's framework question: *Migrate*, then `/adopt-pocock-methodology` |
+| **D. Clean what exists** | On top of A, B or C: architecture and other docs routed and trimmed in one reviewed pull request; then existing code comments rewritten and checked in the background, as small pull requests agents merge themselves where no steering file changes. | `route-codebase-docs` for the docs, a `cleanup` phase for the comments |
+
+Not sure which? `/what-to-do` recommends one from the repo's state and
+your goal, and explains the tradeoffs. Tier B maps Superpowers only; with
+another framework, pick A or C. From the plugin, commands carry its prefix,
+e.g. `/agent-ready:what-to-do`.
+
 ## Install the plugin
 
-You need git read access to this repo.
+You need git read access to this repo: ask the repo owner to add you.
 
 ```sh
 claude plugin marketplace add felixt-teclead/agent-ready
