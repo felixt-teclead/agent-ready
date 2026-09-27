@@ -4,8 +4,8 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A plugin repo can run the step and ends with working hooks without the plugin
-- [ ] Switch values carry over from plugin config to `env`
-- [ ] Guard allows this step without a manifest
+- [x] A plugin repo can run the step and ends with working hooks without the plugin
+- [x] Switch values carry over from plugin config to `env`
+- [x] Guard allows this step without a manifest
