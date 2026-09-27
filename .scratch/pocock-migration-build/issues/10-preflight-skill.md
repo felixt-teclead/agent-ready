@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Inventory lists hits with no framework name lists
-- [ ] Push gate needs explicit "continue anyway"
-- [ ] Nothing deleted without the one confirmation
-- [ ] Runs alone and as a migration block
+- [x] Inventory lists hits with no framework name lists
+- [x] Push gate needs explicit "continue anyway"
+- [x] Nothing deleted without the one confirmation
+- [x] Runs alone and as a migration block
