@@ -6,25 +6,30 @@ disable-model-invocation: true
 
 # Update a codebase for agents
 
-**Goal: the copied skills and hooks match agent-ready's `main`, no local edit is
-lost without the owner saying so, and whoever merges knows what changes.**
+**Goal: the copied skills and hooks match agent-ready's `main`, the owner
+decides every local edit, and whoever merges knows what changes.**
 
 No `.agents/agent-ready-manifest.json` (or `.agents/blueprint-manifest.json`,
 its old name):
 
-- With the plugin (this skill's folder is outside the repo): ask the owner
-  whether to move this repo off it. Yes →
-  [Move this repo off the plugin](#4-move-this-repo-off-the-plugin). No →
-  stop; auto-update under `/plugin` → Marketplaces keeps the plugin current.
-- Without the plugin: stop, and run `/setup-codebase-for-agents` first.
+- With the plugin (this skill's folder is outside the repo): ask "Move this
+  repo off the plugin? The skills, hooks and the team's switch values then
+  come with every clone, for teammates and AFK runners without the plugin."
+  Yes → [Move this repo off the plugin](#4-move-this-repo-off-the-plugin).
+  No → stop, and tell the owner the plugin stays current only while
+  auto-update is on under `/plugin` → Marketplaces.
+- Without the plugin: stop, and tell the owner to run
+  `/setup-codebase-for-agents` first.
 
-Setup's steps named below are in
-[its SKILL.md](../setup-codebase-for-agents/SKILL.md).
+Setup's Skills step and Verify section are in
+[its SKILL.md](../setup-codebase-for-agents/SKILL.md); what it writes into
+`.claude/settings.json` is in
+[settings.md](../setup-codebase-for-agents/settings.md).
 
 ## 1. Fetch
 
-Start from a clean tree on a new branch, `update-codebase-for-agents`. From
-the repo root:
+Start from a clean tree on a new branch, `update-codebase-for-agents`, off
+`origin/<default>`. From the repo root:
 
 ```sh
 sh .agents/skills/setup-codebase-for-agents/fetch.sh
@@ -37,25 +42,31 @@ sh .agents/skills/setup-codebase-for-agents/fetch.sh
   agent-ready. Show its diff and ask the owner: keep or replace. One file per
   question. Then run it again with the printed `AGENT_READY_REF=<sha>` in front
   and one `--keep <path>` or `--replace <path>` per file.
-- **Exit 1**: show the output and stop. A list of files not in the manifest
-  is the owner's: each blocks a path agent-ready now uses, and the owner
-  renames or deletes it. Any other exit 1 is agent-ready's bug or the
-  network.
+- **Exit 1** with files not in the manifest: each blocks a path agent-ready
+  now uses; the owner renames or deletes it, then run it again. Any other
+  exit 1 is agent-ready's bug or the network: show the output and stop.
 
-The last run prints the old and new commits and every file as `written`,
-`deleted` or `kept`. Keep that output for the pull request. Commit `.agents/`.
+Keep the last run's output for the pull request. Commit `.agents/`.
+
+Fetch wrote `.agents/skills/update-codebase-for-agents/SKILL.md` → read that
+file now, and go on after its Fetch section: this session loaded the old
+text.
+
+Done when a run exits 0 and its changes are committed.
 
 ## 2. Settings
 
-`.claude/settings.json`, as setup's `.claude/settings.json` step wrote it.
+`.claude/settings.json`, as
+[Settings file](../setup-codebase-for-agents/settings.md#settings-file) says.
 
 **Hooks.** An entry is one hook. Its key is its event, its matcher and its
 script, the file name after `.agents/hooks/` in its command. Build the entries
 the old `.agents/hooks/hooks.json` gives, from the branch's base
-(`git show $(git merge-base HEAD <default branch>):.agents/hooks/hooks.json`),
-with the rewrite in setup's `.claude/settings.json` step. Compare each with
-the `settings.json` entry of the same key. One that differs was edited by
-hand: show its diff and ask keep or replace, one entry per question.
+(`git show $(git merge-base HEAD origin/<default>):.agents/hooks/hooks.json`),
+with the rewrite in
+[Settings file](../setup-codebase-for-agents/settings.md#settings-file).
+Compare each with the `settings.json` entry of the same key. One that differs
+was edited by hand: show its diff and ask keep or replace, one entry per question.
 
 Then build the new entries the same way from the working tree's `hooks.json`
 and edit `settings.json` in place, by key:
@@ -67,26 +78,26 @@ and edit `settings.json` in place, by key:
 
 Leave every other hook alone.
 
-**Switches.** Read `userConfig` from `plugins/agent-ready/.claude-plugin/plugin.json`
-at the old and the new commit:
+**Switches.** Read `userConfig` at the old and the new commit, as
+[Switches](../setup-codebase-for-agents/settings.md#switches) says. Keep every
+existing `CLAUDE_PLUGIN_OPTION_<KEY>` value. Ask about each new key as that
+section says. Remove the `env` entry of a key that is gone.
 
-```sh
-gh api -H 'Accept: application/vnd.github.raw' \
-  "repos/felixt-teclead/agent-ready/contents/plugins/agent-ready/.claude-plugin/plugin.json?ref=<sha>" \
-  --jq .userConfig
-```
+**Newer setup writes.** Write each key
+[Settings file](../setup-codebase-for-agents/settings.md#settings-file) lists
+that `settings.json` lacks, as it says; ask the window as
+[Review window](../setup-codebase-for-agents/settings.md#review-window) says.
+A window above 0 on a GitHub remote: also run
+`sh .agents/skills/setup-codebase-for-agents/labels.sh --review-only`; a
+`Failed` line goes into the pull request body.
 
-Keep every existing `CLAUDE_PLUGIN_OPTION_<KEY>` value. Ask about each new
-key with its description and default; a key with no default has no
-recommendation. Remove the `env` entry of a key that is gone.
+Commit `settings.json` on its own. Skip the commit when nothing changed. Then
+run `sh .agents/skills/setup-codebase-for-agents/verify-hooks.sh`; each `FAIL`
+line goes into the pull request body.
 
-**Newer setup writes.** Setup's `.claude/settings.json` step also writes
-`enabledPlugins` and the architecture review window. Write each one missing as
-that step says; ask the window as setup's interview J does. A window above 0
-on a GitHub remote: also run
-`sh .agents/skills/setup-codebase-for-agents/labels.sh --review-only`.
-
-Commit `settings.json` on its own. Skip the commit when nothing changed.
+Done when every hook entry of the old and new `hooks.json` is replaced, kept,
+removed or appended, every `userConfig` key has its `env` value, no key that
+Settings file lists is missing, and verify-hooks.sh ran.
 
 ## 3. Pull request
 
@@ -99,12 +110,13 @@ file list:
   window when it was asked.
 - **Kept edits.** Every `kept` file and kept hook entry. Each now differs from
   agent-ready and is asked about again when agent-ready changes it again.
-- **Why.** The agent-ready commits that touch `plugins/agent-ready/`, newest
-  first; stop at the old commit, which the list also holds:
+- **Why.** The agent-ready commits that touch `plugins/agent-ready/` after
+  the old commit, newest first:
 
   ```sh
-  gh api --paginate "repos/felixt-teclead/agent-ready/commits?sha=<new>&path=plugins/agent-ready" \
-    --jq '.[] | "\(.sha[:7]) \(.commit.message | split("\n")[0])"'
+  since=$(gh api repos/felixt-teclead/agent-ready/commits/<old> --jq .commit.committer.date)
+  gh api --paginate "repos/felixt-teclead/agent-ready/commits?sha=<new>&path=plugins/agent-ready&since=$since" \
+    --jq '.[] | select(.sha != "<old>") | "\(.sha[:7]) \(.commit.message | split("\n")[0])"'
   ```
 
   When the Pocock tag moved: old and new tag, and
@@ -113,8 +125,9 @@ file list:
 It touches steering files (the list in `AGENTS.md`): tell the owner a human
 merges it.
 
-Done when the pull request is open, its body names every behaviour change, and
-every kept edit was the owner's answer.
+Done when the pull request is open, its body has a Behaviour line for each
+hook changed and each skill added or removed, and every kept edit was the
+owner's answer.
 
 ## 4. Move this repo off the plugin
 
@@ -122,7 +135,8 @@ The repo gets its own copies of the skills and hooks, and both plugins are
 switched off for this project. Any repo set up with the plugin can run this,
 at any time.
 
-Start from a clean tree on a new branch, `move-off-plugin`.
+Start from a clean tree on a new branch, `move-off-plugin`, off
+`origin/<default>`.
 
 1. **Copies.** Run setup's Skills step as the no-plugin channel does, with
    the plugin's copy of the script:
@@ -132,19 +146,21 @@ Start from a clean tree on a new branch, `move-off-plugin`.
    ```
 
    Commit `.agents/` and `.claude/skills`.
-2. **Settings.** Write `.claude/settings.json` as setup's
-   `.claude/settings.json` step does for the no-plugin channel. The switch
-   values in `env` are this user's plugin values:
+2. **Settings.** Write `.claude/settings.json` as
+   [Settings file](../setup-codebase-for-agents/settings.md#settings-file)
+   says for the no-plugin channel. The switch values in `env` are this
+   user's plugin values:
 
    - `comment_review`: `${user_config.comment_review}`
    - `steering_gate`: `${user_config.steering_gate}`
    - `cleanup_comments`: `${user_config.cleanup_comments}`
    - `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
 
-   A value still in `${…}` form is unset: ask it as setup's interview G does.
-   Tell the owner these values now hold for everyone who clones the repo. No
-   review window in `env`: as under **Newer setup writes** in
-   [Settings](#2-settings).
+   A value still in `${…}` form is unset: ask it as
+   [Switches](../setup-codebase-for-agents/settings.md#switches) says. Tell
+   the owner these values now hold for everyone who clones the repo. The
+   review window, when `env` lacks it: ask and write it as under **Newer
+   setup writes** in [Settings](#2-settings).
    Commit `.claude/settings.json` and `.gitignore`.
 3. **Verify.** Run setup's Verify checks for `settings.json` and the hooks,
    the hooks with the copy,
