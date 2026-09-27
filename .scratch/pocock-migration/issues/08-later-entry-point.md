@@ -12,7 +12,7 @@ A user who said no to the migration question during `/setup-codebase-for-agents`
 
 Grilled with the owner on 2026-09-27.
 
-**Finding it**: the migration is a user-invoked skill with its own name. When the user says no, setup's hand-over and PR body name it once: "Migrate later: run `/<name>`." `scan-codebase-for-agents` §4 gets a new class, placed after "Setup regressed" and before "failing always-loaded lines": the inventory finds an old setup, so the next step is the migration. The migration removes many failing lines anyway. Nothing goes into `AGENTS.md`.
+**Finding it**: the migration is a user-invoked skill with its own name. When the user says no, setup's hand-over and PR body name it once: "Migrate later: run `/<name>`." (Superseded: a report line, not a class, see [What each block does when run alone](13-standalone-paths.md).) `scan-codebase-for-agents` §4 gets a new class, placed after "Setup regressed" and before "failing always-loaded lines": the inventory finds an old setup, so the next step is the migration. The migration removes many failing lines anyway. Nothing goes into `AGENTS.md`.
 
 **In shape** = `CONTEXT.md` exists and the scan is green. The architecture review is not part of it; it recurs through the PR hook.
 
