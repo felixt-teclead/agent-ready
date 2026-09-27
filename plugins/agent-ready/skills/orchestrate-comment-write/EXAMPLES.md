@@ -1,7 +1,7 @@
 # Worked examples
 
 A tag, its rung, and the block that follows. The code is invented and the doc
-is `docs/DESIGN.md`; substitute the repository's own.
+is the placeholder `<design-doc>`; substitute the repository's own.
 
 ## 1. `NAME`
 
@@ -77,7 +77,7 @@ src/checkout.ts:18  const hold = placeHold(order);
 ```
 
 Returned. Whoever holds the docs finds §Payments already states the rule, so
-the anchor gets `See docs/DESIGN.md §"Payments"` and nothing enters the doc.
+the anchor gets `See <design-doc> §"Payments"` and nothing enters the doc.
 If §Payments said nothing, the sentence from the block goes into the section
 and the anchor still gets only the pointer.
 

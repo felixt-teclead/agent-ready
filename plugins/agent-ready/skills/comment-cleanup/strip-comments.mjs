@@ -324,7 +324,7 @@ function commentAbove(lines, at) {
 }
 const bodies = (ls) => ls.map(commentBody).filter((b) => b);
 
-// A source cell is often fenced whole (`docs/X.md §"Y"`); the fence goes, the
+// A source cell is often fenced whole (`<doc> §"<anchor>"`); the fence goes, the
 // backticks inside the heading stay — the pointer quotes the heading exactly.
 const pointerFor = (source) => `See ${source.trim().replace(/^`+|`+$/g, "").replace(/\\`/g, "`")}`;
 
