@@ -16,7 +16,7 @@ const hold = placeHold(order);
 | --- | --- | --- | --- | --- | --- |
 | `const hold = placeHold(order);` | body | originally we charged the card here (T-412) | | `HISTORY` | |
 | … | body | charging double-charged on retry | | `PROCESS` | true, but it narrates the path, not the present rule |
-| … | body | a checkout holds the amount and captures nothing | `docs/DESIGN.md §Payments` | `DUPLICATE` | §Payments states it |
+| … | body | a checkout holds the amount and captures nothing | `docs/DESIGN.md §"Payments"` | `DUPLICATE` | §"Payments" states it |
 
 The pointer is not a row. It is the third fact's source, and because §Payments
 states the fact, the fact is `DUPLICATE` at the code and only the pointer
@@ -24,9 +24,9 @@ survives.
 
 | anchor | verdict | text | source | route | after |
 | --- | --- | --- | --- | --- | --- |
-| `const hold = placeHold(order);` | KEEP | | `docs/DESIGN.md §Payments` | DOC | |
+| `const hold = placeHold(order);` | KEEP | | `docs/DESIGN.md §"Payments"` | DOC | |
 
-Result in the file: `// See docs/DESIGN.md §Payments`. Nothing enters the
+Result in the file: `// See docs/DESIGN.md §"Payments"`. Nothing enters the
 doc, because `text` is empty.
 
 ## 2. Same block, but the doc does not state it
@@ -36,7 +36,7 @@ If §Payments says nothing about holds, the third fact fires no flag. It is
 
 | anchor | verdict | text | source | route | after |
 | --- | --- | --- | --- | --- | --- |
-| `const hold = placeHold(order);` | KEEP | A checkout holds the amount and captures nothing because retries are not idempotent at the gateway: capturing here charges twice on a retried request. | `docs/DESIGN.md §Payments` | DOC | "Capture runs when the order ships" |
+| `const hold = placeHold(order);` | KEEP | A checkout holds the amount and captures nothing because retries are not idempotent at the gateway: capturing here charges twice on a retried request. | `docs/DESIGN.md §"Payments"` | DOC | "Capture runs when the order ships" |
 
 The code gets the same pointer; the sentence goes to the worklist for the doc.
 
@@ -138,8 +138,8 @@ const hit = keywordMatch(line);
 ```
 
 No fact of its own. The rewriter reads §Matching and writes the fact the
-section states as the row, source §Matching, `DUPLICATE`. The pointer survives
-as `// See docs/DESIGN.md §Matching`. If §Matching states nothing about this
+section states as the row, source `docs/DESIGN.md §"Matching"`, `DUPLICATE`.
+The pointer survives as `// See docs/DESIGN.md §"Matching"`. If §Matching states nothing about this
 code, the row is `WRONG` and cut: the pointer was dangling.
 
 ## 10. Facts that split across routes
@@ -225,8 +225,7 @@ Had the blind reader answered correctly, nothing would change: the anchor stays
 Two facts. "A negative quantity is a sell" is judged on its own: true, not
 derivable from `"signed"`, `KEEP`. "Confirmed by the client twice, T-113 and
 the 2026-08-26 call" names where the fact came from: `HISTORY`, cut. The
-decision record already exists in the backlog file for T-113, so it is the
-kept fact's `source`; the code shows the fact, and the record is one pointer
+decision record already exists as an ADR, so it is the kept fact's `source`; the code shows the fact, and the record is one pointer
 away for whoever needs to know who decided.
 
 ## 16. Long text at the code is a doc section
@@ -242,8 +241,8 @@ away for whoever needs to know who decided.
 ```
 
 Every fact is true and none is derivable. It is a trap, and it is six lines.
-Route `DOC`: the write-up goes under the rule file's calibration heading with
-the wrong shape, the right shape and the consequence; the code gets
-`// See .claude/rules/<area>.md §<heading>`. Kept at the code it would be the
+Route `DOC`: the write-up goes under its section in `docs/CODING_STANDARDS.md`
+with the wrong shape, the right shape and the consequence; the code gets
+`// See docs/CODING_STANDARDS.md §"<heading>"`. Kept at the code it would be the
 one paragraph a reader skips, and the rule it states binds every bank, not this
 row.

@@ -28,7 +28,7 @@ column only.
 > exported declarations with the comment now above each. One row each to
 > `<work>/recite-iface/<path>.md`, from the declaration and its comment
 > alone:
-> `| symbol | a correct call | what the caller must guarantee | what it returns, with units and ownership | what it does on failure | the boundary it stays inside |`
+> `| symbol | a correct call | what the caller must guarantee | what it returns, with units and ownership | ordering | what null or empty means | what it does on failure | side effects and argument mutation | the boundary it stays inside |`
 >
 > No answer there → `unstated`. Return only the two paths.
 

@@ -14,7 +14,7 @@ echo "Refactor phase (.agents/refactor.md); the cleanup skill (agent-ready:clean
 cat .agents/refactor.md
 
 # Files left = the path list minus every done file, minus paths no longer in
-# the tree (cleanup, Files). No gh, so it works on any tracker. CRLF files
+# the tree (cleanup/phase-files.md). No gh, so it works on any tracker. CRLF files
 # count like LF ones.
 list=.agents/refactor-paths.txt
 if [ -f "$list" ]; then
@@ -31,7 +31,7 @@ else
 fi
 
 # A continuous phase runs after the task, so an unattended agent needs the
-# nudge. comment-review has already dropped these files.
+# nudge. comment-review has dropped these files, or did not run.
 if grep -q '^mode: *continuous' .agents/refactor.md &&
   ! grep -q '^comments: *false' .agents/refactor.md &&
   ! grep -qs '^paused:' .agents/refactor.md .agents/refactor.local; then

@@ -10,15 +10,13 @@ Write each row of the [routing table](routing-table.md) from the owner's
 answers and the repo's own stack. The file texts are in
 [templates/](templates/).
 
-**Coherent** means every pointer resolves, and no file cites a file that is
-not written yet. The repo is coherent after every commit.
+**Coherent**: every [pointer](pointers.md) resolves, after every commit.
 
 The **gap list** holds every row left unwritten, with the reason. An
 unanswered question puts its row on the gap list. It never gets a default.
 
-This skill writes only rows that are missing, plus the home file of a
-`fixed` row that is misplaced, so `cleanup` has somewhere to move its
-statements. Changing existing content is the `cleanup` skill's job.
+Changing existing content is the `cleanup` skill's job; this skill writes
+what [Write](#3-write) lists.
 
 ## 1. Measure
 
@@ -30,29 +28,34 @@ in `${…}` form is unset:
 
 - `comment_review`: `${user_config.comment_review}`
 - `steering_gate`: `${user_config.steering_gate}`
-- `cleanup_comments`: `${user_config.cleanup_comments}`
-- `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
 
-No-plugin channel with `.agents/agent-ready-manifest.json`: its `"commit"`
-differs from agent-ready's `main`
-(`gh api repos/felixt-teclead/agent-ready/commits/main --jq .sha`) → the
-copies are older than this skill. Stop, and ask the owner to run
-`/update-codebase-for-agents` first; it brings the new hooks and settings.
+No-plugin channel with `.agents/agent-ready-manifest.json`: the copies,
+this skill among them, are behind when fetch.sh would change them. That is
+when a skill or hook file changed on agent-ready's `main` since the
+manifest's `"commit"`:
 
-Done when every row and every old file found has a status, and the old
-setup is listed.
+```sh
+gh api "repos/felixt-teclead/agent-ready/compare/<commit>...main" \
+  --jq '[.files[].filename | select(test("^plugins/agent-ready/(skills|hooks)/"))] | length'
+```
+
+prints more than 0, or when the `mattpocock-skills` `ref` in agent-ready's
+`.claude-plugin/marketplace.json` differs from the manifest's. Then stop, and
+ask the owner to run `/update-codebase-for-agents` first; it brings the new
+hooks and settings.
+
+Done when measure.md's Done holds.
 
 ## 2. Interview
 
-Ask only about rows marked `missing`, and I as it says. One section, one
-answer, then the next. Put the recommended answer first, so the owner can
-accept it in a word.
+Ask the section of each `missing` row, and I on its own condition. One
+section, one answer, then the next. Put the recommended answer first, so the
+owner can accept it in a word.
 
-- **A. Commands,** also when only the verify row is missing and the
-  manifest has no `check` script. Which commands run lint, typecheck and
-  test. Then one `check` script in the manifest that runs all three. It
-  exits non-zero on a failure, never prompts or watches, and needs no
-  service that `docs/agents/environment.md` does not declare.
+- **A. Commands.** Which commands run lint, typecheck and test. Then one
+  `check` command in the stack's manifest or task runner that runs all
+  three. It runs unattended to an exit code, non-zero on a failure, and uses
+  only services `docs/agents/environment.md` declares.
 - **B. README.** Does the code need setup before it runs? No → no
   `README.md` is written.
 - **C. Mechanical checks.** For each missing lint, typecheck or test tool:
@@ -60,47 +63,57 @@ accept it in a word.
   the gap list.
 - **D. Coding standards.** Which mistakes do agents make here? One line
   each. None known → the header only.
-- **E. Tracker.** GitHub when the remote is GitHub, GitLab when it is GitLab,
-  else local markdown. "Other" (Jira, Linear, ...) → the owner describes the
-  workflow in one paragraph. Triage labels: defaults, renamed, or none?
-  Renamed: the owner names the string per role; a dropped role is `—`.
-- **F. AFK environment.** Env vars and where their values come from,
-  services and network egress the `check` script needs.
-- **G. Switches, no-plugin channel only.** Each of the
-  [switches](routing-table.md#switches); recommend its default.
-- **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
-  `@org/team` with write access to this repo.
-- **I. Framework,** always, unless the Superpowers row is `home`. Name the
+- **E. Tracker,** where `/to-tickets` and `/triage` file work: GitHub when
+  the remote is GitHub, GitLab when it is GitLab, else local markdown.
+  "Other" (Jira, Linear, ...) → the owner describes the workflow in one
+  paragraph. Then: "`/triage` sorts issues by five labels, and agents take
+  the `ready-for-agent` ones: keep the default names, rename them, or no
+  labels?" Recommend the defaults. Renamed: the owner names the string per
+  role of [the label table](templates/docs/agents/triage-labels.md); a
+  dropped role is `—`.
+- **F. AFK environment.** "What does `check` need on a machine with nobody
+  at the keyboard (an AFK run): env vars and where their values come from,
+  services, hosts it must reach?" Recommend what CI config, `.env.example`
+  and compose files show; none found → "none".
+- **G. Switches, no-plugin channel only.** Ask [Switches](settings.md#switches).
+- **H. Steering owner,** when `steering_gate` is on and the remote is
+  GitHub: "Who approves changes to the files that steer agents? A GitHub
+  handle or `@org/team` with write access to this repo." Recommend a team,
+  or a person other than whoever opens the steering pull requests: GitHub
+  never lets an author approve their own pull request. A user handle:
+  `gh api repos/<repo>/collaborators/<handle>/permission --jq .permission`
+  reads `write` or `admin`; otherwise ask again.
+- **I. Framework.** Always, unless the Superpowers row is `home`. Name the
   hits by the summary in measure.md's [Old setup](measure.md#4-old-setup).
-  Row not `missing`: ask first, "Does anyone here run Superpowers? A
-  teammate's own install leaves no trace in the repo." No, and no hits →
-  I's answer is neither; ask nothing more. Otherwise ask "Migrate, Stubborn
-  or neither?", each option with what it does, when it is right and what it
-  costs, in the words of
+  Ask "Migrate, Stubborn or neither?", each option with what it does, when
+  it is right and what it costs, in the words of
   [Migrate, Stubborn or neither](../ask-agent-ready/TRADEOFFS.md#migrate-stubborn-or-neither).
   - **Migrate** (recommended): `/adopt-pocock-methodology`, typed after this
     pull request merges. With no hits, say what it does here: it builds
     `CONTEXT.md` and routes the docs.
-  - **Stubborn**, offered when the row is `missing` or the first answer was
-    yes.
+  - **Stubborn**: keep Superpowers with the override. It fits only a team
+    where someone runs Superpowers; a teammate's own install leaves no trace
+    in the repo.
   - **Neither.**
 
   Stubborn: the row counts as `missing`, and [Write](#3-write) writes it.
   Migrate or neither: it counts as `n/a`; no step writes it, and the gap
   list leaves it out.
-- **J. Architecture review.** "After a pull request opens, remind the team
-  to run `/improve-codebase-architecture` when no review merged in the last
-  N days?" Recommend 7. No → `"0"`.
+- **J. Architecture review.** Ask [Review window](settings.md#review-window).
 
-Done when every missing row has an answer or a gap-list entry.
+Done when every missing row has an answer or a gap-list entry, and I has an
+answer unless the Superpowers row is `home`.
 
 ## 3. Write
 
-One branch, one pull request, one commit per step. Skip a step whose rows
-are all `home`, `n/a` or on the gap list; in a step that runs, write only
-its missing rows. Merge into an existing file at the template's place: it
-keeps its text. Placeholders in a template are `<...>`; fill each one, or
-leave the file out and put its row on the gap list.
+One branch, `setup-codebase-for-agents`, off `origin/<default>`; one pull
+request, one commit per step. Skip a step whose rows are all `home`, `n/a`
+or on the gap list. In a step that runs, write its `missing` rows, and, from
+its template, the home file of each `misplaced` `fixed` row that has none
+yet, so `cleanup` has somewhere to move the statements. Merge into an
+existing file at the template's place: it keeps its text. Placeholders in a
+template are `<...>`; fill each one, or leave the file out and put its row on
+the gap list.
 
 1. **`AGENTS.md`** from [the template](templates/AGENTS.md), without the
    `## Agent skills` block (step 3 adds it) and the `## Verify` section
@@ -111,18 +124,17 @@ leave the file out and put its row on the gap list.
 2. **Skills.** `.agents/skills/`, and `ln -s ../.agents/skills .claude/skills`.
    Existing `.claude/skills/` content moves into `.agents/skills/` unchanged.
    Plugin channel with no skills in the repo: skip this step. No-plugin
-   channel: run [fetch.sh](fetch.sh) from the repo root. It copies
-   agent-ready's skills and hooks, and Pocock's skills at the tag agent-ready
-   pins. If it lists clashing files, show them to the owner, who renames or
-   deletes them; then run it again.
+   channel: run [fetch.sh](fetch.sh) from the repo root. If it lists
+   clashing files, show them to the owner, who renames or deletes them; then
+   run it again.
 3. **`docs/agents/`** from answer E: `issue-tracker.md` from
    `templates/docs/agents/issue-tracker-<github|gitlab|local>.md`, or from the
    owner's paragraph; `triage-labels.md` only for renamed labels. Add the
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### Superpowers` and `### AFK runs` parts. An existing `## Agent skills`
    block is updated in place.
-4. **Commands** from answer A into the manifest scripts, and the
-   `## Verify` section into `AGENTS.md`. No `check` script → the verify row
+4. **Commands** from answer A into the manifest or task runner, and the
+   `## Verify` section into `AGENTS.md`. No `check` command → the verify row
    goes on the gap list. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
    script. One commit per tool.
@@ -132,61 +144,51 @@ leave the file out and put its row on the gap list.
    [the header](templates/docs/CODING_STANDARDS.md), then
    [the comments section](templates/docs/CODING_STANDARDS.comments.md) when
    `comment_review` is `false`, then the lines from answer D.
-8. **Architecture pointer**, when step 1 of measure found an architecture
-   doc: one line in `AGENTS.md`, `Architecture: see <path>.`
-9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`, and `env`
-   `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` from answer J. No-plugin channel
-   also:
-   - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
-     `"${CLAUDE_PLUGIN_ROOT}"/hooks/` (quoted or not) changed to
-     `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`. Inside a JSON string each `"`
-     is `\"`. Merge it into existing `hooks`: append each entry to the group
-     with the same event and matcher, or add that group. A group without a
-     matcher (`SessionStart`, `UserPromptSubmit`) matches one without.
-   - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per answer from G, as a string.
-   - `enabledPlugins`: `"agent-ready@teclead": false` and
-     `"mattpocock-skills@teclead": false`. The copies in `.agents/` replace
-     both plugins; a user-scope install left on loads every skill and hook
-     twice.
-   - `.gitignore`: add `.agents/refactor.local`.
+8. **Architecture pointer**, when measure.md's
+   [Inventory](measure.md#2-inventory) lists an architecture doc: one line in
+   `AGENTS.md`, `Architecture: see <path>.`
+9. **`.claude/settings.json`** as [Settings file](settings.md#settings-file)
+   says.
 10. **Stubborn: the Superpowers override**, when answer I is Stubborn:
     `docs/agents/superpowers.md` from the template, the `### Superpowers`
     part of the block, `.superpowers/` in `.gitignore`, and the
     `permissions.deny` entries of
     [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
     merged into `.claude/settings.json`.
-11. **Steering gate,** when `steering_gate` is on and answer H exists:
-    [`CODEOWNERS`](templates/.github/CODEOWNERS) with the owner,
+11. **Steering gate,** on a GitHub remote, when `steering_gate` is on and
+    answer H exists: [`CODEOWNERS`](templates/.github/CODEOWNERS) with
+    answer H's handle,
     [`steering-ruleset.json`](templates/.github/steering-ruleset.json) and
     [`bootstrap-steering-ruleset.sh`](templates/.github/bootstrap-steering-ruleset.sh)
-    in `.github/`.
+    in `.github/`. Other remotes: the Steering approval row goes on the gap
+    list; its files are GitHub's, and the `AGENTS.md` rule still holds.
 
-Done when each commit leaves the repo coherent and each written row matches
-its answer.
+Done when every row left `missing` by the interview is written or on the gap
+list with its reason, each commit leaves the repo coherent, and each written
+row matches its answer.
 
 ## 4. Verify
 
-- `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves.
-- Every [pointer](../scan-codebase-for-agents/SKILL.md#pointers) in
-  `AGENTS.md` and `docs/agents/*.md` resolves.
-- The `check` script finishes with `</dev/null` and exits 0. A red run is a
-  finding for the owner, not a reason to change the script.
+- `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves when
+  the Skills step ran.
+- Every [pointer](pointers.md) in `AGENTS.md` and `docs/agents/*.md`
+  resolves.
+- The `check` command finishes with `</dev/null` and exits 0. A red run is a
+  finding for the owner, not a reason to change the command.
 - `.claude/settings.json` parses as JSON.
 - `sh <this skill's folder>/verify-hooks.sh` from the repo root: each line
-  reads `ok`. [The script](verify-hooks.sh) runs every hook beside this skill
-  (`.agents/hooks/`, or the plugin's) in a throwaway repo, and checks `jq` and,
-  on a GitHub remote, `gh auth status`. Each `FAIL` line goes on the gap list.
+  reads `ok`. Each `FAIL` line goes on the gap list.
 
 Done when each check passes or is on the gap list with its output.
 
 ## 5. Hand over
 
 - GitHub remote: run [labels.sh](labels.sh), with `--review-only` unless
-  answer E is a GitHub tracker with triage labels. It creates the missing
-  labels and keeps existing ones.
+  answer E is a GitHub tracker with triage labels. Each `Failed` line goes
+  on the gap list.
 - Open the pull request. Its body lists what each commit decides, then the
   gap list. The branch touches steering files, so a human merges it.
-- Steering gate on: tell the owner to run
+- The Steering gate step wrote its files: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
 - Answer I is Stubborn: paste [the smoke run](smoke-superpowers.md) into the
   pull request body, and open one tracker issue that links it: "Rerun the
@@ -194,12 +196,16 @@ Done when each check passes or is on the gap list with its output.
 - Answer I is migrate: the pull request body and the hand-over say "After
   the merge, type `/adopt-pocock-methodology`
   (`/agent-ready:adopt-pocock-methodology` with the plugin); it runs the
-  scan itself." Only a user can invoke it. Neither, and the old setup has
-  hits: they say once "Migrate later: run `/adopt-pocock-methodology`."
-- Next, unless answer I is migrate: `scan-codebase-for-agents` measures the
-  result after the merge.
-- No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
+  scan itself." Only a user can invoke it. Neither, and the old setup has hits: they say
+  once "Migrate later: run `/adopt-pocock-methodology`."
+- Unless answer I is migrate, tell the owner: "After the merge, ask for a
+  scan; `scan-codebase-for-agents` names the next change."
+- No-plugin channel, tell the owner: "`/update-codebase-for-agents`
+  refreshes the copies."
 - Plugin channel: `/agent-ready:update-codebase-for-agents` moves the repo
   off the plugin at any time. Worth it once someone who works here, a person
   or an AFK runner, has no plugin installed: the copies and the team's switch
   values then come with every clone.
+
+Done when the pull request is open, and the owner has every line above that
+applies, in the pull request body where a line says so.

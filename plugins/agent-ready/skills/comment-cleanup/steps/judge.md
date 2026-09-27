@@ -29,7 +29,7 @@ A fact is cut when any flag fires:
 
 | flag               | scope     | test                                                                                                                                                                                                                                                                                                                        |
 | ------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `HISTORY`          | all       | it says what the code used to do, when, or by which ticket; or it names the ticket, date, meeting or person a fact came from. Judge the fact on its own row; the provenance is cut, and if the decision record matters the backlog file that holds it is the `source`                                                       |
+| `HISTORY`          | all       | it says what the code used to do, when, or by which ticket; or it names the ticket, date, meeting or person a fact came from. Judge the fact on its own row; the provenance is cut, and if the decision record matters the ADR that holds it is the `source`                                                                |
 | `PROCESS`          | all       | it narrates how the code got here ("after we hit X we chose Y") rather than why it is right now                                                                                                                                                                                                                             |
 | `RESTATES`         | all       | every word of it is readable from the anchor line, the names it uses, or its signature                                                                                                                                                                                                                                      |
 | `MISLEADING`       | all       | the sighted reader's `why` is wrong at this anchor, its wrong belief is what this fact says or implies, and the truth is established: the comment made a correct reader wrong                                                                                                                                               |
@@ -43,15 +43,14 @@ A fact is cut when any flag fires:
 A fact surviving every flag is `KEEP`. Doubt keeps it: truth you cannot
 establish is `KEEP?` — original words back into the file, listed for the
 human, who has the code. Two flags point at the code instead: an interface
-needing a paragraph per parameter is `HARD-TO-DESCRIBE`; a comment right where
+needing a paragraph per parameter is `REDESIGN`; a comment right where
 the code is wrong is `BUG`. Both are report rows, never edits.
 
 **Interface completeness** is the second judgement, interfaces only. The flags
-cut; this adds. The exported surface carries the highest bar. A caller must
-find at the signature: units and currency, who owns the returned value,
-ordering and lifecycle, what null means, failure behaviour, the boundary it
-stays inside. Each one the types do not carry and the comment does
-not state is a missing fact.
+cut; this adds. The exported surface carries the highest bar: a caller must
+find every [interface slot](../../comment-review/interface-slots.md) at the
+signature. Each one the types do not carry and the comment does not state is
+a missing fact.
 
 ## The rewriter brief
 
@@ -99,11 +98,11 @@ One dispatch per file. **To the rewriter:** your dispatch gave `path`,
 >   reader filled from the bare pass is a fact the types state: the comment's
 >   matching fact is `DERIVABLE`. A cell filled only in the commented pass is
 >   what the comment earns: `KEEP`. A cell `unstated` in both passes that a
->   caller must know gets a row with `fact` = `missing: <units | ownership |
->   ordering | null | failure | boundary>`, `flag` = `KEEP`, and the answer in
->   `truth`. A cell the reader filled _wrongly_ from the comment is that fact's
+>   caller must know gets a row with `fact` = `missing: <purpose | unit |
+>   ownership | ordering | null | failure | side effects | precondition |
+>   boundary>`, `flag` = `KEEP`, and the answer in `truth`. A cell the reader filled _wrongly_ from the comment is that fact's
 >   `WRONG`. Your own reading of the signature never replaces the reader's row.
-> - `BUG` and `HARD-TO-DESCRIBE` are flags too: the fact is right and the code
+> - `BUG` and `REDESIGN` are flags too: the fact is right and the code
 >   is wrong, or the export's contract needs a paragraph per parameter.
 > - **Sibling pass, once the whole table stands.** Read your own `KEEP` rows
 >   against each other, grouped by the code they sit in: the fields of one type,
@@ -118,7 +117,7 @@ One dispatch per file. **To the rewriter:** your dispatch gave `path`,
 > `| anchor | verdict | text | source | route | after |`
 >
 > - `verdict` is `CUT` when the anchor has no `KEEP` or `KEEP?` fact, otherwise
->   `KEEP`; `KEEP?` when any surviving fact is. `BUG` and `HARD-TO-DESCRIBE`
+>   `KEEP`; `KEEP?` when any surviving fact is. `BUG` and `REDESIGN`
 >   rows carry the observation as `text` and go to the report.
 > - `text` is composed from the surviving facts. Where the surviving words are
 >   already right, keep them. Otherwise reword by scope. **Body**: one reason,
@@ -133,9 +132,9 @@ One dispatch per file. **To the rewriter:** your dispatch gave `path`,
 >   reader about to change the code meets the test before the change. A `KEEP?`
 >   fact keeps its original words: an unverified claim is never reworded.
 > - `route` answers one question: _where does this reader reach the reason in
->   time?_ A reason local to this code → `COMMENT`. A rule other files must
->   obey, a contract spanning files, a repo-wide gotcha, a trap → `DOC` into one
->   of `<docs>`. Where a control sits or what a pixel value is stays `COMMENT`. An
+>   time?_ A reason local to this code → `COMMENT`. A **shared** fact (a rule
+>   other files must obey, a contract spanning files, a repo-wide gotcha or
+>   trap) → `DOC` into one of `<docs>`. Where a control sits or what a pixel value is stays `COMMENT`. An
 >   anchor whose facts split across routes gets two rows (`EXAMPLES.md` 10).
 > - On a `COMMENT` row `text` is the comment line. On a `DOC` row it is the doc
 >   sentence, and the code gets only the pointer; leave it empty when the

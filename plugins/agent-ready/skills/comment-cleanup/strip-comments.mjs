@@ -238,7 +238,7 @@ function readTable(file) {
   return rows;
 }
 
-const WRITE_BACK = new Set(["LOAD-BEARING", "UNWRITTEN", "KEEP", "KEEP?"]); // CUT, BUG and HARD-TO-DESCRIBE never return
+const WRITE_BACK = new Set(["LOAD-BEARING", "UNWRITTEN", "KEEP", "KEEP?"]); // CUT, BUG and REDESIGN never return
 
 function resolveAnchor(lines, anchor) {
   const find = (a) => {

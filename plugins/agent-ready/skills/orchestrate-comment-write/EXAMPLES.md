@@ -12,7 +12,7 @@ const d = items.filter((i) => i.t > cutoff);
 Tag: *what are `d` and `t`? I would invert the test.* `t` is a due timestamp
 and `d` is the due set, not the deleted one.
 
-`NAME`, file-local. Step 5 renames `d → due, t → dueAt`. A comment saying "d is
+`NAME`, file-local. Step 4 renames `d → due, t → dueAt`. A comment saying "d is
 the due set" is a name written in the wrong syntax.
 
 ## 2. `TYPE`
@@ -38,7 +38,7 @@ retries++;
 No wrong edit, so it was never a tag. If it got in, strike every word readable
 from the anchor and nothing is left.
 
-## 4. `DROP` — nameable convention
+## 4. `DROP` — framework default
 
 ```ts
 export async function GET(req: NextRequest): Promise<Response>
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest): Promise<Response>
 Interface slot: failure behaviour is unstated. The answer is the framework's
 documented default — a throw becomes a 500 — and the code follows it.
 
-`DROP`. Nameable, and it would not move when the framework does. Where the
+`DROP`. A framework default, and it would not move when the framework does. Where the
 handler *departs* from the default, the same slot is `WRITE`.
 
 ## 5. `UNSURE`

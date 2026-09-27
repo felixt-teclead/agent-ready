@@ -2,19 +2,17 @@
 
 ## Single source of truth
 
-Every statement has one home. Do not write it a second time. Point at the home instead.
+Every statement has one home; everywhere else, point at it.
 
 ## Steering files
 
 The steering files are `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `docs/CODING_STANDARDS.md`, `.github/CODEOWNERS`, `.agents/skills/`, `.claude/skills`, `.agents/hooks/` and `.claude/settings.json`.
 
-Never merge a diff that touches one. Stop, state plainly what the diff decides, write that exchange into the pull request, and leave the merge to a human. The merge click is the approval, and every real human is a pass.
-
-This rule guards itself: a diff that edits it is a steering diff.
+A diff that touches one is a **steering diff**: stop, state plainly what it decides, write that exchange into the pull request, and leave the merge to a human. Any human's merge click is the approval.
 
 ## Verify
 
-Verify with the manifest's `check` script.
+Verify with the `check` command in the stack's manifest or task runner.
 
 ## Agent skills
 
@@ -36,4 +34,4 @@ Before any `superpowers:` skill, read `docs/agents/superpowers.md`. It overrides
 
 ### AFK runs
 
-Before an AFK run, read `docs/agents/environment.md`. Hand back as `docs/agents/afk-handback.md` says.
+Working a ticket with nobody in the chat (an AFK run): read `docs/agents/environment.md` first, and hand back as `docs/agents/afk-handback.md` says.
