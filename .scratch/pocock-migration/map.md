@@ -33,11 +33,9 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - [What the repo keeps so the plugin can be switched off](issues/07-plugin-switch-off.md) — reuse the no-plugin channel (`fetch.sh` + settings wiring); a new `update-codebase-for-agents` step moves a repo off the plugin; hooks stay in `plugins/agent-ready/hooks/`
 - [PR hook behaviour](issues/05-pr-hook-behaviour.md) — `PostToolUse` after `gh pr create`, blocks nothing; skips the review PR and any merged or fresh open review PR in N days; offers once per clone per day; no 14-day default
 - [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md) — statements extracted, grouped by topic, routed with per-topic approval; lever verdicts plus scan green = done; comment pass as `cleanup` fast sub-tickets, one commit each, cap 10; migration answers status itself, `/ask-matt` only for next-task routing
+- [How a user starts the migration later](issues/08-later-entry-point.md) — user-invoked skill named in setup's hand-over; scan names it as next step when an old setup remains; start checks setup ran, branch (resume), old setup, in shape (`CONTEXT.md` + scan green); no marker or label
 
 ## Not yet specified
-
-- **The "later" entry point.** How a user who said no during setup finds and starts the migration afterwards, and what the skill checks first (setup ran?). The detection signal is settled in [What migrating the current setup covers](issues/01-migration-scope.md).
-- **Ordering against `agent-ready:cleanup`.** The migration's comment pass is a `cleanup` fast phase (see [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md)). Still open: how a phase already running in the repo meets the migration, and whether anything is left for a phase after it.
 
 ## Out of scope
 
