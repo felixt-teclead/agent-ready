@@ -181,8 +181,17 @@ load   L lines on every task
 
 next   <one change, the files it touches; "steering diff, a human merges" if so>
 tools  <writing skills found; leave the line out if none>
+old    <old setup hits, by their summary>; run <the skill below>
+overridden  <framework>, by <its override file>
 comments  full pass not run: cleanup
 ```
+
+The `old` and `overridden` lines only report, from measure.md's
+[Old setup](../setup-codebase-for-agents/measure.md#4-old-setup); leave each
+out when it lists nothing. `old` names `model-codebase-domain` when every hit
+is a specs and plans folder, else `/adopt-pocock-methodology`, which also
+retires an overridden framework (`agent-ready:` prefix in the plugin
+channel).
 
 The `comments` line only reports (`agent-ready:cleanup` in the plugin
 channel). It shows on a green scan when no phase has ever run: no
