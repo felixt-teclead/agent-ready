@@ -39,6 +39,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - [Where cleanup keeps its state and which files it skips](issues/11-cleanup-state-and-open-branches.md) — write-once path list plus one done file per PR; fast steps skip files in open PRs; agent-ready #46 keeps points 4–8
 - [Who fixes pointers when a statement moves](issues/12-pointer-updates.md) — the moving PR rewrites pointers; the scan flags dead paths and anchors in its own class after "Setup regressed"
 - [What each block does when run alone](issues/13-standalone-paths.md) — "old setup found" is a report line, not a class; alone, route-docs sends terms to `CONTEXT.md` and keeps framework sections; with an active framework only finished plans fold, the rest get an issue; per-row commits; no `migrate-*` copies, the user types step 3
+- [The conversational entry point](issues/14-ask-agent-ready.md) — `/ask-agent-ready`: state goals or ask "what's next?"; reads state live, recommends one step, explains tradeoffs; full migration best for parallel, unattended work, partial starts fine to measure first; home of the tradeoffs and reasons
 
 ## Not yet specified
 
