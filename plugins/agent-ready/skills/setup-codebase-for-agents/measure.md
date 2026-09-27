@@ -6,17 +6,18 @@ Read [routing-table.md](routing-table.md) first. Edit nothing.
 
 - **Channel.** This skill's folder sits inside the repo (`.agents/skills/` or
   `.claude/skills/`) → no plugin. Anywhere else → plugin.
-- **Switches.** Plugin: the values the calling skill lists. No plugin: the
-  `env` block of `.claude/settings.json`, then `.claude/settings.local.json`.
-  Not there → unset.
+- **Switches.** Plugin: the values the calling skill lists. No plugin:
+  `CLAUDE_PLUGIN_OPTION_<KEY>` in the `env` of `.claude/settings.local.json`,
+  else of `.claude/settings.json`. Not there → unset.
 
 ## 2. Inventory
 
 List every file an agent loads or is pointed at. Skip gitignored paths.
 
-- **Always loaded:** `AGENTS.md`, `CLAUDE.md`, nested `AGENTS.md` or
-  `CLAUDE.md`, `.claude/rules/*.md` without a `paths:` list.
-- **Loaded on a trigger:** `.claude/rules/*.md` with a `paths:` list,
+- **Always loaded:** `AGENTS.md`, `CLAUDE.md`, `.claude/rules/*.md` without
+  a `paths:` list.
+- **Loaded on a trigger:** nested `AGENTS.md` or `CLAUDE.md` (when a file in
+  its folder is read), `.claude/rules/*.md` with a `paths:` list,
   `.agents/skills/`, `.claude/skills/`, `docs/agents/`, the review-rules doc.
 - **Pointed at:** every doc an always-loaded file cites. A cited folder
   pulls in its `README.md` or index file only.
@@ -43,13 +44,25 @@ and nothing shows Superpowers in use: no `.superpowers/`, and no enabled
 `superpowers@` plugin ([Old setup](#4-old-setup) says when a plugin is
 enabled). A `docs/superpowers/` folder holds past work, not use.
 
-The verify row is **n/a** while the manifest has no `check` script: the
-`## Verify` line points at it. The Commands row carries the gap: it is
-**missing** until `check` exists.
+The verify row is **n/a** while the stack's manifest or task runner has no
+`check` command: the `## Verify` line points at it. The Commands row carries
+the gap: it is **missing** until `check` exists.
+
+The Procedures row is **n/a** in the plugin channel while no skill lives in
+the repo; setup writes its home with the first one.
 
 The AFK hand-back row and the `### AFK runs` row are **n/a** while
 `docs/agents/environment.md` is absent. The AFK environment row carries the
-gap: it is **missing** until answer F is written.
+gap: it is **missing** until `docs/agents/environment.md` exists.
+
+A skill that production code loads at runtime (a source file reads the
+skill folder) is not an agent procedure: its row is **misplaced** while it
+sits in `.agents/` or `.claude/`. A repo's own consent rule ("change this
+file only with approval") belongs to the steering-approval row.
+
+A Specs row made `misplaced` by a specs and plans hit of
+[Old setup](#4-old-setup): its change is `model-codebase-domain`, as the
+scan's `old` line names; `cleanup` never moves it.
 
 Statuses skip `docs/archive/`, which holds history, and a path
 `.agents/deviations.md` keeps whole: its quoted text is the path itself.
@@ -87,8 +100,9 @@ Hits by kind:
 - **Hook:** a `hooks` entry in either repo settings file, and the script it
   runs. A hook that runs a repo tool (lint, format, test) or guards this
   repo's own rules is no hit.
-- **Specs and plans:** a folder named for specs, plans or designs, outside
-  `docs/adr/` and `docs/archive/`. Meeting notes, changelogs, incident
+- **Specs and plans:** a tracked folder named for specs, plans or designs,
+  outside `docs/adr/` and `docs/archive/`; a folder inside Scratch is no
+  hit. Meeting notes, changelogs, incident
   reports and research are no hit, dated or not.
 - **Framework section:** a section of `AGENTS.md` or `CLAUDE.md` that routes
   the agent through another hit ("use skill X first", "plans go to
@@ -100,6 +114,10 @@ override is every home of the Superpowers row in the
 is no framework section. List it apart, with each enabled `superpowers@`
 plugin. They are no hit. Its specs and plans folders stay hits.
 
+**Retired:** a framework none of whose plugins, skills or hooks Old setup
+lists or `.agents/deviations.md` keeps with class `old setup`. An overridden
+framework counts as retired for its committed specs and plans.
+
 **Scratch** is listed too, but is not a hit on its own: a top-level dot folder
 that holds agent run state or worktrees, tracked or gitignored, plus the
 `.gitignore` lines that name it. For each: tracked or not, and whether any
@@ -110,4 +128,7 @@ and matcher. **Summary**, for setup's framework question and the scan's
 `old` line: per kind, the count and up to three paths. A folder whose
 subfolders are hits counts once.
 
-Done when every settings file, skill folder and top-level folder is checked.
+Done when each kind is searched in full: the three settings files and their
+hooks, every skill folder and every `.claude/commands/` or `.claude/agents/`
+file, every tracked folder name at any depth, every section of `AGENTS.md`
+and `CLAUDE.md`, and every top-level dot folder.
