@@ -70,6 +70,10 @@ answers anchor is in `ambiguous.txt`.
 
 ### 4. Apply
 
+First, each `DOC` row with a `text` whose doc the caller marks as queued
+([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)): make it a
+`COMMENT` row with that text, and list it in the report with its anchor.
+
 ```bash
 node <skill>/strip-comments.mjs <work>/files.txt
 node <skill>/strip-comments.mjs --apply <work>/answers

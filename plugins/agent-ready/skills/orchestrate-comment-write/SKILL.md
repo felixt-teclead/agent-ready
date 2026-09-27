@@ -65,6 +65,11 @@ grep -rn '<symbol>' src tests scripts
 | pointer                        | a doc section states it, or the fact is a rule, contract, gotcha or trap  | write the sentence into the section if absent; place `See <doc> §"<anchor>"` at every anchor in the group |
 | `WRITE`                        | no doc states it and it is true of that one file alone                    | send the block back to its subagent as `WRITE`                                                      |
 
+A doc the caller marks as queued
+([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)) takes no new
+sentence: send the block back as `WRITE`, and list the sentence with its
+anchors in the report. Its existing sections take pointers as usual.
+
 Pointer rules and doc-entry form: [`WRITING.md`](../comment-write/WRITING.md) §"Pointers".
 
 Done when every `DOC?` block has an outcome.
