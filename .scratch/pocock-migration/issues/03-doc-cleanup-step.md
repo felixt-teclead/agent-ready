@@ -24,11 +24,11 @@ Grilled with the owner on 2026-09-27.
 
 **Levers**: per rebuilt doc, one verdict per `/writing-for-agents` lever the scan does not test: pointer wording, hierarchy and sprawl, completion criteria (skills only), leading words, negation. The agent proposes fixes, then asks fix-or-keep for the rest. Kept items go into the PR as known deviations.
 
-**Comment pass**: `orchestrate-comment-write`, with `comment-write` and `comment-cleanup` under it, run as a `cleanup` fast phase. One parent ticket, one sub-ticket per batch of files up to the cap, worked in order. Tracker: GitHub or local md tickets. Each sub-ticket becomes one commit on the migration branch. Local tickets live in `.scratch/` and are deleted before the PR, like the worklist.
+**Comment pass** (superseded: it now runs after the steering PR as a normal `cleanup` phase, see [How a running cleanup phase meets the migration](09-cleanup-phase-ordering.md)): `orchestrate-comment-write`, with `comment-write` and `comment-cleanup` under it, run as a `cleanup` fast phase. One parent ticket, one sub-ticket per batch of files up to the cap, worked in order. Tracker: GitHub or local md tickets. Each sub-ticket becomes one commit on the migration branch. Local tickets live in `.scratch/` and are deleted before the PR, like the worklist.
 
 **Cap**: `cleanup_comments_max_files` default goes from 20 to 10, and the `cleanup` §4 fallback changes with it. `plugin.json` is a steering path, so a human merges that change.
 
-**Done**: every statement has an approved home, the scan is green, every lever has a verdict, every fix-or-keep is answered, and the path list is empty.
+**Done**: every statement has an approved home, the scan is green, every lever has a verdict, every fix-or-keep is answered. (The empty path list moved out: see [How a running cleanup phase meets the migration](09-cleanup-phase-ordering.md).)
 
 **`/ask-matt`**: the skill itself answers "where am I, what's next, why this step" from the worklist: the chain, the current step, open rows, and the reason for the order. `/ask-matt` does not know the migration. At the end of each step and in the PR body, the skill says: "Unsure which Pocock skill fits your next task? Run `/ask-matt`." The user types it, so no `migrate-ask-matt` copy is needed.
 

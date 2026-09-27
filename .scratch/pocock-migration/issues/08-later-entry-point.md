@@ -25,7 +25,7 @@ Grilled with the owner on 2026-09-27.
 
 Then the running-phase check (see [How a running cleanup phase meets the migration](09-cleanup-phase-ordering.md)) and the push gate.
 
-Every run in 3 and 4 ends with step 3, `/improve-codebase-architecture`.
+Every run in 3 and 4 ends with an offer of step 3, `/improve-codebase-architecture` (optional since [Which parts of the migration run on their own](10-building-blocks.md)).
 
 **After the migration**, and in case 5: suggest `/improve-codebase-architecture`, or `/grill-with-docs` for new features.
 

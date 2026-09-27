@@ -24,8 +24,15 @@ Grilled with the owner on 2026-09-27.
 - Team pause (`paused:` in `refactor.md`): it shows the reason and asks "resume the phase and migrate?". No stops the migration.
 - Personal pause (`paused:` in `refactor.local`): the same question, only to that user. Yes deletes the line.
 
-**State on the migration branch**: the migration writes `.agents/refactor.md` (`mode: fast`, `parent:` = the comment pass's parent ticket) and the path list, or takes them over. `cleanup` §3 reads `parent:` from there, `refactor-phase.sh` shows the phase in every session on the branch, and `comment-review` sees fast mode. The last commit before the PR deletes both, like the `.scratch` worklist.
+**Reopened 2026-09-27** by a handoff on cleanup as a repeatable cycle. The first answer kept a private phase on the migration branch and deleted it before the PR. That copied `cleanup` instead of using it. Replaced by:
 
-**After the merge**: mode `none`. Nothing is left for `cleanup`. `comment-review` covers new files. A new phase starts only when a later scan reports a gap.
+**Three kinds of PR, merged in order:**
+1. **Steering PR**: preflight, step 1, step 2a (route statements). A human merges it.
+2. **Cleanup PRs**: the migration starts a normal phase (`cleanup` §1 PR: phase file, path list, parent issue), or takes over a running one. The comment pass then runs as normal `cleanup` §3 steps, one PR each. No exception to §3.
+3. **Architecture PR**: only on a yes at the end (see [Which parts of the migration run on their own](10-building-blocks.md)).
 
-Rejected: stop until the phase ends (the user waits, and the phase does work the migration redoes); pause, then resume (the migration empties the path list, so nothing is left to resume).
+**Wait or stack**: by default the phase starts after the steering PR merges, so the path list and the scan see the routed docs. In an interactive chat the skill asks "wait for the merge or stack on the steering branch?", default wait.
+
+**Done**: the steering PR is open and the phase is started. The path list need not be empty. Phase state outlives the migration PR, so no file is lost.
+
+Rejected: a private phase on the migration branch, deleted before the PR (a copy of `cleanup`); stop until the phase ends (the user waits, and the phase does work the migration redoes); pause, then resume (the migration empties the path list, so nothing is left to resume).
