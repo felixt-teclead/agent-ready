@@ -44,9 +44,11 @@ in the [routing table](../setup-codebase-for-agents/routing-table.md). When
   `next dev` keeps in `AGENTS.md`), count toward `load` but are not judged.
   The next step never edits them.
 - **Single source of truth.** Search the inventory for the line's key terms.
-  When an always-loaded line repeats a file loaded later, the always-loaded
-  copy fails and the other file keeps it. Two always-loaded copies: the one
-  outside the row's home fails.
+  When two files say the same thing, the copy in the row's home passes and
+  the other fails. Neither copy in the home: the always-loaded copy fails and
+  the other file keeps it. A pointer line may carry when to read its target
+  and a gist: one clause per target, naming what the target covers. Anything
+  beyond the gist repeats the target and fails.
 - **No-op.** A line fails when it restates a default, the tree, or what lint,
   typecheck or a test enforces. The tool wins, even when the line would save a
   red run.
