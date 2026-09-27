@@ -12,5 +12,6 @@
 /docs/CODING_STANDARDS.md   <owner>
 /.github/CODEOWNERS         <owner>
 /.agents/skills/            <owner>
+/.claude/skills             <owner>
 /.agents/hooks/             <owner>
 /.claude/settings.json      <owner>
