@@ -143,3 +143,4 @@ Done when each check passes or is on the gap list with its output.
 - Steering gate on: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
 - Next: `scan-codebase-for-agents` measures the result after the merge.
+- No-plugin channel: `update-codebase-for-agents` refreshes the copies later.

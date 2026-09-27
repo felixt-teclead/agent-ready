@@ -20,7 +20,8 @@ ships. Pocock's skills move only when a merge bumps the tag.
 
 ## Set up a repo without the plugin
 
-Stream the setup skill into the repo, then run `/setup-codebase-for-agents`.
+Stream the setup and update skills into the repo, then run
+`/setup-codebase-for-agents`.
 It copies the other skills, Pocock's skills at the pinned tag, and the hooks
 itself. Nothing else is written.
 
@@ -29,9 +30,15 @@ mkdir -p .agents/skills
 w=; tar --version | grep -q 'GNU tar' && w=--wildcards
 gh api repos/felixt-teclead/blueprint/tarball/main |
   tar xzf - -C .agents/skills --strip-components=4 $w \
-    '*/plugins/agent-ready/skills/setup-codebase-for-agents'
+    '*/plugins/agent-ready/skills/setup-codebase-for-agents' \
+    '*/plugins/agent-ready/skills/update-codebase-for-agents'
 mkdir -p .claude && ln -s ../.agents/skills .claude/skills
 ```
+
+The copies do not update themselves. Run `/update-codebase-for-agents` to
+take the current `main`. It asks before it overwrites a file edited in your
+repo, and opens a pull request that says what changes. A repo set up before
+that skill existed runs the stream command above once first.
 
 ## Name a steering owner (optional)
 
