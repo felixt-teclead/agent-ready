@@ -77,8 +77,11 @@ The logic PR's `comment-review` skips these files.
 ## 3. Fast: one child issue per step
 
 1. Re-run the scan. Take its next step, in its class order: setup regressed,
-   failing always-loaded lines, misplaced statements. Scan green → comment
-   pass over the next files left that are not held, up to the cap (§4).
+   dead pointers, failing always-loaded lines, misplaced statements and old files. An old
+   file gets the action its row in the
+   [routing table](../setup-codebase-for-agents/routing-table.md) names.
+   Scan green → comment pass over the next files left that are not held, up
+   to the cap (§4).
    **Held**: changed by an open PR. Read them before picking:
    `gh pr list --state open --limit 1000 --json number,changedFiles,files`.
    `files` stops at 100; a PR with more `changedFiles` →

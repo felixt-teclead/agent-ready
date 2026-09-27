@@ -40,7 +40,10 @@ For each file: its line count, and whether an always-loaded file cites it.
 - **not measured**: the comments row. Reading every comment is costly; a
   cleanup phase does it.
 
-Done when every row has a status.
+Each old file in the routing table that exists gets the status its row
+names.
+
+Done when every row and every old file found has a status.
 
 ## 4. Old setup
 

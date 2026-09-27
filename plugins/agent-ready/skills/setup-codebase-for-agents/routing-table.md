@@ -23,27 +23,40 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Procedures with a predictable trigger | `.agents/skills/`; `.claude/skills` is a symlink to it | fixed |
 | A skill that production code loads at runtime | a tooling folder in the source tree, not `.agents/` or `.claude/` | lazy |
 | Steps for one topic | `docs/<topic>.md` plus a pointer line in `AGENTS.md` | lazy |
-| Review rules, universal and scoped | `docs/CODING_CONVENTIONS.md` | fixed; content interviewed |
+| Review rules, universal and scoped | `docs/CODING_STANDARDS.md` | fixed; content interviewed |
 | Mechanical rules | lint, typecheck, tests | interviewed |
-| Architecture | no architecture doc is written. If one exists, one pointer line in `AGENTS.md`. Architecture rules are scoped sections in `docs/CODING_CONVENTIONS.md`. | lazy |
-| Domain definitions | `CONTEXT.md`, written by `/domain-modeling` | lazy |
+| Architecture | no architecture doc is written. If one exists, one pointer line in `AGENTS.md`. Architecture rules are scoped sections in `docs/CODING_STANDARDS.md`. | lazy |
+| Domain definitions | `CONTEXT.md`, written by `/domain-modeling`; multi-context: `CONTEXT-MAP.md`, which also says which `CONTEXT.md` to read | lazy |
 | Decisions and rejected alternatives | `docs/adr/` | lazy |
 | Specs | issues, closed once shipped; never kept in the repo | fixed |
-| Tracker, triage labels, domain-doc read rules | `docs/agents/issue-tracker.md`, `triage-labels.md`, `domain.md` | interviewed |
+| Tracker | `docs/agents/issue-tracker.md` | interviewed |
+| Triage labels | the `### Triage labels` line in `AGENTS.md`; renamed labels also `docs/agents/triage-labels.md` | interviewed |
 | What an AFK run needs: env vars, services, egress, token scopes | `docs/agents/environment.md` | interviewed |
 | What an AFK run hands back | `docs/agents/afk-handback.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |
 | Hooks and switch values, no-plugin channel only | `.agents/hooks/`; `.claude/settings.json` `hooks` and `env` | fixed |
 | Auto-memory | off: `"autoMemoryEnabled": false` in `.claude/settings.json` | fixed |
 
-## `docs/CODING_CONVENTIONS.md`
+## Old files
+
+Earlier setups wrote these. Measure gives each one it finds the status
+below, and `cleanup` takes the action.
+
+| Old file | Status | Action |
+|---|---|---|
+| `docs/CODING_CONVENTIONS.md` | misplaced: review rules | `git mv` it to `docs/CODING_STANDARDS.md`, or move its lines there when that file exists. Rename it in the steering list and in `.github/CODEOWNERS`. |
+| `docs/agents/domain.md` | no-op | Delete it. Write the `### Domain docs` line from [templates/AGENTS.md](templates/AGENTS.md). |
+| `docs/agents/triage-labels.md` with each string equal to its role | no-op | Delete it. Write the defaults line from [templates/AGENTS.md](templates/AGENTS.md). |
+| CLI commands in `docs/agents/issue-tracker.md` outside `## Wayfinding operations` | no-op | Cut them, as the tracker template in [templates/docs/agents/](templates/docs/agents/) does. |
+
+## `docs/CODING_STANDARDS.md`
 
 - One line per mistake an agent made here. A rule a tool can check goes to
   lint, typecheck or a test.
 - A rule for part of the code is a section that names its scope in prose.
   Not `.claude/rules/`: a glob can miss a file, prose cannot.
 - Only review reads it, so it may grow. `AGENTS.md` carries no pointer to it:
-  a code-review skill finds it by search.
+  Pocock's `code-review` finds it by this name.
 
 ## Switches
 

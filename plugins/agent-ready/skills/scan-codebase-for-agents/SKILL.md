@@ -37,7 +37,7 @@ Two rulings on top of measure.md:
 - A repo's own consent rule ("change this file only with approval") belongs
   to the steering-approval row. Judge it like any other line.
 
-Done when every row has a status.
+Done when every row and every old file found has a status.
 
 ## 2. Lines
 
@@ -57,7 +57,9 @@ file.
   typecheck or a test enforces. The tool wins, even when the line would save a
   red run.
 - **Pointers.** A line that points at a file passes when the file exists or
-  is gitignored, and the file is not always loaded. Otherwise it fails.
+  is gitignored, and the file is not always loaded. A missing domain file
+  (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`) passes: skills create it when
+  a term or decision first needs a home. Otherwise it fails.
 
 Judge each line; do not count keywords. A duplicate you did not find is a
 pass.
@@ -70,6 +72,7 @@ and, for single source of truth, the other file.
 Three numbers, none weighted:
 
 - `rows X of Y in their home`: Y leaves out `n/a` and `not measured` rows.
+  Each old file found adds one row to Y and none to X.
 - `lines A of J pass`: J is the judged lines from §2.
 - `load L lines on every task`: every non-blank always-loaded line, judged
   or not.
@@ -90,7 +93,7 @@ Take the first class with a finding:
    stand-in for the repo's own file. The fix points at the statement's new
    home or removes the pointer.
 3. **Failing always-loaded lines.**
-4. **Misplaced statements.**
+4. **Misplaced statements and old files.**
 
 Name one change that fits one pull request: the files it touches, and what it
 removes or moves. If it touches a steering file, say "steering diff, a human
@@ -133,5 +136,6 @@ old    <measure.md §4 hits>; run `/adopt-pocock-methodology`; leave the line ou
 The `old` line only reports. `next` comes from this skill's §4 alone.
 
 Then the row table (statement, status, up to three `file:line` examples),
-then the failing lines grouped by file, `file:line`, and the reason, then
-the dead pointers, `file:line`, and the missing file or anchor.
+then the old files found with their status and action, then the failing
+lines grouped by file, `file:line`, and the reason, then the dead pointers,
+`file:line`, and the missing file or anchor.

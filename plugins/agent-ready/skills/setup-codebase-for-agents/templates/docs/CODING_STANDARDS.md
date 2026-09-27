@@ -1,4 +1,4 @@
-# Coding conventions
+# Coding standards
 
 Read this at code review. It applies to a human reviewer and to a reviewer agent.
 
