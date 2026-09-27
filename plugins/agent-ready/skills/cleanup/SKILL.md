@@ -78,7 +78,14 @@ The logic PR's `comment-review` skips these files.
 
 1. Re-run the scan. Take its next step, in its class order: setup regressed,
    failing always-loaded lines, misplaced statements. Scan green → comment
-   pass over the next files left, up to the cap (§4).
+   pass over the next files left that are not held, up to the cap (§4).
+   **Held**: changed by an open PR. Read them before picking:
+   `gh pr list --state open --limit 1000 --json number,changedFiles,files`.
+   `files` stops at 100; a PR with more `changedFiles` →
+   `gh api repos/{owner}/{repo}/pulls/<n>/files --paginate`. Held files stay
+   files left for a later step. Only held files left → list them with their
+   PRs and ask the human: wait, or clean anyway. No `gh` (local tracker) →
+   warn the human once that open branches go unchecked, then pick as usual.
 2. Open the step as a sub-issue of `parent:`, label `cleanup`.
 3. One branch, one PR, `Closes #<step>`. A step on a steering path: say
    "steering diff, a human merges" in the body.

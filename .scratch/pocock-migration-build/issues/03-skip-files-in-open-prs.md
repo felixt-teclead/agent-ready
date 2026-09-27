@@ -4,9 +4,9 @@
 
 **Blocked by:** 02: Write-once path list plus done files
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Fast step reads open PR files before picking
-- [ ] Held files stay on the list
-- [ ] Only-held-files case lists PRs and asks
-- [ ] No `gh` → one warning, no check
+- [x] Fast step reads open PR files before picking
+- [x] Held files stay on the list
+- [x] Only-held-files case lists PRs and asks
+- [x] No `gh` → one warning, no check
