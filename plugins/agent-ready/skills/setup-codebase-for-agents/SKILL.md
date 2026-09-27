@@ -142,8 +142,9 @@ Done when each check passes or is on the gap list with its output.
 
 ## 5. Hand over
 
-- GitHub tracker with the default labels: run [labels.sh](labels.sh). It
-  creates the labels that are missing and keeps existing ones.
+- GitHub tracker with triage labels: run [labels.sh](labels.sh). It
+  creates the labels that are missing, with the strings from
+  `triage-labels.md` when that file exists, and keeps existing ones.
 - Open the pull request. Its body lists what each commit decides, then the
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
