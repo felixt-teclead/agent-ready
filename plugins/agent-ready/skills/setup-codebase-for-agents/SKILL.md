@@ -64,6 +64,12 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   set them at install; do not ask.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
+- **I. Framework.** Ask unless the Superpowers row is `home`: keep your
+  framework (Superpowers override), migrate to Pocock (when the migration
+  skill exists), or neither? Recommend keep when measure found a Superpowers
+  trace, else neither. Migrate puts the row on the gap list until
+  felixt-teclead/agent-ready#58 ships the skill. Neither leaves the row
+  `n/a`.
 
 Done when every missing row has an answer or a gap-list entry.
 
@@ -91,7 +97,9 @@ leave the file out and put its row on the gap list.
    owner's paragraph; `triage-labels.md` only for renamed labels. Add the
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
-   place.
+   place. Answer I is keep: also `superpowers.md` from the template, the
+   `### Superpowers` part of the block, and `.superpowers/` in `.gitignore`.
+   Any other answer: the block goes without the `### Superpowers` part.
 4. **Commands** from answer A into the manifest scripts, and the
    `## Verify` section into `AGENTS.md`. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
@@ -128,9 +136,10 @@ its answer.
 
 - `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves.
 - Every path in backticks in `AGENTS.md` and `docs/agents/*.md` exists,
-  except the steering list, the ones a template names as examples, and the
-  domain files (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`), which skills
-  create when a term or decision first needs a home.
+  except the steering list, the ones a template names as examples,
+  gitignored paths, and the domain files (`CONTEXT.md`, `CONTEXT-MAP.md`,
+  `docs/adr/`), which skills create when a term or decision first needs a
+  home.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
