@@ -5,11 +5,9 @@ description: "Called by agent-ready:cleanup during a refactor phase: write missi
 
 You hold the repo docs; the subagents hold one file each and never open a
 doc. They return every tag whose answer may sit in a doc, you judge those in
-one batch, write each doc sentence once, and place the pointers. That keeps
-the doc load to one context, gives one writer per doc file, and lets the
-same fact tagged in three files become one sentence and three pointers.
+one batch, write each doc sentence once, and place the pointers.
 
-Do not commit; git is the undo.
+Leave the changes uncommitted; git is the undo.
 
 ## 1. Set up
 
@@ -66,7 +64,7 @@ grep -rn '<symbol>' src tests scripts
 | pointer                        | a doc section states it, or the fact is a rule, contract, gotcha or trap  | write the sentence into the section if absent; place `See <doc> §"<anchor>"` at every anchor in the group |
 | `WRITE`                        | no doc states it and it is true of that one file alone                    | send the block back to its subagent as `WRITE`                                                      |
 
-Pointer rules and doc-entry form: [`WRITING.md`](WRITING.md) §"Pointers".
+Pointer rules and doc-entry form: [`WRITING.md`](../comment-write/WRITING.md) §"Pointers".
 
 Done when every `DOC?` block has an outcome.
 
@@ -83,9 +81,9 @@ Run once, over the whole set, after step 3 has placed its lines:
    git diff -U0 -- $(cat <work>/files.txt) | grep -E '^-[^-]|^\+[^+]' | grep -vE '^\+\s*(//|/\*|\*|\{/\*)'
    ```
 3. **JSX only.** A `//` in JSX child text renders as page text and passes
-   typecheck. If the
-   lint config lacks `react/jsx-no-comment-textnodes`, read every added `//`
-   in a `.tsx` file and confirm it sits in code, not between tags.
+   typecheck. If the lint config lacks `react/jsx-no-comment-textnodes`, read
+   every added `//` in a `.tsx` file and confirm it sits in code, not between
+   tags.
 
 Done when all three pass with nothing to fix.
 

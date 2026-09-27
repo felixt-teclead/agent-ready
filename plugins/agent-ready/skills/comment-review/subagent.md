@@ -15,9 +15,8 @@ stripped file and the repository.
 > diffs, the repository's own `<path>` and the rest of `<work>` stay closed.
 >
 > Read the file. You may open what it imports, who imports it, its tests,
-> and the repository's docs. For each export in
-> your ranges, grep its callers before you word its contract: a caller shows
-> which slot matters.
+> and the repository's docs. For each export in your ranges, grep its callers
+> before you word its contract: a caller shows which slot matters.
 >
 > Walk your ranges once. At every export, read the slot list against the
 > signature. At every block of eight lines or more, and at every value whose

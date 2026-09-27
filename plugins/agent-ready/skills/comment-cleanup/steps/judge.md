@@ -6,16 +6,10 @@ its concern.
 
 ## What a comment says
 
-- **An interface describes the underlying object**: units and currency, who
-  owns the returned value, ordering and lifecycle, error behaviour, the
-  boundary it stays inside. The exported surface carries the highest bar.
-- **Code first, doc for what spans modules.** A reason local to this code
-  stays a comment. A rule other files must obey, a cross-file contract, a trap
-  → the design doc; the code carries a bare pointer.
 - **Comments describe unintuitive behaviour.**
 - **Concise, simple technical terms.** Common words, active voice, one idea
-  per sentence. Verbs stay verbs ("when it retries", not "on retry"). No
-  hedges, no emphasis, no narrative.
+  per sentence, under twenty words. Verbs stay verbs ("when it retries", not
+  "on retry"). No hedges, no emphasis, no narrative.
 - **More than three lines is a doc section**, and the code gets the pointer.
   Long text at the code means the fact is a rule, a trap or design reasoning —
   none of them local.
@@ -53,9 +47,10 @@ needing a paragraph per parameter is `HARD-TO-DESCRIBE`; a comment right where
 the code is wrong is `BUG`. Both are report rows, never edits.
 
 **Interface completeness** is the second judgement, interfaces only. The flags
-cut; this adds. A caller must find at the signature: units and currency, who
-owns the returned value, ordering, what null means, failure behaviour, the
-boundary it stays inside. Each one the types do not carry and the comment does
+cut; this adds. The exported surface carries the highest bar. A caller must
+find at the signature: units and currency, who owns the returned value,
+ordering and lifecycle, what null means, failure behaviour, the boundary it
+stays inside. Each one the types do not carry and the comment does
 not state is a missing fact.
 
 ## The rewriter brief
@@ -69,8 +64,8 @@ One dispatch per file. **To the rewriter:** your dispatch gave `path`,
 > the line range `<work>/headings.txt` gives (`doc:start-end  heading`), as
 > `sed -n 'start,endp' <doc>`. A test is fetched as the `grep -n` hit plus its
 > surrounding lines. Independent calls go in one turn: a turn costs its whole
-> context, so three `grep`s together cost a third of three turns. The whole doc and the whole test file stay out of your
-> context: one fact needs one section.
+> context. The whole doc and the whole test file stay out of your context: one
+> fact needs one section.
 >
 > Every row in `<work>/anchors/<path>.md` is a comment in `<path>` with the
 > code it describes. `<work>/doc-refs.txt` lists doc lines that name this file:
@@ -129,11 +124,9 @@ One dispatch per file. **To the rewriter:** your dispatch gave `path`,
 >   already right, keep them. Otherwise reword by scope. **Body**: one reason,
 >   `X because Y: consequence`. **Interface**: a contract in plain statements,
 >   one per fact, no because; the script writes it as a `/** */` block.
->   **Private**: what the function accomplishes, briefly. Write concise, in
->   simple technical terms: common words, active voice, one idea per sentence,
->   under twenty words. Length is whatever the facts need and nothing more;
->   break lines with `<br>`, and each break lands as a line in the file. A fact
->   that needs more than three lines is `DOC`, not a longer comment. A doc
+>   **Private**: what the function accomplishes, briefly. Word it per "What a
+>   comment says" above. Length is whatever the facts need and nothing more;
+>   break lines with `<br>`, and each break lands as a line in the file. A doc
 >   pointer never goes in `text`: the route and `source` carry it, and the
 >   script writes it. A test is the exception: when the fact is a trap ("loosen
 >   X and Y breaks") and a test pins it, the test path stays in `text`, so the

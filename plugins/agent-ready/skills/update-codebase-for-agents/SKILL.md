@@ -1,6 +1,6 @@
 ---
 name: update-codebase-for-agents
-description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. User-invoked, in a repo set up without the plugin.
+description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. For a repo set up without the plugin.
 disable-model-invocation: true
 ---
 
@@ -9,8 +9,9 @@ disable-model-invocation: true
 **Goal: the copied skills and hooks match agent-ready's `main`, no local edit is
 lost without the owner saying so, and whoever merges knows what changes.**
 
-No `.agents/agent-ready-manifest.json` (or `agent-ready-manifest.json`, its old name): stop. With the plugin, auto-update
-under `/plugin` → Marketplaces does this job. Without the plugin, run
+No `.agents/agent-ready-manifest.json` (or `.agents/blueprint-manifest.json`,
+its old name): stop. With the plugin, auto-update under `/plugin` →
+Marketplaces does this job. Without the plugin, run
 `/setup-codebase-for-agents` first.
 
 ## 1. Fetch
@@ -92,7 +93,7 @@ file list:
   `https://github.com/mattpocock/skills/releases/tag/<new>`.
 
 `.agents/skills/`, `.agents/hooks/` and `.claude/settings.json` are steering
-files. Do not merge; tell the owner a human merges it.
+files: tell the owner a human merges it.
 
 Done when the pull request is open, its body names every behaviour change, and
 every kept edit was the owner's answer.

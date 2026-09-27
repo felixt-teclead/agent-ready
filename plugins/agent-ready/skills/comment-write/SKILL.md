@@ -14,8 +14,8 @@ improvements a codebase can take. How to word a comment:
 
 ## 1. Set up
 
-`<work>` is a scratch directory outside the repository (`mktemp -d`); every
-list this skill writes lives there and nothing in it is committed.
+`<work>` is a scratch directory outside the repository (`mktemp -d`); nothing
+in it is committed.
 
 File set = what the conversation names; inferred rather than read → print,
 stop for confirmation. One path per line in `<work>/files.txt`.
@@ -27,9 +27,7 @@ List their sections once, with line ranges, so you fetch one section at a time:
 grep -nE '^#{2,4} ' <doc> | tee -a <work>/headings.txt
 ```
 
-Files that already carry comments stay in the set. An existing comment is a
-fact the reader already has: it feeds `DROP` in step 3, and a new sentence at
-the same anchor joins its block rather than opening a second one.
+Files that already carry comments stay in the set.
 
 ## 2. Tag
 
@@ -169,8 +167,8 @@ Done when every tag carries an exit or a rung.
 ## 4. Write
 
 Edit each file, `WRITE` blocks only, per [`WRITING.md`](WRITING.md). A doc
-sentence goes into the doc in the same pass; the code gets only the pointer.
-An unplaced sentence is a dead pointer.
+sentence goes into the doc in the same pass: an unplaced sentence is a dead
+pointer.
 
 Then the gates, in this order:
 
@@ -183,9 +181,9 @@ Then the gates, in this order:
    git diff -U0 -- $(cat <work>/files.txt) | grep -E '^-[^-]|^\+[^+]' | grep -vE '^\+\s*(//|/\*|\*|\{/\*)'
    ```
 3. **JSX only.** A `//` in JSX child text renders as page text and passes
-   typecheck. If the
-   lint config lacks `react/jsx-no-comment-textnodes`, read every `//` you
-   placed in a `.tsx` file and confirm it sits in code, not between tags.
+   typecheck. If the lint config lacks `react/jsx-no-comment-textnodes`, read
+   every `//` you placed in a `.tsx` file and confirm it sits in code, not
+   between tags.
 4. Re-read each line you wrote against the code: a named symbol exists and is
    used as stated, a named key or flag exists, a stated number or direction
    holds. A claim you cannot check now is a claim you invented — delete it.

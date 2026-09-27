@@ -11,13 +11,14 @@
 //        table per file; changes nothing on disk)
 //        node strip-comments.mjs --apply <answers-dir>  (insert each answer row's
 //        text above its anchor; prints a worklist of what it would not place)
-//        node strip-comments.mjs --prepare <file-list> <work> [doc ...]  (steps 1-4
-//        setup in one call, refuses a non-empty <work>: pre/ and stripped/ copies, anchors/, exports/,
-//        headings.txt with section line ranges, doc-refs.txt, ambiguous.txt)
-//        node strip-comments.mjs --finish <file-list> <work>  (step 9: code identity
-//        diff HEAD vs working copy with comments removed, marker counts, and a check
-//        that no CUT anchor still carries a comment; exit 1 on
-//        any difference)
+//        node strip-comments.mjs --prepare <file-list> <work> [doc ...]  (step 1
+//        in one call, refuses a non-empty <work>: pre/ and stripped/ copies,
+//        anchors/, exports/, headings.txt with section line ranges,
+//        doc-refs.txt, ambiguous.txt)
+//        node strip-comments.mjs --finish <file-list> <work>  (step 7: code
+//        identity diff HEAD vs working copy with comments removed, marker
+//        counts, and a check that no CUT anchor still carries a comment; exit 1
+//        on any difference)
 // Needs `typescript` resolvable from cwd (the repo's node_modules).
 
 import fs from "node:fs";
@@ -434,7 +435,7 @@ function applyFile(file, rows, skipped, worklist, docStyle) {
 
 
 // --- prepare -----------------------------------------------------------------
-// One call replaces the shell scaffolding of steps 1-4. Every artefact a later
+// One call replaces the shell scaffolding of step 1. Every artefact a later
 // dispatch needs is a file under <work>, so no dispatch greps or copies on its
 // own, and the orchestrator's turn count stays flat per file.
 
@@ -534,7 +535,7 @@ if (process.argv[2] === "--prepare") {
     anchors += rows.length;
     put(path.join("anchors", f + ".md"), "| anchor | comment |\n| --- | --- |\n" + rows.map((r) => `| ${esc(r.anchor)} | ${esc(r.comment)} |`).join("\n") + "\n");
     // An anchor `--apply` will refuse: the same code text on two lines. Found
-    // now, so the rewriter widens it before step 5 instead of after a failed apply.
+    // now, so the rewriter widens it before `--apply` runs, not after it fails.
     const lines = text.split("\n").map((l) => l.trim());
     for (const r of rows) if (lines.filter((l) => l === r.anchor).length > 1) ambiguous.push(`${f}\t${r.anchor}`);
     if (!f.endsWith(".css")) {
@@ -565,7 +566,7 @@ if (process.argv[2] === "--prepare") {
 }
 
 // --- finish ------------------------------------------------------------------
-// Step 9 as one command. Both sides are stripped, then every remaining comment
+// Step 7 as one command. Both sides are stripped, then every remaining comment
 // line (a marker the strip keeps) is dropped, so the diff is code against code.
 // Markers are counted separately: a marker absent from both sides diffs clean.
 

@@ -1,6 +1,6 @@
 ---
 name: setup-codebase-for-agents
-description: Interview the owner and write the agent steering structure into a codebase, new or existing. User-invoked, once per repo.
+description: Interview the owner and write the agent steering structure into a codebase, new or existing.
 disable-model-invocation: true
 ---
 
@@ -33,8 +33,7 @@ in `${…}` form is unset:
 - `cleanup_comments`: `${user_config.cleanup_comments}`
 - `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
 
-Done when every row is `home`, `misplaced`, `missing`, `n/a` or
-`not measured`.
+Done when every row and every old file found has a status.
 
 ## 2. Interview
 
@@ -60,8 +59,7 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   services and network egress the `check` script needs.
 - **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
   `steering_gate` (no recommendation: the owner decides), `cleanup_comments`
-  (on), `cleanup_comments_max_files` (20). In the plugin channel each user
-  set them at install; do not ask.
+  (on), `cleanup_comments_max_files` (20).
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
 - **I. Framework.** Ask unless the Superpowers row is `home`: keep your
@@ -122,7 +120,6 @@ leave the file out and put its row on the gap list.
      `\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/` inside the JSON string. Merge
      it into existing `hooks`: append each entry to the group with the same
      event and matcher, or add that group.
-     With the plugin, write none: each hook would fire twice.
    - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per answer from G, as a string.
    - `.gitignore`: add `.agents/refactor.local`.
 10. **Steering gate,** when `steering_gate` is on and answer H exists:

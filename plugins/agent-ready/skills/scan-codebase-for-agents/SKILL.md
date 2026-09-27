@@ -1,16 +1,11 @@
 ---
 name: scan-codebase-for-agents
-description: Measure a codebase against the routing table, give three numbers and name the one next change. Use when the user asks how agent-ready a repo is, or what to clean up next in its steering files. Runs after /setup-codebase-for-agents.
+description: Measure how agent-ready a repo is and name the one next change to its steering files. Use when the user asks how agent-ready a repo is, or what to clean up next.
 ---
 
 # Scan a codebase for agents
 
-You measure; you do not edit. The report goes to chat.
-
-The routing table and the measuring steps belong to setup. Read them from its
-folder: [routing-table.md](../setup-codebase-for-agents/routing-table.md) and
-[measure.md](../setup-codebase-for-agents/measure.md). This skill adds the
-line tests, the numbers and the next step.
+Edit nothing. The report goes to chat.
 
 ## 0. Setup has run
 
@@ -19,8 +14,8 @@ line tests, the numbers and the next step.
 
 ## 1. Measure
 
-Run measure.md. It gives the channel, the switches, the inventory and one
-status per row.
+Run [measure.md](../setup-codebase-for-agents/measure.md). It gives the
+channel, the switches, the inventory and one status per row.
 
 Plugin channel switch values, filled in when the skill loads. A value still
 in `${…}` form is unset, and unset means on:
@@ -41,8 +36,8 @@ Done when every row and every old file found has a status.
 ## 2. Lines
 
 Judge every non-blank line of every always-loaded file against the two tests
-in the routing table. When `CLAUDE.md` is a symlink to `AGENTS.md`, it is one
-file.
+in the [routing table](../setup-codebase-for-agents/routing-table.md). When
+`CLAUDE.md` is a symlink to `AGENTS.md`, it is one file.
 
 - **Headings** pass when a line under them passes.
 - **Tool-owned blocks,** text a tool writes and rewrites (such as the block
@@ -60,8 +55,8 @@ file.
   (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`) passes: skills create it when
   a term or decision first needs a home. Otherwise it fails.
 
-Judge each line; do not count keywords. A duplicate you did not find is a
-pass.
+Judge each line by its meaning, not by keyword counts. A duplicate you did
+not find is a pass.
 
 Done when every judged line has a verdict, and each failure names its reason
 and, for single source of truth, the other file.

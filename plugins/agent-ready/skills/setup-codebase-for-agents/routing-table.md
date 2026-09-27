@@ -1,8 +1,6 @@
 # Routing table
 
-Which file owns which statement. `setup-codebase-for-agents` writes the rows,
-`scan-codebase-for-agents` measures them, `cleanup` moves statements into
-them.
+Which file owns which statement.
 
 Every line in a steering file passes two tests:
 
@@ -40,8 +38,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 
 ## Old files
 
-Earlier setups wrote these. Measure gives each one it finds the status
-below, and `cleanup` takes the action.
+Earlier setups wrote these.
 
 | Old file | Status | Action |
 |---|---|---|
@@ -52,10 +49,9 @@ below, and `cleanup` takes the action.
 
 ## `docs/CODING_STANDARDS.md`
 
-- One line per mistake an agent made here. A rule a tool can check goes to
-  lint, typecheck or a test.
-- A rule for part of the code is a section that names its scope in prose.
-  Not `.claude/rules/`: a glob can miss a file, prose cannot.
+- What goes in it: [its header](templates/docs/CODING_STANDARDS.md).
+- A scoped rule is a prose section, not `.claude/rules/`: a glob can miss a
+  file, prose cannot.
 - Only review reads it, so it may grow. `AGENTS.md` carries no pointer to it:
   Pocock's `code-review` finds it by this name.
 
