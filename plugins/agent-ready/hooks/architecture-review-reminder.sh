@@ -36,4 +36,4 @@ open=$(gh pr list --state open --label architecture-review \
 
 echo "$today" >"$git_dir/agent-ready-review-offered"
 jq -n --arg d "$days" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext:
-  ("Ask the user once: \"No architecture review in " + $d + " days. Run /improve-codebase-architecture in a fresh worktree? Not touching the PR.\" Yes: open a worktree off origin/<default> on branch architecture-review/<date> and run it there. No: carry on.")}}'
+  ("Ask the user once: \"No architecture review in " + $d + " days. Open a fresh worktree where you type /improve-codebase-architecture? Not touching the PR.\" Yes: open a worktree off origin/<default> on branch architecture-review/<date>, switch into it, and ask the user to type /improve-codebase-architecture. No: carry on.")}}'
