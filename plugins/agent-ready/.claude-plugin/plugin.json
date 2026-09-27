@@ -28,7 +28,7 @@
       "type": "number",
       "title": "Cleanup comments: files per PR",
       "description": "Most files one cleanup PR gives the comment pass. The rest stay on the path list.",
-      "default": 20,
+      "default": 10,
       "min": 1
     }
   }

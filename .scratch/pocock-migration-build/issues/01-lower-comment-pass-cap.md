@@ -4,8 +4,8 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `cleanup_comments_max_files` defaults to 10
-- [ ] `cleanup` §4 no-plugin fallback says cap 10
-- [ ] Setup interview G recommends 10
+- [x] `cleanup_comments_max_files` defaults to 10
+- [x] `cleanup` §4 no-plugin fallback says cap 10
+- [x] Setup interview G recommends 10
