@@ -30,8 +30,9 @@ Keep source files. Drop docs, config, lockfiles, generated and vendored files.
 
 If `.agents/refactor.md` sets mode `continuous` and neither it nor
 `.agents/refactor.local` says `paused:`, drop every file listed in
-`.agents/refactor-paths.txt`. Its stacked cleanup PR gives it the full comment
-pass. A file created on this branch is never on that list, so it stays.
+`.agents/refactor-paths.txt` and in no `.agents/refactor-done/*.txt`. Its
+stacked cleanup PR gives it the full comment pass. A file created on this
+branch is never on that list, so it stays.
 
 One path per line into `<work>/files.txt`. Empty list → go to step 7.
 

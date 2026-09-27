@@ -4,10 +4,10 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] No cleanup step edits the path list after §1
-- [ ] Each continuous and fast PR adds one done file named after its branch
-- [ ] The SessionStart hook reports files left from list minus done files
-- [ ] Phase end deletes list and done folder
-- [ ] `comment-review` skip rule still finds the phase files it relies on
+- [x] No cleanup step edits the path list after §1
+- [x] Each continuous and fast PR adds one done file named after its branch
+- [x] The SessionStart hook reports files left from list minus done files
+- [x] Phase end deletes list and done folder
+- [x] `comment-review` skip rule still finds the phase files it relies on

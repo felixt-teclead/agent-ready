@@ -24,10 +24,12 @@ paused: <reason>     (only while paused)
 No phase file means mode `none`: `comment-review` covers each PR alone.
 
 `.agents/refactor.local`: same format, gitignored, holds `paused:` for one
-person. `.agents/refactor-paths.txt`: every path still to clean, one per
-line.
+person. `.agents/refactor-paths.txt`: every path to clean, one per line,
+written once in §1. `.agents/refactor-done/<branch>.txt`: one per cleanup PR,
+the files it covered, one per line; `/` in the branch name becomes `-`.
+**Files left** = the path list minus every done file.
 
-Agents and humans edit all three without a human merge. `comment-review`
+Agents and humans write these files without a human merge. `comment-review`
 greps `mode:` and `paused:`, so keep both keys at the start of a line.
 
 ## 0. Before any run
@@ -44,8 +46,8 @@ Input: a scan report whose next step is a phase. Ask the human for the mode:
 
 Path list: `git ls-files` into `.agents/refactor-paths.txt`. Show the human
 the top-level folders with file counts; they strike vendored and generated
-paths. Write it once. Files created later are never added; `comment-review`
-covers them.
+paths. Write it once; no later step edits it. Files created later are never
+added; `comment-review` covers them.
 
 Fast mode: open the parent issue, title `Refactor: <goal>`, body the scan's
 three numbers and its class list. Its number goes in `parent:`.
@@ -58,26 +60,24 @@ Commit the phase file and path list in one PR labelled `cleanup`
 After the task's logic PR is open, in the same session:
 
 1. Branch from the logic branch.
-2. Files = the logic PR's changed files that sit on the path list.
-   Empty → done.
+2. Files = the logic PR's changed files that are files left. Empty → done.
 3. Comment pass (§4) over them.
-4. Remove the files that got the pass from the path list.
+4. Add the done file (Files) with the files that got the pass.
 5. Open the PR against the logic branch, label `cleanup`, body starts with
    `Follows #<logic PR>.`
 
-The logic PR's `comment-review` skips these files. Adjacent-line conflicts
-between two stacked cleanup PRs are expected; resolve them by hand.
+The logic PR's `comment-review` skips these files.
 
 ## 3. Fast: one child issue per step
 
 1. Re-run the scan. Take its next step, in its class order: setup regressed,
    failing always-loaded lines, misplaced statements. Scan green → comment
-   pass over the next files on the path list, up to the cap (§4).
+   pass over the next files left, up to the cap (§4).
 2. Open the step as a sub-issue of `parent:`, label `cleanup`.
 3. One branch, one PR, `Closes #<step>`. A step on a steering path: say
    "steering diff, a human merges" in the body.
-4. Remove the files the comment pass covered from the path list, in the same
-   PR.
+4. Add the done file (Files) with the files the comment pass covered, in
+   the same PR.
 
 Next step only after this PR merges.
 
@@ -89,8 +89,8 @@ plugin) → `CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS` and
 `CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS_MAX_FILES` from the environment;
 unset → on, cap 10.
 
-`false` → skip the pass; the files still leave the path list. Past the cap,
-the rest stay on the list and go into the PR body under "Not cleaned: over
+`false` → skip the pass; the files still go into the done file. Past the cap,
+the rest stay out of it and go into the PR body under "Not cleaned: over
 the cap".
 
 Per file, in this order:
@@ -119,7 +119,8 @@ delete the line.
 
 ## 6. End
 
-- **fast**: scan green and path list empty → delete the phase file and the
-  path list in one `cleanup` PR, close the parent issue.
+- **fast**: scan green and no files left → delete the phase file, the path
+  list and `.agents/refactor-done/` in one `cleanup` PR, close the parent
+  issue.
 - **continuous**: switch `mode:` to `fast` and set `parent:` (§1), then run §3
   over what is left.
