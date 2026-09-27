@@ -98,7 +98,7 @@ Input, one of:
 - `comment pass`, from the user or from a calling skill after a green scan:
   `goal: comment pass`.
 
-An open `cleanup` PR already adds `.agents/refactor.md` → name it and stop.
+A phase file exists, or an open `cleanup` PR adds one → name it and stop.
 
 The calling skill may give the mode. Otherwise ask the human:
 
