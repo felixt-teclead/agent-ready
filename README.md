@@ -22,19 +22,22 @@ methodology first.
    options and their tradeoffs. State a goal instead if you have one: "agents
    should take tickets unattended", "just fix our docs", "we use Superpowers".
 
-The usual path:
+## Pick how deep you go
 
-| Step | Command | What you get |
+Every tier starts with setup and leaves the repo better prepared for agents.
+Go as far as you want; the tiers combine.
+
+| Tier | You get | Commands |
 |---|---|---|
-| Set up | `/setup-codebase-for-agents` | `AGENTS.md`, hooks, tracker and labels, one pull request |
-| Check | `/scan-codebase-for-agents` | three numbers and the next change |
-| Migrate | `/adopt-pocock-methodology` | old setup retired, `CONTEXT.md` and ADRs, docs routed |
-| Improve over time | `cleanup` | comments and docs fixed one pull request at a time |
+| **A. Prepare** | Lean steering files: `AGENTS.md` (with `CLAUDE.md` pointing at it) holds only what an agent needs on every task, `docs/CODING_STANDARDS.md` holds the review rules, `CONTEXT.md` names the domain. New comments and docs get reviewed on every pull request from then on. | `/setup-codebase-for-agents`, then `model-codebase-domain`; the scan and `cleanup` trim the steering files one pull request at a time |
+| **B. Keep your framework** | Superpowers stays. agent-ready maps its steps onto the blueprint's flow: design by grilling, specs and tickets by Pocock's skills, plans and execution by Superpowers. Setup calls this answer **Stubborn**. | Setup's framework question: *Stubborn* |
+| **C. Migrate** | One methodology: the old setup retired, old specs and plans folded into `CONTEXT.md`, ADRs and issues, the docs agents read routed to one home each. Best for a team that wants agents to work in parallel and unattended. | Setup's framework question: *Migrate*, then `/adopt-pocock-methodology` |
+| **D. Clean what exists** | On top of A, B or C: existing code comments rewritten and checked, architecture and other docs routed and trimmed, dead pointers fixed. Runs in the background as small pull requests, merged by agents where no steering file changes. | `route-codebase-docs` for the docs, a `cleanup` phase for the comments |
 
-A full migration pays off most for a team that wants agents to work in
-parallel. Starting with one part is fine: `/ask-agent-ready` names the order
-and how to compare before and after. From the plugin, commands carry its
-prefix, e.g. `/agent-ready:ask-agent-ready`.
+Not sure which? `/ask-agent-ready` recommends one from the repo's state and
+your goal, and explains the tradeoffs. Tier B maps Superpowers only; with
+another framework, pick A or C. From the plugin, commands carry its prefix,
+e.g. `/agent-ready:ask-agent-ready`.
 
 ## Install the plugin
 
