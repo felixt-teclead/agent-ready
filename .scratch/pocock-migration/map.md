@@ -4,7 +4,7 @@ Migrate a repo's agent setup to Pocock's methodology.
 
 ## Destination
 
-A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets`. The skill moves a repo from its current agent setup (Superpowers or any other) to Pocock's methodology in three steps: `/domain-modeling` → doc cleanup → `/improve-codebase-architecture`. The spec also covers a PR hook that keeps the architecture review recurring.
+A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets`. The skill moves a repo from its current agent setup (Superpowers or any other) to Pocock's methodology in three steps: `/domain-modeling` → doc cleanup → `/improve-codebase-architecture`. The spec also covers a PR hook that keeps the architecture review recurring, and ends with an overview of every migration stage and every setting the user can choose.
 
 ## Notes
 
@@ -28,6 +28,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 
 - [What Superpowers leaves in a repo](issues/06-superpowers-footprint.md) — no repo steering: install touches at most `enabledPlugins` in `.claude/settings.json`, never `CLAUDE.md`/`AGENTS.md`; use leaves committed specs and plans in `docs/superpowers/` (project knowledge) plus `.superpowers/` and `.worktrees/` scratch
 - [What migrating the current setup covers](issues/01-migration-scope.md) — soft push gate + retire plugins/skills/hooks/scratch in a preflight; specs fold into `CONTEXT.md`/ADRs/issues, then delete (archive if declined); detection by generic inventory, listing hits
+- [What /domain-modeling produces during migration](issues/02-domain-modeling-step.md) — agent-invokable `migrate-*` skill copies on the migration branch; code is truth, old docs give language only; `CONTEXT.md` entries approved by topic; gitignored `CONTEXT.local.md` for personal wording; settings asked at start and end
 - [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md) — committed `.agents/architecture-review` date, written only in the review's own PR, read from `origin/<default>`; its existence is the opt-in; a skill-start hook tells the agent to stamp
 
 ## Not yet specified
