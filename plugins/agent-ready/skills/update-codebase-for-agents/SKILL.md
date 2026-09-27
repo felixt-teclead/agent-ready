@@ -10,10 +10,13 @@ disable-model-invocation: true
 lost without the owner saying so, and whoever merges knows what changes.**
 
 No `.agents/agent-ready-manifest.json` (or `.agents/blueprint-manifest.json`,
-its old name): stop. With the plugin, auto-update under `/plugin` →
-Marketplaces does this job. Without the plugin, run
-`/setup-codebase-for-agents` first. Exception: the owner wants this repo off
-the plugin → [Move this repo off the plugin](#4-move-this-repo-off-the-plugin).
+its old name):
+
+- With the plugin (this skill's folder is outside the repo): ask the owner
+  whether to move this repo off it. Yes →
+  [Move this repo off the plugin](#4-move-this-repo-off-the-plugin). No →
+  stop; auto-update under `/plugin` → Marketplaces keeps the plugin current.
+- Without the plugin: stop, and run `/setup-codebase-for-agents` first.
 
 Setup's steps named below are in
 [its SKILL.md](../setup-codebase-for-agents/SKILL.md).
@@ -27,7 +30,9 @@ the repo root:
 sh .agents/skills/setup-codebase-for-agents/fetch.sh
 ```
 
-- **Exit 0, "Up to date"**: tell the owner, delete the branch, stop.
+- **Exit 0, "Up to date"**: do only **Newer setup writes** in
+  [Settings](#2-settings). Nothing to write → tell the owner, delete the
+  branch, stop.
 - **Exit 3**: each listed file was edited here and changed or dropped in
   agent-ready. Show its diff and ask the owner: keep or replace. One file per
   question. Then run it again with the printed `AGENT_READY_REF=<sha>` in front
