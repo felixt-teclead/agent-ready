@@ -13,6 +13,25 @@
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/steering-merge-gate.sh"
           }
         ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/architecture-review-branch.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/architecture-review-branch.sh"
+          }
+        ]
       }
     ],
     "SessionStart": [
