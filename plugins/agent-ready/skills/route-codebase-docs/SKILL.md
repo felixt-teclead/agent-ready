@@ -1,6 +1,6 @@
 ---
 name: route-codebase-docs
-description: Route every statement in the docs agents read to its one home, rebuild those homes with /writing-for-agents, and fix the pointers. Use when steering docs repeat, contradict or sprawl.
+description: Route every statement in the docs agents read to its one home. Use when steering docs repeat, contradict or sprawl across many files.
 ---
 
 # Route a codebase's docs
@@ -9,8 +9,7 @@ description: Route every statement in the docs agents read to its one home, rebu
 move approved by the user; every rebuilt doc has a verdict per lever; the
 scan is green.** The homes come from setup's
 [routing table](../setup-codebase-for-agents/routing-table.md); the writing
-comes from `/writing-for-agents`, which you run directly. Comments are
-`cleanup`'s job, not this skill's.
+comes from `/writing-for-agents`. Comments go to `cleanup`'s comment pass.
 
 **In scope:** the docs agents read. Run
 [measure.md](../setup-codebase-for-agents/measure.md) and take the files its
@@ -61,8 +60,8 @@ a list item or a sentence that says one thing. Group them by topic, across
 docs, so duplicates and conflicts sit side by side: one `topic:` row per
 group, its statements under it.
 
-Tick `extract` and commit. Done when every non-blank line of every in-scope
-doc, headings aside, sits under a `topic:` row.
+Done when every non-blank line of every in-scope doc, headings aside, sits
+under a `topic:` row; then tick `extract` and commit.
 
 ## 3. Route, per topic
 
@@ -81,8 +80,7 @@ Two rules on top of the routing table:
 - **Framework sections** (measure.md's
   [Old setup](../setup-codebase-for-agents/measure.md#4-old-setup)) route to
   a home, like any statement. Under `owner: adopt-pocock-methodology`,
-  propose delete for a framework the preflight retired (its summary under
-  the preflight row).
+  propose delete for a framework measure.md's Old setup calls retired.
 
 Per topic, the user approves, edits or strikes each route. A struck
 statement stays where it is. Write each approved route after its statement,
@@ -100,9 +98,10 @@ are is no target. Per row:
   `/writing-for-agents` sets. A doc for humans keeps its text and loses only
   the moved lines. `CONTEXT.md` gets each approved term appended; every
   entry it holds stays.
-- **tool** routes: add the rule to the tool's config and drop the statement.
-  A rule the tool cannot express goes back to
-  [Route, per topic](#3-route-per-topic) as a home route.
+- **tool** routes: add the rule to the tool's config, run the manifest's
+  `check`, and drop the statement. A rule the tool cannot express, or one
+  the code breaks today, goes back to [Route, per topic](#3-route-per-topic)
+  as a home route.
 - **Pointers**: fix them in the same commit, as
   [Moving a statement](../cleanup/SKILL.md#moving-a-statement) in `cleanup`
   says.
@@ -112,15 +111,16 @@ are is no target. Per row:
   it and its `AGENTS.md` pointer; `keep` → it stays, with one pointer line
   in `AGENTS.md`.
 
-Tick the row and commit. Done when every approved route has landed and no
-file still points at a moved statement's old spot.
+A row is done when its approved routes have landed and no file still
+points at a moved statement's old spot; then tick it and commit.
 
 ## 5. Levers
 
 One `levers:` row per file [Rewrite homes](#4-rewrite-homes) rebuilt,
 `CONTEXT.md` aside. Run `/writing-for-agents` over it and
-give one verdict, pass or finding, per lever the scan does not test; an
-item `.agents/deviations.md` lists is no finding:
+give one verdict per lever the scan does not test, a finding with its
+`file:line` or a pass naming what you checked; an item
+`.agents/deviations.md` lists is no finding:
 
 - pointer wording
 - hierarchy and sprawl
@@ -128,14 +128,9 @@ item `.agents/deviations.md` lists is no finding:
 - leading words
 - negation
 
-Propose a fix for each finding. Apply the fixes the user accepts, then ask
-fix-or-keep for each remaining one. A kept finding goes into
-`.agents/deviations.md` as the scan's
-[Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)
-says, class `levers`. Tick the row and commit.
-
-Done when every lever of every rebuilt file has a verdict and every
-fix-or-keep is answered.
+[Fix-or-keep](../adopt-pocock-methodology/worklist.md#fix-or-keep) each finding, class
+`levers`. Done when every lever of the file has a verdict and every
+fix-or-keep is answered; then tick the row and commit.
 
 ## 6. Scan
 
@@ -149,16 +144,15 @@ of its One next step:
 - **Failing lines**, and **Misplaced statements and old files**: each
   finding becomes a new `topic:` row; run Route, Rewrite homes and Levers
   over it. An old file takes the action its routing table row names. A skill
-  production code loads is never rewritten: `git mv` it whole as its row
-  says, fix the path its loader reads, and run the manifest's `check`; or
-  the user keeps it.
+  production code loads: `git mv` it whole as its row says, fix the path
+  its loader reads, and run the manifest's `check`; or the user keeps it.
 
-Run the scan again after each fix. A finding the user keeps, or whose
-statement the user struck in Route, per topic, goes into
-`.agents/deviations.md`, as under [Levers](#5-levers), with its class; a
-struck one without asking again. Write
-the first and last run's three numbers under `scan`, tick it and commit.
-Done when the scan is green.
+Run the scan again once every finding of its last report is fixed or kept.
+A finding the user keeps, or whose statement the user struck in Route, per
+topic, goes into `.agents/deviations.md`, as under [Levers](#5-levers), with
+its class; a struck one without asking again. Done when the scan is green;
+then write the first and last run's three numbers under `scan`, tick it and
+commit.
 
 ## 7. End
 
@@ -168,5 +162,7 @@ Done when the scan is green.
   [End](../adopt-pocock-methodology/worklist.md#end). The pull request body
   lists, per topic, the count per route (home, tool, delete) and the files
   touched; the scan's numbers; the lines added to `.agents/deviations.md`.
+  Tell the user: "After the merge, unsure what's next? Run
+  `/ask-agent-ready`."
 
 Done when every worklist row is ticked.
