@@ -42,6 +42,10 @@ and the repo shows no Superpowers trace: no `docs/superpowers/`, no
 `.superpowers/`, no `superpowers@` key in the `enabledPlugins` of
 `.claude/settings.json`.
 
+The verify row is **n/a** while the manifest has no `check` script: the
+`## Verify` line points at it. The Commands row carries the gap: it is
+**missing** until `check` exists.
+
 Each old file in the routing table that exists makes the row it names
 `misplaced`; it is one of that row's examples. It adds no row of its own.
 
