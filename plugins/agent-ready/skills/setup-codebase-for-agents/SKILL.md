@@ -82,7 +82,7 @@ leave the file out and put its row on the gap list.
    Existing `.claude/skills/` content moves into `.agents/skills/` unchanged.
    Plugin channel with no skills in the repo: skip this step. No-plugin
    channel: run [fetch.sh](fetch.sh) from the repo root. It copies
-   agent-ready's skills and hooks, and Pocock's skills at the tag blueprint
+   agent-ready's skills and hooks, and Pocock's skills at the tag agent-ready
    pins. If it lists clashing files, show them to the owner, who renames or
    deletes them; then run it again.
 3. **`docs/agents/`** from answer E: `issue-tracker.md` from

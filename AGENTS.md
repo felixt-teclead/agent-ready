@@ -18,7 +18,7 @@ This rule guards itself: a diff that edits it is a steering diff.
 
 ### Issue tracker
 
-Issues live as GitHub issues in `felixt-teclead/blueprint`, driven with the `gh` CLI. See `docs/agents/issue-tracker.md`.
+Issues live as GitHub issues in `felixt-teclead/agent-ready`, driven with the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

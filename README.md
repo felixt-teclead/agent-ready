@@ -1,4 +1,4 @@
-# blueprint
+# agent-ready
 
 The record of the documentation and steering conventions for agent-driven repos,
 and the `agent-ready` Claude Code plugin that writes them into a codebase.
@@ -8,7 +8,7 @@ and the `agent-ready` Claude Code plugin that writes them into a codebase.
 You need git read access to this repo.
 
 ```sh
-claude plugin marketplace add felixt-teclead/blueprint
+claude plugin marketplace add felixt-teclead/agent-ready
 claude plugin install agent-ready@teclead
 ```
 
@@ -28,7 +28,7 @@ itself. Nothing else is written.
 ```sh
 mkdir -p .agents/skills
 w=; tar --version | grep -q 'GNU tar' && w=--wildcards
-gh api repos/felixt-teclead/blueprint/tarball/main |
+gh api repos/felixt-teclead/agent-ready/tarball/main |
   tar xzf - -C .agents/skills --strip-components=4 $w \
     '*/plugins/agent-ready/skills/setup-codebase-for-agents' \
     '*/plugins/agent-ready/skills/update-codebase-for-agents'
