@@ -105,7 +105,7 @@ minutes: say so first).
 
 | Stage | Signal | Next |
 |---|---|---|
-| Not set up | no `AGENTS.md` on `origin/<default>` | `/setup-codebase-for-agents`; its pull request open → a human merges it first |
+| Not set up | no `AGENTS.md` on `origin/<default>` | `/setup-basics` (setup, then the domain); its pull request open → a human merges it first. `Else` `/setup-codebase-for-agents` for setup alone |
 | Migration mid-run | a run's branch is not merged and has no open pull request | `/<branch>` (the owner's skill), typed in a fresh session; it resumes at the first open row or opens its pull request |
 | PR open | a run's branch has an open pull request and no worklist | a human reviews and merges it; then, after `adopt-pocock-methodology`, `/adopt-pocock-methodology` again, which offers the comment pass; after a block, the next block of the [Stance](TRADEOFFS.md#stance)'s order, or `/adopt-pocock-methodology` for the rest |
 | Copies behind | fetch.sh would change the no-plugin copies (setup's [Measure](../setup-codebase-for-agents/SKILL.md#1-measure) says how to tell) | `/update-codebase-for-agents` |
@@ -137,7 +137,7 @@ Else   <command> — <when it is the better pick>
   choice from [TRADEOFFS.md](TRADEOFFS.md), or another way to their goal.
   None when there is none.
 - Every step is a command. The user types the user-invoked skills:
-  `/setup-codebase-for-agents`, `/update-codebase-for-agents`,
+  `/setup-basics`, `/setup-codebase-for-agents`, `/update-codebase-for-agents`,
   `/adopt-pocock-methodology`, and Pocock's `/grill-with-docs`, `/to-spec`,
   `/to-tickets`, `/implement`, `/triage`, `/improve-codebase-architecture`,
   `/ask-matt` and `/teach`. You run the others on a yes; a migration run,
