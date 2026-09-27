@@ -71,7 +71,8 @@ One table, one row per skill hit and per hook hit:
 
 - **Replaced by:** the Pocock step (a `mattpocock-skills` skill) or the
   agent-ready skill it duplicates. Read the item before you fill it. An item
-  that does only what this repo needs is no hit: drop its row and say so.
+  that does only what this repo needs is no hit: move it below the table as
+  "repo-specific".
 - **Lost:** what the repo can no longer do once the item is gone. "Nothing"
   only when the replacement covers every branch of the item.
 - **Action:** delete.
@@ -80,6 +81,8 @@ A hook in `.claude/settings.local.json` gets a row too; its action is "user
 removes", like a personal plugin.
 
 ## 6. Scratch
+
+The worktree this run works in is never scratch.
 
 - **Delete:** worktrees that are clean, pushed and hold no ignored file in a
   scratch folder (`git status --porcelain --ignored` inside each: an
@@ -91,13 +94,14 @@ removes", like a personal plugin.
 
 ## 7. Confirm once
 
-Show [Plugins](#3-plugins), [Override](#4-override), the table and the
-scratch list together. The user strikes the rows to flip; repeat the edited
+Show [Plugins](#3-plugins), [Override](#4-override), the table with its
+repo-specific items, and the scratch list together. The user strikes the rows to flip; repeat the edited
 set until they confirm. That one confirmation is the only one. Every
 deletion waits for it.
 
-A struck plugin, override, skill or hook stays, and its line goes into
-`.agents/deviations.md` as the scan's
+A struck plugin, override, skill or hook stays, and so does a
+repo-specific item. Each gets a line in `.agents/deviations.md`, as the
+scan's
 [Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)
 says, class `old setup`: later runs skip it.
 
@@ -113,7 +117,8 @@ In the order confirmed:
 3. Skills and hooks marked delete: `git rm -r` the folder or script.
 4. Scratch marked delete: `git worktree remove` for worktrees, `rm -rf` for
    the rest; then the `.gitignore` lines.
-5. Struck rows: their `.agents/deviations.md` lines.
+5. Struck rows and repo-specific items: their `.agents/deviations.md`
+   lines.
 
 One commit, `chore: retire old agent setup`. Its message is the summary:
 
@@ -126,8 +131,7 @@ One commit, `chore: retire old agent setup`. Its message is the summary:
 - the specs, plans and framework sections [Inventory](#1-inventory) found,
   left in place
 
-**Alone:** open the PR, body = the summary. A diff that touches the
-steering list in `AGENTS.md` or `.agents/deviations.md`: say "steering diff,
-a human merges". Tell the user to start a fresh session: the running one
-still carries the retired setup. **As a block:** hand the summary to the
-caller.
+**Alone:** push and open the PR, body = the summary; who merges: the
+worklist's [End](../adopt-pocock-methodology/worklist.md#end). Tell the user
+to start a fresh session: the running one still carries the retired setup.
+**As a block:** hand the summary to the caller.

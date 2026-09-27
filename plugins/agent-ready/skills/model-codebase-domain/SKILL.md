@@ -34,7 +34,7 @@ With `CONTEXT-MAP.md`, `CONTEXT.md` means each context's file.
 ## 1. Worklist
 
 Run the [worklist's Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume):
-branch `model-codebase-domain`. Its Start asks `specs:`, default `delete`.
+branch `model-codebase-domain`. Its Start asks `specs:`.
 Your section:
 
 ```
@@ -62,13 +62,14 @@ Show the list; the user strikes rows. A struck folder is neither folded nor
 removed; its line goes into `.agents/deviations.md` as under
 [Folders](#4-folders) keep.
 
-**Framework.** Under `owner: adopt-pocock-methodology` the preflight has
-retired the old framework: `retired`. Alone: `active` when Old setup lists
-a plugin, skill or hook hit or a framework section, or
-`.agents/deviations.md` keeps a plugin, skill or hook; else `retired`. An
+**Framework.** `active` when the old framework still runs:
+`.agents/deviations.md` keeps one of its plugins, skills or hooks, or, when
+this skill runs alone, Old setup lists a plugin, skill or hook hit or a
+framework section. Under `owner: adopt-pocock-methodology` the preflight ran
+first, and leftover framework sections go in the same pull request. An
 overridden framework keeps its live plans in `.superpowers/`, so it does not
-count, and its committed folders fold whole. Write the verdict into the
-section; tell the user when it is `active`.
+count, and its committed folders fold whole. Else `retired`. Write the
+verdict into the section; tell the user when it is `active`.
 
 Commit the worklist.
 
@@ -106,8 +107,9 @@ Read `CONTEXT.md` and `docs/adr/` whole. Flag:
 - ADRs that fail `/domain-modeling`'s bar;
 - terms defined twice.
 
-Propose a fix for each. Apply the fixes the user accepts, then ask
-fix-or-keep for each remaining item. A kept item goes into
+An item `.agents/deviations.md` lists is no finding. Propose a fix for
+each. Apply the fixes the user accepts, then ask fix-or-keep for each
+remaining item. A kept item goes into
 `.agents/deviations.md` as the scan's
 [Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)
 says, class `fit check`. Tick the row and commit.
@@ -118,11 +120,11 @@ Show the settings again; `specs:` is the answer that only makes sense now.
 A folded folder still reaches every agent that searches the repo and pulls
 it toward old decisions: suggest removing it. Per folded spec or plan
 folder, the user answers delete, archive or keep, the setting as the
-default. With the framework active, the answer covers the finished files
-only.
+default. Each answer acts on the folder, or with the framework active on its
+finished files:
 
-- **delete**: `git rm -r <folder>`.
-- **archive**: `git mv <folder> docs/archive/<folder>/`, plus
+- **delete**: `git rm -r`.
+- **archive**: `git mv` to `docs/archive/<folder>/`, plus
   `docs/archive/<folder>/README.md`: "Historical. Superseded by
   `CONTEXT.md` and `docs/adr/`. Do not follow."
 - **keep**: its line goes into `.agents/deviations.md`, class `old setup`.
@@ -134,12 +136,16 @@ row and commit.
 
 ## 5. End
 
+Still no `CONTEXT.md` (every entry struck, or no domain terms): its line
+goes into `.agents/deviations.md`, class `domain`, so later runs do not
+build it again. Then:
+
 - **`owner: adopt-pocock-methodology`**: hand back; the caller keeps the
   worklist and opens the pull request.
 - **`owner: model-codebase-domain`**: the worklist's
-  [End](../adopt-pocock-methodology/worklist.md#end), then one pull request.
-  Its body lists the issues filed, for `/triage`, and the lines added to
-  `.agents/deviations.md`; with those lines, a human merges.
+  [End](../adopt-pocock-methodology/worklist.md#end). The pull request body
+  lists the issues filed, for `/triage`, and the lines added to
+  `.agents/deviations.md`.
 
 Done when every worklist row is ticked, every folded folder has its answer,
 and every unfinished plan left in place has its issue.

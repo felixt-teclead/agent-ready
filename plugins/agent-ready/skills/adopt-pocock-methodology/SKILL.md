@@ -24,7 +24,9 @@ An architecture-review offer from the PR reminder during the run waits for
 
 ## 1. Start checks
 
-In order; the first that matches decides.
+In order; the first that matches decides. `git fetch` first. Past check 2,
+the checks read `<default>`: from a clean tree, check it out and
+`git pull --ff-only`.
 
 1. **No setup**: `AGENTS.md` is missing on `origin/<default>` → stop, and
    point to `/setup-codebase-for-agents`.
@@ -49,27 +51,27 @@ In order; the first that matches decides.
    [Old setup](../setup-codebase-for-agents/measure.md#4-old-setup):
    - **preflight** (`retire-agent-setup`): a plugin, skill or hook hit, or an
      overridden framework `.agents/deviations.md` does not list;
-   - **`model-codebase-domain`**: no `CONTEXT.md` or `CONTEXT-MAP.md`, or a
-     specs and plans hit;
+   - **`model-codebase-domain`**: no `CONTEXT.md` or `CONTEXT-MAP.md` and no
+     `domain` line in `.agents/deviations.md`, or a specs and plans hit;
    - **`route-codebase-docs`**: the scan is not green, or a framework
-     section hit.
+     section hit;
+   - **review window**: no `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` in the
+     `env` of `.claude/settings.json`. It is no block:
+     [Branch and worklist](#2-branch-and-worklist) writes it.
 
    Any → [Branch and worklist](#2-branch-and-worklist).
 6. **In shape**: no block → say "nothing to migrate". The scan's report has
    the `comments` line → ask "Start the comment pass (a `cleanup` phase)?";
-   yes → step 2 of [Hand off to cleanup](#5-hand-off-to-cleanup). A phase is
-   running → name it. Then [Architecture review](#6-architecture-review).
+   yes → Start or take over in
+   [Hand off to cleanup](#5-hand-off-to-cleanup). A phase is running → name
+   it. Then [Architecture review](#6-architecture-review).
 
 ## 2. Branch and worklist
 
 The worklist's Start ([Start or resume](worklist.md#start-or-resume)), with
-the branch `adopt-pocock-methodology`. Ask once, defaults shown, only the
-settings of the blocks that run:
-
-- `specs:` `delete` or `archive`, default `delete`, when a specs and plans
-  hit exists
-- `architecture:` `delete` or `keep`, default `delete`, when
-  `route-codebase-docs` runs and an architecture doc exists
+the branch `adopt-pocock-methodology`. Of the worklist's settings, ask
+`specs:` when a specs and plans hit exists, and `architecture:` when
+`route-codebase-docs` runs and an architecture doc exists.
 
 Your section, one row per block the start checks chose, in their order:
 
@@ -82,10 +84,10 @@ scan before: <the scan's three numbers>
 ```
 
 **Review window.** No `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` in the `env` of
-`.claude/settings.json` → ask it as question J of setup's
-[Interview](../setup-codebase-for-agents/SKILL.md#2-interview) does, and
-write it as setup's `.claude/settings.json` step does. Above 0 on a GitHub
-remote: run [labels.sh](../setup-codebase-for-agents/labels.sh) with
+`.claude/settings.json` → ask it as the Architecture review question of
+setup's [Interview](../setup-codebase-for-agents/SKILL.md#2-interview) does,
+and write it as setup's `.claude/settings.json` step does. Above 0 on a
+GitHub remote: run [labels.sh](../setup-codebase-for-agents/labels.sh) with
 `--review-only`.
 
 Commit.
@@ -109,18 +111,19 @@ Done when every row is ticked.
 
 ## 4. Steering PR
 
-The worklist's [End](worklist.md#end), then the PR, `Adopt Pocock's
-methodology`. Its body, from the worklist:
+No diff against `origin/<default>` but the worklist (every block changed
+nothing) → delete the branch and go on at In shape in
+[Start checks](#1-start-checks).
+
+Otherwise the worklist's [End](worklist.md#end), with the PR title `Adopt
+Pocock's methodology`. Its body, from the worklist:
 
 - the preflight summary, with its teammate lines
-- the issues `model-codebase-domain` filed
-- per topic, the count per route and the files touched
-- the lines added to `.agents/deviations.md`
+- what the End of `model-codebase-domain` and of `route-codebase-docs`
+  would list, for each that ran
 - the scan's three numbers before, and after `route-codebase-docs` when it
   ran
-- the settings as applied
-- "Steering diff, a human merges." when the diff touches the steering list
-  in `AGENTS.md` or `.agents/deviations.md`
+- the settings as applied, and the review window when this run set it
 - "After the merge, run `/adopt-pocock-methodology` again; it starts the
   comment pass unless one runs."
 - the hand-over line
@@ -158,9 +161,6 @@ holds today's date → the user was asked today: skip the question.
   the user to type `/improve-codebase-architecture` there. With a review
   window set, its hook names the branch and label.
 - **No**: go on.
-
-No review window and no steering PR in this run: say that question J of
-setup sets one; re-running `/setup-codebase-for-agents` asks it.
 
 Then suggest `/grill-with-docs` for the next feature, and close with the
 hand-over line.

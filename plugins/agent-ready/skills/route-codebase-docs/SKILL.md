@@ -39,9 +39,7 @@ pull request, then run this again.
 
 Run the [worklist's Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume):
 branch `route-codebase-docs`. Its Start asks `architecture:` when an
-architecture doc exists, default `delete`: once its statements have homes,
-an architecture doc goes, or stays behind one pointer line in `AGENTS.md`.
-Your section:
+architecture doc exists. Your section:
 
 ```
 ## route-codebase-docs
@@ -82,8 +80,9 @@ Two rules on top of the routing table:
   form.
 - **Framework sections** (measure.md's
   [Old setup](../setup-codebase-for-agents/measure.md#4-old-setup)) route to
-  a home, like any statement. Under `owner: adopt-pocock-methodology` the
-  preflight has retired the framework, so propose delete there.
+  a home, like any statement. Under `owner: adopt-pocock-methodology`,
+  propose delete for a framework the preflight retired (its summary under
+  the preflight row).
 
 Per topic, the user approves, edits or strikes each route. A struck
 statement stays where it is. Write each approved route after its statement,
@@ -94,7 +93,8 @@ Done when every `topic:` row is ticked.
 ## 4. Rewrite homes
 
 One `home:` row per file an approved route touches: each target, and each
-source that loses a statement. Per row:
+source that loses a statement. A file whose statements all stay where they
+are is no target. Per row:
 
 - Rebuild the file from its statements, in the order and hierarchy
   `/writing-for-agents` sets. A doc for humans keeps its text and loses only
@@ -119,7 +119,8 @@ file still points at a moved statement's old spot.
 
 One `levers:` row per file [Rewrite homes](#4-rewrite-homes) rebuilt,
 `CONTEXT.md` aside. Run `/writing-for-agents` over it and
-give one verdict, pass or finding, per lever the scan does not test:
+give one verdict, pass or finding, per lever the scan does not test; an
+item `.agents/deviations.md` lists is no finding:
 
 - pointer wording
 - hierarchy and sprawl
@@ -141,15 +142,21 @@ fix-or-keep is answered.
 Run `scan-codebase-for-agents` on the branch and take its report. Per class
 of its One next step:
 
-- **Missing fixed rows**: stop, as under **Setup first**.
+- **Missing fixed rows**: a row this branch removed → undo that route, back
+  through [Route, per topic](#3-route-per-topic). Otherwise stop, as under
+  **Setup first**.
 - **Dead pointers**: point each at the statement's home, or remove it.
 - **Failing lines**, and **Misplaced statements and old files**: each
   finding becomes a new `topic:` row; run Route, Rewrite homes and Levers
-  over it. An old file
-  takes the action its routing table row names.
+  over it. An old file takes the action its routing table row names. A skill
+  production code loads is never rewritten: `git mv` it whole as its row
+  says, fix the path its loader reads, and run the manifest's `check`; or
+  the user keeps it.
 
-Run the scan again after each fix. A finding the user keeps goes into
-`.agents/deviations.md`, as under [Levers](#5-levers), with its class. Write
+Run the scan again after each fix. A finding the user keeps, or whose
+statement the user struck in Route, per topic, goes into
+`.agents/deviations.md`, as under [Levers](#5-levers), with its class; a
+struck one without asking again. Write
 the first and last run's three numbers under `scan`, tick it and commit.
 Done when the scan is green.
 
@@ -158,11 +165,8 @@ Done when the scan is green.
 - **`owner: adopt-pocock-methodology`**: hand back; the caller keeps the
   worklist and opens the pull request.
 - **`owner: route-codebase-docs`**: the worklist's
-  [End](../adopt-pocock-methodology/worklist.md#end), then one pull request.
-  Its body lists, per topic, the count per route (home, tool, delete) and
-  the files touched; the scan's numbers; the lines added to
-  `.agents/deviations.md`. A diff that touches the steering list in
-  `AGENTS.md` or `.agents/deviations.md`: say "steering diff, a human
-  merges".
+  [End](../adopt-pocock-methodology/worklist.md#end). The pull request body
+  lists, per topic, the count per route (home, tool, delete) and the files
+  touched; the scan's numbers; the lines added to `.agents/deviations.md`.
 
 Done when every worklist row is ticked.
