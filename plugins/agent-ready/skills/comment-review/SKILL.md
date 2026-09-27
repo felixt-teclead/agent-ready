@@ -30,8 +30,9 @@ Keep source files. Drop docs, config, lockfiles, generated and vendored files.
 
 If `.agents/refactor.md` sets mode `continuous` and not `comments: false`,
 and neither it nor `.agents/refactor.local` says `paused:`, drop every file
-left that is not held ([`cleanup`, Files](../cleanup/SKILL.md#files)). Its
-stacked cleanup PR gives it the full comment pass. A held file keeps this
+left that is not held
+([`cleanup`'s phase files](../cleanup/phase-files.md)). Its stacked cleanup
+PR gives it the full comment pass. A held file keeps this
 review; its pass waits for a later PR. A file created on this branch is never
 on the path list, so it stays.
 
@@ -79,7 +80,7 @@ Per file, set `original/` against `proposed/`, anchor by anchor.
 - **A fact this session knows that neither side carries** → write it if it
   passes `RULES.md`: a gateway quirk, a requirement, a caller outside the
   repository.
-- **`RENAME`** → apply it if it passes the no-op test: the name and every
+- **`NAME`** → apply it if it passes the no-op test: the name and every
   reference to it, nothing else.
 
 Every other finding goes to the report.
@@ -99,10 +100,13 @@ Read the comments within a few lines of each call site outside the diff. A
 comment the new behaviour makes wrong is fixed in place. Anything wider is a
 refactor: report it.
 
+Done when every call site of every listed export has had its nearby comments
+read.
+
 ## 6. Gates
 
 1. `git diff` against `HEAD` changes comment lines, plus lines that differ
-   only by an applied `RENAME`. Any other code line is your mistake: revert
+   only by an applied `NAME`. Any other code line is your mistake: revert
    it.
 2. Typecheck and lint, by the names the project manifest gives them.
 3. Re-read each written line against the code. A named symbol exists and is
@@ -117,13 +121,15 @@ Changes → commit them as `docs: review comments`.
 git rev-parse HEAD > "$(git rev-parse --git-dir)/comment-review-ok"
 ```
 
-Only after steps 1 to 6. Any later commit clears the stamp, so review again
-after it.
+Only after steps 1 to 6, or a `cleanup`
+[comment pass](../cleanup/comment-pass.md) that stands in for them. Any
+later commit clears the stamp, so review again after it.
 
 ## Report
 
 A `## Comment review` section for the pull request body: files reviewed,
-the files dropped for the cleanup PR under "Left to the cleanup PR",
+the files dropped for the cleanup PR under "Left to the cleanup PR" (`none`
+when empty),
 comments written, restored comments with `file:line` and their words, then
 the findings as a to-do list. An open pull request → read its body, replace
 or append that section only, and write it back with `gh pr edit --body-file`.

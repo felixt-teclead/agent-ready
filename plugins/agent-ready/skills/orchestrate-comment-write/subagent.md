@@ -7,7 +7,7 @@ a better name, a type, a comment. An **intuition** fact — what a block
 accomplishes, so a reader can skip it — has no home but a comment, and a
 summary above a large block is one of the most common improvements a codebase
 can take. How to word a comment:
-[`WRITING.md`](../comment-write/WRITING.md). Calibration:
+[`WRITING.md`](WRITING.md). Calibration:
 [`EXAMPLES.md`](EXAMPLES.md).
 
 Input: one `path`, one scratch directory `work`. Sources: the file, its tests,
@@ -55,19 +55,9 @@ uncommon; from eight lines a summary saves the reading. Ask:
 The first is the summary, admitted by size. The rest are gated.
 
 **Interface** — every export, signature alone. Checklist, not gated: each slot
-the types do not carry is a tag, **whether or not it would surprise anyone**.
-`grep -nE '^export' <path>` lists the anchors. A slot the signature itself
-answers is not a tag: `source: X | null | undefined` already says what null
-means, and a sentence saying it back restates the parameter list.
-
-- purpose, when the name does not carry it
-- unit and currency
-- ownership of the return
-- ordering
-- what null means
-- failure behaviour
-- side effects and argument mutation
-- preconditions
+of [`interface-slots.md`](../comment-review/interface-slots.md) the types do
+not carry is a tag, **whether or not it would surprise anyone**.
+`grep -nE '^export' <path>` lists the anchors.
 
 Append to `<work>/tags/<path>.txt`, one block per tag:
 
@@ -97,7 +87,9 @@ fact the file cannot state: two definitions that must change together. Skip the 
 instead of the contract. Return a fact that spans files this way as a `DOC?`
 block, with the sibling named.
 
-Two exits first, then the ladder. **First rung that fits wins.**
+Two exits first, then the ladder. **First rung that fits wins.** Value tags
+mostly end in `NAME`, `TYPE` or `DROP`; a comment for nearly every one means
+the ladder was skipped.
 
 | exit     | when                                                                                        | reaches the file                 |
 | -------- | ------------------------------------------------------------------------------------------- | -------------------------------- |
@@ -109,7 +101,7 @@ Two exits first, then the ladder. **First rung that fits wins.**
 | `DROP`  | the anchor or its existing comment already says it, a zero-hop callee signature or type says it, or a **framework** default says it and the code follows it | no                                |
 | `NAME`  | a rename or an extracted function says it                                                                                                                   | step 4 if file-local, else report |
 | `TYPE`  | a type carries it **and the change stays inside the file**: brand the unit, narrow the union, make the null impossible                                      | step 4                            |
-| `DOC?`  | the answer may sit in a repo doc: a rule other files obey, a contract spanning files, a repo-wide gotcha, a trap                                            | no — returned, see below          |
+| `DOC?`  | the answer may sit in a repo doc: a **shared fact** (a rule other files obey, a contract spanning files, a repo-wide gotcha or trap)                         | no — returned, see below          |
 | `WRITE` | none of the above, or the type change would ripple beyond the file                                                                                          | yes — a line at the anchor        |
 
 **Framework default** means you can cite the framework's documented behaviour
@@ -154,7 +146,7 @@ Done when every tag carries an exit or a rung.
 ## 3. Write
 
 Edit the file, `WRITE` blocks only, per
-[`WRITING.md`](../comment-write/WRITING.md). Then re-read each line you wrote
+[`WRITING.md`](WRITING.md). Then re-read each line you wrote
 against the code: a named symbol exists and is used as stated, a named key or
 flag exists, a stated number or direction holds. A claim you cannot check now is a claim you invented — delete it.
 

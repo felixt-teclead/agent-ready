@@ -49,7 +49,7 @@ The original copy and the exports table.
 > exported declarations, each once `bare` and once `commented` where a comment
 > stands above it. Per declaration, per pass, one row to
 > `<work>/iface/<path>.md`:
-> `| symbol | pass: bare / commented | a correct call | what the caller must guarantee | what it returns, with units and ownership | what it does on failure | the boundary it stays inside |`
+> `| symbol | pass: bare / commented | a correct call | what the caller must guarantee | what it returns, with units and ownership | ordering | what null or empty means | what it does on failure | side effects and argument mutation | the boundary it stays inside |`
 >
 > Answer these from the declaration and its comment alone, as a caller who
 > will never open the body. No answer there → `unstated`. Return only the two

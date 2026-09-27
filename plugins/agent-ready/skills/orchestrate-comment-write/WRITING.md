@@ -38,15 +38,3 @@ Common words, active voice, one idea per sentence, under twenty words. Use the
 term the codebase already uses. State the target, not the prohibition:
 "Amounts are `Cents`", not "don't pass euros". Write what holds now; git holds
 how it got here.
-
-## Pointers
-
-`See <doc> §"<anchor>"` alone on its line, after the comment marker. The
-anchor is a heading or a bold lead-in, quoted verbatim, and names the
-paragraph that states the fact, never the chapter. A section over about sixty
-lines is not a target: write a bold lead-in into the doc and point at that.
-
-The sentence goes in the doc, the code gets the pointer alone. For a trap,
-write the full entry: the wrong shape, the right shape, the consequence, one
-example, and keep the pinning test's path in the comment so the reader meets
-the test before the change.
