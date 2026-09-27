@@ -1,6 +1,6 @@
 # Environment for AFK runs
 
-What the `check` script and an AFK run need that the repo cannot tell you. Runtime and package manager are not here: the lockfile says them.
+What the `check` command and an AFK run need that the repo cannot tell you. Runtime and package manager are not here: the lockfile says them.
 
 ## Env vars
 
@@ -16,4 +16,4 @@ What the `check` script and an AFK run need that the repo cannot tell you. Runti
 
 ## Token scopes
 
-An AFK run that opens a pull request needs: Issues read and write, Contents read and write, Pull requests read and write, Metadata read.
+<GitHub tracker: "An AFK run that opens a pull request needs: Issues read and write, Contents read and write, Pull requests read and write, Metadata read." | other: the token scopes the run's tracker and pull requests need>

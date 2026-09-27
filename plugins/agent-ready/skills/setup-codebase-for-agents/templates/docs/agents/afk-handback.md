@@ -1,10 +1,10 @@
 # AFK handback
 
-An AFK run ends in a pull request. No agent closes an issue; the merge closes it through `Closes #<n>`.
+An AFK run ends in a pull request; its merge closes the issue (`Closes #<n>`, or as `docs/agents/issue-tracker.md` says). A run that a reason below stops ends in a comment on the issue.
 
 ## Stop condition
 
-Run the manifest's `check` script. Hand back only when it passes, or when a reason below stops you.
+Verify as `AGENTS.md` says. Hand back only when it passes, or when a reason below stops you.
 
 Stop and ask, with no code written, only when:
 
@@ -12,7 +12,7 @@ Stop and ask, with no code written, only when:
 2. the issue supports two readings that produce different work;
 3. you lack information you cannot get.
 
-Then the handback states the fork in the road.
+That comment states the fork in the road.
 
 ## The pull request description
 
