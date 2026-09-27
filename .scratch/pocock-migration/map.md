@@ -42,6 +42,8 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 
 ## Not yet specified
 
+- **Follow-up from the superpower-stubborn-approach map:** its ticket 07 renames scan class "Setup regressed" to "missing fixed rows" and adds a one-step `cleanup` run without a phase file. When it merges, rename our references ("Dead pointers" sits after it; `cleanup` §3 class order) and check the one-step run against [Where cleanup keeps its state and which files it skips](issues/11-cleanup-state-and-open-branches.md). Setup's framework question from #70 ("keep / migrate / neither") replaces our separate migration question; the "migrate" answer starts `/adopt-pocock-methodology`.
+
 ## Out of scope
 
-- Running `/writing-for-agents` over the `agent-ready` plugin's own skills — plugin work in `blueprint`, not a migration step; the migration never edits fetched plugin skills (see [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md))
+- Running `/writing-for-agents` over the `agent-ready` plugin's own skills (done anyway in agent-ready #69) — plugin work in `blueprint`, not a migration step; the migration never edits fetched plugin skills (see [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md))
