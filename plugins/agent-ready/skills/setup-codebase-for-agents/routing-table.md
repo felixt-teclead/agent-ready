@@ -36,6 +36,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | When to read the AFK files | the `### AFK runs` line in `AGENTS.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |
 | Hooks and switch values, no-plugin channel only | `.agents/hooks/`; `.claude/settings.json` `hooks` and `env` | fixed |
+| The plugins the copies replace are off, no-plugin channel only | `.claude/settings.json` `enabledPlugins` | fixed |
 | How often the team runs an architecture review | `.claude/settings.json` `env` `AGENT_READY_ARCHITECTURE_REVIEW_DAYS`: days as a string, `"0"` for never | interviewed |
 | Auto-memory | off: `"autoMemoryEnabled": false` in `.claude/settings.json` | fixed |
 

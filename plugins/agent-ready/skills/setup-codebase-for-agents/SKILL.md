@@ -128,6 +128,10 @@ leave the file out and put its row on the gap list.
      with the same event and matcher, or add that group. A group without a
      matcher (`SessionStart`, `UserPromptSubmit`) matches one without.
    - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per answer from G, as a string.
+   - `enabledPlugins`: `"agent-ready@teclead": false` and
+     `"mattpocock-skills@teclead": false`. The copies in `.agents/` replace
+     both plugins; a user-scope install left on loads every skill and hook
+     twice.
    - `.gitignore`: add `.agents/refactor.local`.
 10. **Steering gate,** when `steering_gate` is on and answer H exists:
     [`CODEOWNERS`](templates/.github/CODEOWNERS) with the owner,
