@@ -127,7 +127,10 @@ load   L lines on every task
 
 next   <one change, the files it touches; "steering diff, a human merges" if so>
 tools  <writing skills found; leave the line out if none>
+old    <measure.md §4 hits>; run `/adopt-pocock-methodology`; leave the line out if none
 ```
+
+The `old` line only reports. `next` comes from this skill's §4 alone.
 
 Then the row table (statement, status, up to three `file:line` examples),
 then the failing lines grouped by file, `file:line`, and the reason, then

@@ -4,8 +4,8 @@
 
 **Blocked by:** 10: Preflight skill: retire an old agent setup, 13: Migration orchestrator and steering PR
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Question only when inventory hits
-- [ ] Hand-over line on no
-- [ ] Scan class placed as decided
+- [x] Question only when inventory hits
+- [x] Hand-over line on no
+- [x] Scan class placed as decided

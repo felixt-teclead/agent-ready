@@ -67,6 +67,8 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   it lives in `env`, not `userConfig`. No → leave it unset.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
+- **I. Migration,** when measure.md §4 lists hits: "Migrate your current
+  setup to Pocock's methodology?", listing the hits.
 
 Done when every missing row has an answer or a gap-list entry.
 
@@ -160,3 +162,6 @@ Done when each check passes or is on the gap list with its output.
 - Scan: ask the owner to say when the pull request is merged. Then update
   the default branch and run `scan-codebase-for-agents` on it.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
+- Answer I yes: after the merge, ask the owner to type
+  `/adopt-pocock-methodology`. No: the pull request body and the hand-over
+  say once "Migrate later: run `/adopt-pocock-methodology`."
