@@ -27,4 +27,6 @@ Decided with the owner on 2026-09-27.
 13. **#73's escalation accepted**: a one-step `cleanup` may start a phase when a step is too big. Supersedes "only the scan decides" in [Which parts of the migration run on their own](10-building-blocks.md).
 14. **Scan report line** `comments  full pass not run: cleanup` on a green repo that never ran a phase. Report only.
 
+15. **Steering rules in fast mode are batched** (decided after PR B's verification): comment-pass PRs never touch steering files; discovered `CODING_STANDARDS.md` rules queue as a checklist in the phase's parent issue and land in one human-merged steering PR every 10 fast steps and at the phase end. Class steps that must edit steering files stay one human-merged PR each.
+
 Plus fixes with no decision: references by heading name, never § or class numbers; deleted paths leave "files left"; `Part of #<parent>` instead of sub-issues (GitHub caps at 100); a sharper dead-pointer rule; `CONTEXT.md` protected when homes are rebuilt; quoted `hooks.json` paths.
