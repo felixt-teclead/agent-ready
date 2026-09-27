@@ -38,8 +38,8 @@ pull request, then run this again.
 ## 1. Worklist
 
 Run the [worklist's Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume):
-branch `route-codebase-docs`. When an architecture doc exists, ask the
-setting `architecture:`, default `delete`: once its statements have homes,
+branch `route-codebase-docs`. Its Start asks `architecture:` when an
+architecture doc exists, default `delete`: once its statements have homes,
 an architecture doc goes, or stays behind one pointer line in `AGENTS.md`.
 Your section:
 

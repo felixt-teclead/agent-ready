@@ -34,8 +34,8 @@ With `CONTEXT-MAP.md`, `CONTEXT.md` means each context's file.
 ## 1. Worklist
 
 Run the [worklist's Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume):
-branch `model-codebase-domain`, setting `specs:`, default `delete`. Your
-section:
+branch `model-codebase-domain`. Its Start asks `specs:`, default `delete`.
+Your section:
 
 ```
 ## model-codebase-domain
