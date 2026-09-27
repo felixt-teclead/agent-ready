@@ -5,61 +5,46 @@ and the `agent-ready` Claude Code plugin that writes them into a codebase.
 
 ## Start here
 
-agent-ready moves a repo to one shared way of working with agents, built on
+agent-ready moves a repo onto
 [Matt Pocock's skills](https://github.com/mattpocock/skills): one domain
-glossary (`CONTEXT.md`), decisions as ADRs, docs agents can trust, and work as
-tickets agents can take on their own. You don't need to know Pocock's
-methodology first.
+glossary (`CONTEXT.md`), decisions as ADRs, docs agents can trust, and tickets
+agents take on their own. You need no prior knowledge of Pocock's methodology.
 
-1. Install the plugin (below).
-2. In your repo, ask:
+1. [Install the plugin](#install-the-plugin).
+2. In your repo, type `/what-to-do what's next for this repo?`. It reads the
+   repo, recommends one next step and explains the tradeoffs. You can state a
+   goal instead: "agents should take tickets unattended", "just fix our docs",
+   "we use Superpowers".
 
-   ```
-   /what-to-do what's next for this repo?
-   ```
+## Tiers
 
-   It reads the repo's state, recommends one next step, and explains the
-   options and their tradeoffs. State a goal instead if you have one: "agents
-   should take tickets unattended", "just fix our docs", "we use Superpowers".
+Go as far as you want. Each tier builds on Basic. With the plugin, commands
+carry its prefix, e.g. `/agent-ready:what-to-do`.
 
-## Pick how deep you go
-
-Every tier starts with setup and leaves the repo better prepared for agents.
-Go as far as you want; the tiers combine.
-
-| Tier | You get | Commands |
+| Tier | You get | Command |
 |---|---|---|
-| **A. Basic** | Lean steering files: `AGENTS.md` (with `CLAUDE.md` pointing at it) holds only what an agent needs on every task, `docs/CODING_STANDARDS.md` holds the review rules, `CONTEXT.md` names the domain. New comments and docs get reviewed on every pull request from then on. | `/setup-basics`: setup, then `model-codebase-domain`, then it stops. It asks first: guided by you, or done by the agent alone. The scan and `cleanup` trim the steering files one pull request at a time |
-| **B. Keep your framework** | Superpowers stays. agent-ready maps its steps onto the blueprint's flow: design by grilling, specs and tickets by Pocock's skills, plans and execution by Superpowers. Setup calls this answer **Stubborn**. | Setup's framework question: *Stubborn* |
-| **C. Migrate** | One methodology: the old setup retired, old specs and plans folded into `CONTEXT.md`, ADRs and issues, the docs agents read routed to one home each. Best for a team that wants agents to work in parallel and unattended. | Setup's framework question: *Migrate*, then `/adopt-pocock-methodology` |
-| **D. Clean what exists** | On top of A, B or C: architecture and other docs routed and trimmed in one reviewed pull request; then existing code comments rewritten and checked in the background, as small pull requests agents merge themselves where no steering file changes. | `route-codebase-docs` for the docs, a `cleanup` phase for the comments |
-
-Not sure which? `/what-to-do` recommends one from the repo's state and
-your goal, and explains the tradeoffs. Tier B maps Superpowers only; with
-another framework, pick A or C. From the plugin, commands carry its prefix,
-e.g. `/agent-ready:what-to-do`.
+| **Basic** | `AGENTS.md` (with `CLAUDE.md` pointing at it) holds what an agent needs on every task. `docs/CODING_STANDARDS.md` holds the review rules. `CONTEXT.md` names the domain. Every pull request gets its new comments and docs reviewed. | `/setup-basics`. It asks first: guided by you, or done by the agent alone |
+| **Stay Stubborn** | Superpowers stays. Design goes to grilling, specs and tickets to Pocock's skills, plans and execution to Superpowers. Superpowers only; with another framework, pick Basic or Migrate. | Setup's framework question: *Stubborn* |
+| **Migrate** | One methodology. The old setup is retired, old specs and plans fold into `CONTEXT.md`, ADRs and issues, and each doc statement gets one home. Best when agents work in parallel and unattended. | Setup's framework question: *Migrate*, then `/adopt-pocock-methodology` |
+| **Perfection** | Docs routed and trimmed in one reviewed pull request. Then code comments rewritten in the background, as small pull requests that agents merge themselves unless a steering file changes. | `route-codebase-docs`, then a `cleanup` phase |
 
 ## Install the plugin
 
-You need git read access to this repo: ask the repo owner to add you.
+Ask the repo owner for git read access to this repo. Then:
 
 ```sh
 claude plugin marketplace add felixt-teclead/agent-ready
 claude plugin install agent-ready@teclead
 ```
 
-This installs `mattpocock-skills@teclead` too: Matt Pocock's skills, pinned to
-the tag in `.claude-plugin/marketplace.json`, as `/mattpocock-skills:<name>`.
-
-Then turn on auto-update under `/plugin` → Marketplaces. Every merge to `main`
-ships. Pocock's skills move only when a merge bumps the tag.
+This also installs Pocock's skills as `/mattpocock-skills:<name>`, pinned to
+the tag in `.claude-plugin/marketplace.json`. Turn on auto-update under
+`/plugin` → Marketplaces: every merge to `main` ships, and Pocock's skills move
+only when a merge bumps the tag.
 
 ## Set up a repo without the plugin
 
-Stream the setup and update skills into the repo, then run
-`/setup-codebase-for-agents`.
-It copies the other skills, Pocock's skills at the pinned tag, and the hooks
-itself. Nothing else is written.
+Stream the setup and update skills into the repo:
 
 ```sh
 mkdir -p .agents/skills
@@ -71,32 +56,28 @@ gh api repos/felixt-teclead/agent-ready/tarball/main |
 mkdir -p .claude && ln -s ../.agents/skills .claude/skills
 ```
 
-The copies do not update themselves. Run `/update-codebase-for-agents` to
-take the current `main`. It asks before it overwrites a file edited in your
-repo, and opens a pull request that says what changes. A repo set up before
-that skill existed runs the stream command above once first.
+Then run `/setup-codebase-for-agents`. It copies the other skills, Pocock's
+skills and the hooks. To take the current `main` later, run
+`/update-codebase-for-agents`. It asks before it overwrites a file you edited,
+and opens a pull request. A repo set up before that skill existed runs the
+stream command once first.
 
 ## Name a steering owner (optional)
 
-A diff to the steering files changes the rules the agents work by, so a human
-decides it. The rule lives in `AGENTS.md` and stops an agent before it merges.
-Two layers can stand behind it.
+`AGENTS.md` stops an agent from merging a steering diff. Two GitHub layers can
+back that rule.
 
-**Name owners.** `.github/CODEOWNERS` names `@STEERING-OWNER-PLACEHOLDER`, so
-nobody owns anything and anyone with write access can change a steering file.
-Replace the placeholder with a handle or `@org/team` that has **write access to
-this repo**. GitHub then requests a review from the owner on every steering
-diff. A handle *without* write access is worse than the placeholder: GitHub
-assigns no owner, requests nothing, and says nothing at merge time.
+**Name owners.** In `.github/CODEOWNERS`, replace `@STEERING-OWNER-PLACEHOLDER`
+with a handle or `@org/team` that has **write access to this repo**. GitHub then
+requests the owner's review on every steering diff. A handle without write
+access does nothing, silently.
 
-**Make it blocking.** Owners alone do not refuse a merge. To make GitHub refuse
-one, run the bootstrap once:
+**Make it blocking.** Run once:
 
 ```sh
 sh .github/bootstrap-steering-ruleset.sh <owner>/<name>
 ```
 
-It adds the ruleset in `.github/steering-ruleset.json`: a pull request with a
-code-owner approval, and no bypass actor. A private repo on a Free account
-cannot hold a ruleset, so the script says so and exits 0. The gate then stays
-advisory, and a human merges every steering diff by hand.
+It adds the ruleset in `.github/steering-ruleset.json`: code-owner approval
+required, no bypass. A private repo on a Free plan cannot hold a ruleset; the
+script says so and exits 0, and the rule stays advisory.
