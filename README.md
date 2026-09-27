@@ -26,7 +26,7 @@ carry its prefix, e.g. `/agent-ready:what-to-do`.
 | **Basic** | `AGENTS.md` (with `CLAUDE.md` pointing at it) holds what an agent needs on every task. `docs/CODING_STANDARDS.md` holds the review rules. `CONTEXT.md` names the domain. Every pull request gets its new comments and docs reviewed. | `/setup-basics`. It asks first: guided by you, or done by the agent alone |
 | **Stay Stubborn** | Superpowers stays. Design goes to grilling, specs and tickets to Pocock's skills, plans and execution to Superpowers. Superpowers only; with another framework, pick Basic or Migrate. | Setup's framework question: *Stubborn* |
 | **Migrate** | One methodology. The old setup is retired, old specs and plans fold into `CONTEXT.md`, ADRs and issues, and each doc statement gets one home. Best when agents work in parallel and unattended. | Setup's framework question: *Migrate*, then `/adopt-pocock-methodology` |
-| **Perfection** | Docs routed and trimmed in one reviewed pull request. Then code comments rewritten in the background, as small pull requests that agents merge themselves unless a steering file changes. | `route-codebase-docs`, then a `cleanup` phase |
+| **Cleanup** | Docs routed and trimmed in one reviewed pull request. Then code comments rewritten in the background, as small pull requests that agents merge themselves unless a steering file changes. | `route-codebase-docs`, then a `cleanup` phase |
 
 ## Install the plugin
 
