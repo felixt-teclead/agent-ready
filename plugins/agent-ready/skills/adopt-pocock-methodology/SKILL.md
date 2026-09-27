@@ -32,7 +32,9 @@ In order; the first that matches decides.
 4. **Not in shape**: no hit, and `CONTEXT.md` is missing or the scan is not
    green → only the blocks whose signal is missing: `model-codebase-domain`
    without `CONTEXT.md`, `route-codebase-docs` without a green scan.
-5. **In shape** → say "nothing to migrate", suggest
+5. **In shape** → say "nothing to migrate". No `.agents/refactor.md` → ask
+   "Start a comment pass (`cleanup` phase)?"; yes → §5. The repo cannot tell
+   a finished pass from none, so the user answers. Then suggest
    `/improve-codebase-architecture`, or `/grill-with-docs` for a new feature,
    and stop.
 
@@ -95,6 +97,8 @@ The last commit removes `.agents/migration.md`. Then open the PR,
   (`route-codebase-docs` §7)
 - the settings as applied
 - "Steering diff, a human merges."
+- "After the merge, run `/adopt-pocock-methodology` again to start the
+  comment pass."
 - the hand-over line
 - "To run without the plugin: `update-codebase-for-agents` §4."
 
