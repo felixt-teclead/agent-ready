@@ -39,6 +39,12 @@ In order; the first that matches decides.
 **Green**: `scan-codebase-for-agents` names no §4 class. Take its report
 only; decline its phase offer, §5 covers the phase.
 
+**Cleanup phase**: before §2, read `.agents/refactor.local`, then
+`.agents/refactor.md` on `origin/<default>`. Either says `paused:` → show the
+reason and ask "Resume the phase and migrate?". No: stop. Yes: resume it
+(`cleanup` §5); for `refactor.local` only that user answers. An unpaused phase
+is taken over in §5.
+
 ## 2. Branch and worklist
 
 From a clean tree, a new branch `adopt-pocock-methodology` off
@@ -69,9 +75,12 @@ tick its row and commit.
 
 - **preflight**: `retire-agent-setup`. Paste its summary under the row.
 - **model-codebase-domain**: its §4 shows the settings again.
-- **route-codebase-docs**: before the call, show the settings again. Stress
-  `architecture:`: step 1 has mined those docs, so the choice is informed now.
-  Write a change into the worklist.
+- **route-codebase-docs**: before the call, list open `cleanup` PRs
+  (`gh pr list --state open --label cleanup`) and ask the user to merge or
+  close them; go on only when none are left or on an explicit "continue
+  anyway". Then show the settings again. Stress `architecture:`: step 1 has
+  mined those docs, so the choice is informed now. Write a change into the
+  worklist.
 
 Done when every row is ticked.
 
@@ -91,7 +100,21 @@ The last commit removes `.agents/migration.md`. Then open the PR,
 
 ## 5. Hand off to cleanup
 
-Placeholder: build ticket 14 fills this section.
+The comment pass is a normal `cleanup` phase. This section only picks when
+it starts.
+
+1. **Wait or stack.** Only in an interactive chat, ask "Wait for the steering
+   PR to merge, or stack on the steering branch?", default wait.
+   - **Wait**: once the user says it merged, check out the default branch and
+     pull.
+   - **Stack**: stay on the steering branch; the phase PR targets it.
+2. **Start or take over.**
+   - No `.agents/refactor.md`: re-run the scan, then `cleanup` §1 with mode
+     `fast`.
+   - A phase is running: leave it as is. Its path list and done files stay,
+     and `cleanup` continues it.
+
+Done when the phase PR is open or the running phase is taken over.
 
 ## 6. Architecture review
 

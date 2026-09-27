@@ -4,9 +4,9 @@
 
 **Blocked by:** 02: Write-once path list plus done files, 03: Fast steps skip files in open PRs, 13: Migration orchestrator and steering PR
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] New phase via `cleanup` §1 unchanged
-- [ ] Takeover keeps done files
-- [ ] Pause never lifted without a yes
-- [ ] Wait/stack asked only in a chat
+- [x] New phase via `cleanup` §1 unchanged
+- [x] Takeover keeps done files
+- [x] Pause never lifted without a yes
+- [x] Wait/stack asked only in a chat
