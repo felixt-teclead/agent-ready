@@ -33,6 +33,12 @@ in `${…}` form is unset:
 - `cleanup_comments`: `${user_config.cleanup_comments}`
 - `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
 
+No-plugin channel with `.agents/agent-ready-manifest.json`: its `"commit"`
+differs from agent-ready's `main`
+(`gh api repos/felixt-teclead/agent-ready/commits/main --jq .sha`) → the
+copies are older than this skill. Stop, and ask the owner to run
+`/update-codebase-for-agents` first; it brings the new hooks and settings.
+
 Done when every row and every old file found has a status.
 
 ## 2. Interview
