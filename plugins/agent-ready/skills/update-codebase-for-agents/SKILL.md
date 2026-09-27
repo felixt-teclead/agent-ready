@@ -37,17 +37,22 @@ The last run prints the old and new commits and every file as `written`,
 
 `.claude/settings.json`, as setup step 9 wrote it.
 
-**Hooks.** Build the entries the old `.agents/hooks/hooks.json` gives
-(`git show HEAD~1:.agents/hooks/hooks.json`, the branch's base): its `hooks`
-object, every `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
-`"$CLAUDE_PROJECT_DIR"/.agents/hooks/`. Compare them with the entries in
-`settings.json` whose command points into `.agents/hooks/`. An entry that
-differs was edited by hand: show its diff and ask keep or replace, one entry
-per question.
+**Hooks.** An entry is one hook; its script is the file name after
+`.agents/hooks/` in its command. Build the entries the old
+`.agents/hooks/hooks.json` gives, from the branch's base
+(`git show $(git merge-base HEAD <default branch>):.agents/hooks/hooks.json`),
+with setup step 9's rewrite. Compare each with the `settings.json` entry for
+the same script. One that differs was edited by hand: show its diff and ask
+keep or replace, one entry per question.
 
-Then remove every `.agents/hooks/` entry except the kept ones, and drop a
-matcher group left empty. Merge in the entries the new `hooks.json` gives, as
-setup step 9 does, skipping a hook whose kept entry already runs its script.
+Then build the new entries the same way from the working tree's `hooks.json`
+and edit `settings.json` in place, by script:
+
+- in both old and new: replace the entry where it stands, unless kept;
+- only in old: remove it, and drop a matcher group left empty;
+- only in new: append it to the group with the same event and matcher, or add
+  that group.
+
 Leave every other hook alone.
 
 **Switches.** Read `userConfig` from `plugins/agent-ready/.claude-plugin/plugin.json`

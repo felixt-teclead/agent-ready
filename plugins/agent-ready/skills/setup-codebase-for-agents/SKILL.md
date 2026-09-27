@@ -107,7 +107,10 @@ leave the file out and put its row on the gap list.
    channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
      `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
-     `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`. Merge it into existing `hooks`.
+     `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`, which is
+     `\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/` inside the JSON string. Merge
+     it into existing `hooks`: append each entry to the group with the same
+     event and matcher, or add that group.
      With the plugin, write none: each hook would fire twice.
    - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per answer from G, as a string.
    - `.gitignore`: add `.agents/refactor.local`.
