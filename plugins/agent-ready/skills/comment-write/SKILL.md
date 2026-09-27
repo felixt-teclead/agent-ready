@@ -141,7 +141,10 @@ interface tag either. Only `TYPE` or `WRITE`.
 at the anchor. A rule other files obey, a contract spanning files, a repo-wide
 gotcha, or a trap belongs in one of the docs. The sentence goes there and the
 anchor keeps `See <doc> §"<anchor>"`. Either way the anchor ends up with a
-line; only its shape differs.
+line; only its shape differs. A doc the caller marks as queued
+([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)) takes no new
+sentence: the fact stays a comment at the anchor, and the report lists the
+sentence with its anchors.
 
 **An existing comment at the anchor is joined, not doubled.** A `WRITE` at an
 anchor that already has a comment adds its sentence to that block, so the

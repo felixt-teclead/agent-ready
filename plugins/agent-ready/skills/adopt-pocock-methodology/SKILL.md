@@ -45,7 +45,8 @@ the checks read `<default>`: from a clean tree, check it out and
    first on the branch [Branch and worklist](#2-branch-and-worklist) opens;
    with no block to run, it goes into its own `cleanup` PR.
 4. **Missing fixed rows**: run `scan-codebase-for-agents`. Its Missing fixed
-   rows class has a finding → stop: "Re-run `/setup-codebase-for-agents`,
+   rows class has a finding other than the review window row, which this
+   skill writes itself → stop: "Re-run `/setup-codebase-for-agents`,
    merge its pull request, then run `/adopt-pocock-methodology` again."
 5. **Blocks**: each block whose signal shows, from the scan and its
    [Old setup](../setup-codebase-for-agents/measure.md#4-old-setup):

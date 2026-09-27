@@ -115,7 +115,9 @@ its `mode:` and say `cleanup` takes the step. Otherwise, after the report,
 ask "Start a refactor phase with `cleanup` now?". Yes: run the "Start a
 phase" section of [`cleanup`](../cleanup/SKILL.md#2-start-a-phase) with this
 report as input. No: the report stands. When a calling skill runs the scan,
-it decides; do not offer.
+it decides; do not offer. Only the next change decides the offer: a later
+class too big for one pull request reaches a phase when `cleanup` takes it
+as its one step.
 
 ### Pointers
 
@@ -125,19 +127,22 @@ comment anywhere in the repo (`git grep -n 'See [^ ]* §"'`). Leave out the
 files `.agents/agent-ready-manifest.json` lists: they are fetched, not
 written here.
 
-A token in backticks is a **path** when it has no space, `<`, `*`, `{`, `$`
-or URL scheme, and it ends in a file extension or has a `/` after a first
-segment that names a folder in the tree. `EUR/USDT`, `n/a` and
-`Cmd/Ctrl+Enter` are no paths. Drop a `:line`, `:line-line` or `#L…` suffix
-first.
+A token in backticks is a **path** when it has no space, `<`, `*`, `{`, `$`,
+`…` or URL scheme, and it ends in a name with a file extension (`x.md`;
+`.md` alone is none) or has a `/` after a first segment that names a folder
+in the tree. `EUR/USDT`, `n/a` and `Cmd/Ctrl+Enter` are no paths. Drop a
+`:line`, `:line-line` or `#L…` suffix first.
 
-A pointer **resolves** when its path exists from the repo root or from the
-doc's folder, or is the tail of exactly one `git ls-files` path
-(`accounts/aggregate.ts` for `src/lib/accounts/aggregate.ts`). A folder
-pointer resolves when the folder exists. An `#anchor` resolves when a
-heading's GitHub slug matches: lowercase, punctuation dropped except `-` and
-`_`, spaces as `-`, a repeated heading gets `-1`, `-2`. A `§"<heading>"`
-resolves when a heading or bold lead-in in the target reads the same.
+A path in backticks or in a `See` comment **resolves** when it exists from
+the repo root or from the doc's folder, or is the tail of at least one
+`git ls-files` path (`accounts/aggregate.ts` for
+`src/lib/accounts/aggregate.ts`). A markdown link target resolves as GitHub
+renders it: from the doc's folder, or from the repo root when it starts with
+`/`. A folder pointer resolves when the folder exists. An `#anchor` resolves
+when a heading's GitHub slug matches: lowercase, punctuation dropped except
+`-` and `_`, spaces as `-`, a repeated heading gets `-1`, `-2`. A
+`§"<heading>"` resolves when a heading or bold lead-in in the target reads
+the same.
 
 Skip gitignored paths; the domain files (`CONTEXT.md`, `CONTEXT-MAP.md`,
 `docs/adr/`), which skills create when a term or decision first needs a home;
@@ -154,8 +159,16 @@ each:
 - `<file>`: "<the finding's line, pointer or path, quoted>" (<class>). <Why, one sentence.>
 ```
 
+`<class>` is a class of [One next step](#4-one-next-step), or a check of
+another skill: `old setup` (an old-setup item or folder kept, measure.md's
+[Old setup](../setup-codebase-for-agents/measure.md#4-old-setup)),
+`fit check` (`model-codebase-domain`), `levers` (`route-codebase-docs`),
+`domain` (no `CONTEXT.md` wanted).
+
 A finding with the same file and quoted text is no finding: it stays as it
-is, and no class counts it. Only the user accepts a finding. The skill that
+is, and no class counts it. A line an open PR adds to the file counts too,
+so a finding the user just kept stays kept while its PR waits. Only the user
+accepts a finding. The skill that
 asked writes the line into its own PR, and a human merges that PR.
 
 ## 5. Writing skills
@@ -194,9 +207,11 @@ retires an overridden framework (`agent-ready:` prefix in the plugin
 channel).
 
 The `comments` line only reports (`agent-ready:cleanup` in the plugin
-channel). It shows on a green scan when no phase has ever run: no
-`.agents/refactor.md`, and `git log -1 --format=%h -- .agents/refactor.md`
-prints nothing. Otherwise leave it out.
+channel). It shows on a green scan when no comment pass has ever run: no
+`.agents/refactor.md`, and `git log -1 --format=%h -- .agents/refactor-done`
+prints nothing. Otherwise leave it out, also in a shallow clone
+(`git rev-parse --is-shallow-repository` prints `true`), whose history
+cannot tell.
 
 Then the row table (statement, status, up to three `file:line` examples),
 then the old files found with their row and action, then the failing

@@ -7,7 +7,7 @@ case $AGENT_READY_ARCHITECTURE_REVIEW_DAYS in ''|*[!0-9]*|0) exit 0 ;; esac
 
 input=$(cat)
 if command -v jq >/dev/null 2>&1; then
-  prompt=$(printf '%s' "$input" | jq -r '.prompt // empty')
+  prompt=$(printf '%s' "$input" | jq -r '.prompt // empty' | head -n 1)
 else
   prompt=$(printf '%s' "$input" | sed -nE 's/.*"prompt" *: *"([^"]*)".*/\1/p')
 fi
