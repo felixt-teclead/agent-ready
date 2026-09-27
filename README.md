@@ -15,7 +15,7 @@ methodology first.
 2. In your repo, ask:
 
    ```
-   /ask-agent-ready what's next for this repo?
+   /what-to-do what's next for this repo?
    ```
 
    It reads the repo's state, recommends one next step, and explains the
@@ -34,10 +34,10 @@ Go as far as you want; the tiers combine.
 | **C. Migrate** | One methodology: the old setup retired, old specs and plans folded into `CONTEXT.md`, ADRs and issues, the docs agents read routed to one home each. Best for a team that wants agents to work in parallel and unattended. | Setup's framework question: *Migrate*, then `/adopt-pocock-methodology` |
 | **D. Clean what exists** | On top of A, B or C: existing code comments rewritten and checked, architecture and other docs routed and trimmed, dead pointers fixed. Runs in the background as small pull requests, merged by agents where no steering file changes. | `route-codebase-docs` for the docs, a `cleanup` phase for the comments |
 
-Not sure which? `/ask-agent-ready` recommends one from the repo's state and
+Not sure which? `/what-to-do` recommends one from the repo's state and
 your goal, and explains the tradeoffs. Tier B maps Superpowers only; with
 another framework, pick A or C. From the plugin, commands carry its prefix,
-e.g. `/agent-ready:ask-agent-ready`.
+e.g. `/agent-ready:what-to-do`.
 
 ## Install the plugin
 
