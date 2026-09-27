@@ -60,12 +60,17 @@ Earlier setups wrote these.
 
 ## Switches
 
-`comment_review`, `steering_gate`, `cleanup_comments`,
-`cleanup_comments_max_files`.
+| Switch | Default |
+|---|---|
+| `comment_review` | on |
+| `steering_gate` | none: the owner decides |
+| `cleanup_comments` | on |
+| `cleanup_comments_max_files` | 10 |
 
 - **Plugin:** each user answers them at install. Skills read
   `${user_config.<key>}`, hooks read `CLAUDE_PLUGIN_OPTION_<KEY>`.
 - **No plugin:** `CLAUDE_PLUGIN_OPTION_<KEY>` in the `env` block of
   `.claude/settings.json` is the team value. `.claude/settings.local.json`
   overrides it for one person.
-- An unset switch is on. Only `false` switches a safeguard off.
+- An unset switch takes its default; an unset `steering_gate` is on. Only
+  `false` switches a safeguard off.

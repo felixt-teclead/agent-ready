@@ -21,14 +21,14 @@
     "cleanup_comments": {
       "type": "boolean",
       "title": "Cleanup comments",
-      "description": "During a refactor phase, give every cleaned file a full comment pass. Costly: several subagents per file.",
+      "description": "Default for a new refactor phase: give every cleaned file a full comment pass. Costly: several subagents per file.",
       "default": true
     },
     "cleanup_comments_max_files": {
       "type": "number",
       "title": "Cleanup comments: files per PR",
-      "description": "Most files one cleanup PR gives the comment pass. The rest stay on the path list.",
-      "default": 20,
+      "description": "Default for a new refactor phase: most files one fast-mode cleanup PR gives the comment pass. The rest wait for the next one.",
+      "default": 10,
       "min": 1
     }
   }

@@ -58,9 +58,8 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   Renamed: the owner names the string per role; a dropped role is `—`.
 - **F. AFK environment.** Env vars and where their values come from,
   services and network egress the `check` script needs.
-- **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
-  `steering_gate` (no recommendation: the owner decides), `cleanup_comments`
-  (on), `cleanup_comments_max_files` (20).
+- **G. Switches, no-plugin channel only.** Each of the
+  [switches](routing-table.md#switches); recommend its default.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
 - **I. Framework.** Ask unless the Superpowers row is `home`: keep your
