@@ -44,7 +44,7 @@ prints more than 0, or when the `mattpocock-skills` `ref` in agent-ready's
 ask the owner to run `/update-codebase-for-agents` first; it brings the new
 hooks and settings.
 
-Done when every row and every old file found has a status.
+Done when measure.md's Done holds.
 
 ## 2. Interview
 

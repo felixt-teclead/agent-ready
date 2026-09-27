@@ -26,15 +26,7 @@ in `${…}` form is unset, and unset means on:
 - `comment_review`: `${user_config.comment_review}`
 - `steering_gate`: `${user_config.steering_gate}`
 
-Two rulings on top of measure.md:
-
-- A skill that production code loads at runtime (a source file reads the
-  skill folder) is not an agent procedure. Its row is **misplaced** while it
-  sits in `.agents/` or `.claude/`.
-- A repo's own consent rule ("change this file only with approval") belongs
-  to the steering-approval row. Judge it like any other line.
-
-Done when measure.md's Done holds under both rulings.
+Done when measure.md's Done holds.
 
 ## 2. Lines
 
@@ -88,8 +80,8 @@ Three numbers, none weighted:
 
 Take the first class with a finding, in this order:
 
-1. **Missing fixed rows.** A `fixed` row is `missing`, or `CLAUDE.md` or
-   `.claude/skills` is not a symlink. The step: re-run
+1. **Missing fixed rows.** A `fixed` row is `missing`, `CLAUDE.md` is not a
+   symlink, or `.claude/skills` exists and is not a symlink. The step: re-run
    `/setup-codebase-for-agents`; it writes missing rows only.
 2. **Dead pointers.** A
    [dead pointer](../setup-codebase-for-agents/pointers.md#when-it-resolves).
