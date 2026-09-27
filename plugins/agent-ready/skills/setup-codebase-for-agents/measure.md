@@ -1,16 +1,14 @@
 # Measure a repo against the routing table
 
-Shared by `setup-codebase-for-agents` and `scan-codebase-for-agents`. Read
-[routing-table.md](routing-table.md) first. You read; you do not edit.
+Read [routing-table.md](routing-table.md) first. Edit nothing.
 
 ## 1. Channel and switches
 
 - **Channel.** This skill's folder sits inside the repo (`.agents/skills/` or
   `.claude/skills/`) → no plugin. Anywhere else → plugin.
-- **Switches.** Plugin: the values the calling skill lists; only a skill's
-  own `SKILL.md` gets `${user_config.<key>}` filled in. No plugin: the `env` block of
-  `.claude/settings.json`, then `.claude/settings.local.json`. Not there →
-  unset.
+- **Switches.** Plugin: the values the calling skill lists. No plugin: the
+  `env` block of `.claude/settings.json`, then `.claude/settings.local.json`.
+  Not there → unset.
 
 ## 2. Inventory
 
