@@ -4,8 +4,8 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] No `migrate-*` copy left in any skill
-- [ ] Unfinished plans stay, each with an issue
-- [ ] Reminder offer text says the user types the command
+- [x] No `migrate-*` copy left in any skill
+- [x] Unfinished plans stay, each with an issue
+- [x] Reminder offer text says the user types the command

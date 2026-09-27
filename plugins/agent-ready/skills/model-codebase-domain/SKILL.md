@@ -56,29 +56,16 @@ the existing `CONTEXT.md` and `docs/adr/`; one `code:` row per top-level
 code area. Show the list; the user strikes rows. The step runs even when
 there is no doc row.
 
+Run §4 of [measure.md](../setup-codebase-for-agents/measure.md). A plugin,
+skill, hook or framework-section hit means the old framework is still
+**active**: its unfinished specs and plans stay (step 2). Tell the user.
+
 Commit the worklist.
 
-## 2. Agent-invokable copy
+## 2. Rows
 
-The pinned `/domain-modeling`:
-
-- **No plugin** (this skill sits in `.agents/skills/`):
-  `.agents/skills/domain-modeling/`.
-- **Plugin**: the `mattpocock-skills` plugin next to this one,
-  `${CLAUDE_PLUGIN_ROOT}/../../mattpocock-skills/*/skills/engineering/domain-modeling/`.
-
-Not found → stop and say which path you checked. Copy the folder to
-`.claude/skills/migrate-domain-modeling/`. In the copy's frontmatter set
-`name: migrate-domain-modeling` and delete any `disable-model-invocation`
-line. The pinned folder stays unchanged. Commit the copy.
-
-Done when `/migrate-domain-modeling` is in your skill list. If this session
-does not list it yet, read the copy's `SKILL.md` and follow it.
-
-## 3. Rows
-
-Per `doc:` or `code:` row, run `/migrate-domain-modeling` over it with the
-ranks above. Each row yields:
+Per `doc:` or `code:` row, run `/domain-modeling` over it with the ranks
+above. Each row yields:
 
 - **Terms.** Group the proposed `CONTEXT.md` entries by domain topic. Per
   topic, the user approves, edits or strikes each entry. Write approved
@@ -89,10 +76,14 @@ ranks above. Each row yields:
   items, checked against the code: done in code → dropped. The user
   confirms each remaining one. File it in the tracker
   (`docs/agents/issue-tracker.md`) with the label `needs-triage`.
+- **Framework active.** A spec or plan is finished when the code shows all
+  of it. Fold finished ones only. Each unfinished plan stays as it is and
+  gets one `needs-triage` issue, "Fold and remove `<plan>` once it
+  finishes", in place of the item issues above.
 
 Tick the row and commit. The worklist carries the run across sessions.
 
-## 4. Fit check
+## 3. Fit check
 
 Read `CONTEXT.md` and `docs/adr/` whole. Flag:
 
@@ -104,11 +95,12 @@ Propose a fix for each. Apply the fixes the user accepts, then ask
 fix-or-keep for each remaining item. Each kept item goes under `Known
 deviations`. Tick the row and commit.
 
-## 5. Folders
+## 4. Folders
 
 Show the settings again; the `specs:` answer is the one that only makes
 sense now. Then per spec or plan folder, the user answers delete or
-archive, the setting as the default:
+archive, the setting as the default. With the framework active, the
+answer covers the finished files only; unfinished specs and plans stay.
 
 - **delete**: `git rm -r <folder>`.
 - **archive**: `git mv <folder> docs/archive/<folder>/`, plus
@@ -118,10 +110,7 @@ archive, the setting as the default:
 Architecture docs stay; `route-codebase-docs` handles them. Tick the row
 and commit.
 
-## 6. End
-
-`git rm -r` the copy from step 2 and commit. `/domain-modeling` is
-human-only again.
+## 5. End
 
 - **`owner: adopt-pocock-methodology`**: hand back; the caller keeps the
   worklist and opens the pull request.
@@ -130,4 +119,4 @@ human-only again.
   the known deviations.
 
 Done when every worklist row is ticked, every folder has its answer, and
-`.claude/skills/migrate-domain-modeling/` is gone.
+every unfinished plan left in place has its issue.
