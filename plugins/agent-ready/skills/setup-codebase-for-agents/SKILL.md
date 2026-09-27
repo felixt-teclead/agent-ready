@@ -96,7 +96,8 @@ owner can accept it in a word.
     in the repo.
   - **Neither.**
 
-  Stubborn: the row counts as `missing`, and [Write](#3-write) writes it.
+  Owner unsure: tell them to type `/what-to-do`; it explains the options
+  against their goal. Stubborn: the row counts as `missing`, and [Write](#3-write) writes it.
   Migrate or neither: it counts as `n/a`; no step writes it, and the gap
   list leaves it out.
 - **J. Architecture review.** Ask [Review window](settings.md#review-window).
