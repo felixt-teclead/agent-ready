@@ -54,8 +54,9 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   each. None known → the header only.
 - **E. Tracker.** GitHub when the remote is GitHub, GitLab when it is GitLab,
   else local markdown. "Other" (Jira, Linear, ...) → the owner describes the
-  workflow in one paragraph. Triage labels: the five defaults unless the owner
-  names others. Domain docs: single-context, unless the repo is a monorepo.
+  workflow in one paragraph. Triage labels: defaults, renamed, or none?
+  Renamed: the owner names the string per role; a dropped role is `—`.
+  Domain docs: single-context, unless the repo is a monorepo.
 - **F. AFK environment.** Env vars and where their values come from,
   services and network egress the `check` script needs.
 - **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
@@ -88,8 +89,8 @@ leave the file out and put its row on the gap list.
    deletes them; then run it again.
 3. **`docs/agents/`** from answer E: `issue-tracker.md` from
    `templates/docs/agents/issue-tracker-<github|gitlab|local>.md`, or from the
-   owner's paragraph; `triage-labels.md`; `domain.md`. Add the
-   `## Agent skills` block from the template to `AGENTS.md`, without the
+   owner's paragraph; `triage-labels.md` only for renamed labels;
+   `domain.md`. Add the `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
    place.
 4. **Commands** from answer A into the manifest scripts, and the
@@ -140,8 +141,8 @@ Done when each check passes or is on the gap list with its output.
 
 ## 5. Hand over
 
-- GitHub tracker: run [labels.sh](labels.sh). It creates the
-  labels that are missing and keeps existing ones.
+- GitHub tracker with the default labels: run [labels.sh](labels.sh). It
+  creates the labels that are missing and keeps existing ones.
 - Open the pull request. Its body lists what each commit decides, then the
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run

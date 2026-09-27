@@ -24,7 +24,7 @@ Verify with the manifest's `check` script.
 
 ### Triage labels
 
-<one line: the label vocabulary>. See `docs/agents/triage-labels.md`.
+<defaults: "The five canonical triage roles, each label string equal to its name." | renamed: "Label string per role: see `docs/agents/triage-labels.md`." | none: "No triage labels: skip every labeling step.">
 
 ### Domain docs
 

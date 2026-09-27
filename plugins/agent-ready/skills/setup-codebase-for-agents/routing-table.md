@@ -29,7 +29,8 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Domain definitions | `CONTEXT.md`, written by `/domain-modeling` | lazy |
 | Decisions and rejected alternatives | `docs/adr/` | lazy |
 | Specs | issues, closed once shipped; never kept in the repo | fixed |
-| Tracker, triage labels, domain-doc read rules | `docs/agents/issue-tracker.md`, `triage-labels.md`, `domain.md` | interviewed |
+| Tracker, domain-doc read rules | `docs/agents/issue-tracker.md`, `domain.md` | interviewed |
+| Triage labels | the `### Triage labels` line in `AGENTS.md`; renamed labels also `docs/agents/triage-labels.md` | interviewed |
 | What an AFK run needs: env vars, services, egress, token scopes | `docs/agents/environment.md` | interviewed |
 | What an AFK run hands back | `docs/agents/afk-handback.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |
