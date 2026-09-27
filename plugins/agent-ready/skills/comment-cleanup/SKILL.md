@@ -9,7 +9,6 @@ one place, as a reason. Other places point at it. Flags and routing:
 
 ## Process
 
-- **Script does the mechanics.** `--prepare`, `--apply`, `--finish`.
 - **Dispatch = brief path + values, nothing else:**
   `Run the brief at <skill>/steps/<brief>. path=<path> work=<work> repo=<repo> docs=<doc>, <doc>`
   You open this file, script output, tables — never a brief, the source file
@@ -27,7 +26,7 @@ the only writers into the repository.
 **Rewriter** — Sonnet: one per file. The only judge.
 **Verifier** — Sonnet: one per file, two passes max.
 
-Do not commit; git is the undo. `<work>` =
+Leave the changes uncommitted; git is the undo. `<work>` =
 `$TMPDIR/comment-cleanup/<repo>/<run>/`, `<run>` = first file's
 basename. `<skill>` = this directory.
 
@@ -95,8 +94,6 @@ lines only, with `file:line`, into `<work>/added/<path>.txt`. Dispatch
 Redispatch once. A `WRONG` surviving that goes to the report.
 
 ### 6. Recite
-
-Verify proved the lines true; this proves a reader recovers the reason.
 
 ```bash
 node <skill>/strip-comments.mjs --prepare <work>/files.txt <work>/post

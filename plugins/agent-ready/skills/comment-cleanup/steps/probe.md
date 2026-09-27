@@ -30,8 +30,7 @@ The stripped copy. Never sees a comment.
 
 ## Sighted + interface
 
-The original copy and the exports table. Two tables from one context: the
-interface pass needs no repository access, so it costs no second dispatch.
+The original copy and the exports table.
 
 > Read `<work>/pre/<path>` and work out how it holds together. You may open
 > what it imports, who imports it, its tests, and `<docs>`. Leave the
