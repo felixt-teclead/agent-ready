@@ -75,9 +75,10 @@ keeps its text. Placeholders in a template are `<...>`; fill each one, or
 leave the file out and put its row on the gap list.
 
 1. **`AGENTS.md`** from [the template](templates/AGENTS.md), without the
-   `## Agent skills` block; step 3 adds it. An existing `CLAUDE.md` is
-   renamed to `AGENTS.md` (`git mv`) and keeps its text. `CLAUDE.md` becomes
-   a symlink: `ln -s AGENTS.md CLAUDE.md`.
+   `## Agent skills` block (step 3 adds it) and the `## Verify` section
+   (step 4 adds it). An existing `CLAUDE.md` is renamed to `AGENTS.md`
+   (`git mv`) and keeps its text. `CLAUDE.md` becomes a symlink:
+   `ln -s AGENTS.md CLAUDE.md`.
 2. **Skills.** `.agents/skills/`, and `ln -s ../.agents/skills .claude/skills`.
    Existing `.claude/skills/` content moves into `.agents/skills/` unchanged.
    Plugin channel with no skills in the repo: skip this step. No-plugin
@@ -91,8 +92,8 @@ leave the file out and put its row on the gap list.
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
    place.
-4. **Commands** from answer A into the manifest scripts. **`README.md`** from
-   answer B.
+4. **Commands** from answer A into the manifest scripts, and the
+   `## Verify` section into `AGENTS.md`. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
    script. One commit per tool.
 6. **AFK files** from answer F: `docs/agents/environment.md` and

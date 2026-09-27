@@ -12,6 +12,10 @@ Never merge a diff that touches one. Stop, state plainly what the diff decides, 
 
 This rule guards itself: a diff that edits it is a steering diff.
 
+## Verify
+
+Verify with the manifest's `check` script.
+
 ## Agent skills
 
 ### Issue tracker
