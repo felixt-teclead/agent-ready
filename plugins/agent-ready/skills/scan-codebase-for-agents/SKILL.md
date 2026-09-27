@@ -102,6 +102,9 @@ Take the first class with a finding, in this order:
    home. An old file of the routing table is one of its row's examples and
    takes the action its row names.
 
+A `missing` row that is not `fixed` is in no class: its status shows in
+the report and is no finding.
+
 Missing fixed rows come first because the other fixes need their homes. A dead pointer
 sends every reader nowhere and its fix is small, so it goes before the
 lines.

@@ -15,8 +15,8 @@ check of another skill:
 
 - `old setup`: an old-setup plugin, skill, hook, override or folder kept
   (measure.md's [Old setup](measure.md#4-old-setup));
-- `repo-specific`: an item `retire-agent-setup` found that only this repo
-  needs;
+- `repo-specific`: a skill, hook or command only this repo needs
+  (measure.md's [Old setup](measure.md#4-old-setup));
 - `fit check`: `model-codebase-domain`;
 - `levers`: `route-codebase-docs`;
 - `domain`: no `CONTEXT.md` wanted.

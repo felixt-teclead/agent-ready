@@ -1,9 +1,9 @@
 ---
-name: ask-agent-ready
+name: what-to-do
 description: Orient in a repo's agent-ready setup — where it stands and the one next step. Use when a user asks what's next or states a goal for agents here, is unsure at a setup, migration or cleanup question, or you meet state you cannot place — a phase file, a migration worklist, a kept or overridden framework.
 ---
 
-# Ask agent-ready
+# What to do
 
 **Goal: the asker knows where the repo stands, what happened, the one next
 step and why, and each alternative as a command to type.** You answer people

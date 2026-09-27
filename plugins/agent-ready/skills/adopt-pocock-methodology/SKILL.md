@@ -13,11 +13,11 @@ orchestrates: the blocks `retire-agent-setup`, `model-codebase-domain` and
 `route-codebase-docs` work on this branch and hand back, as the
 [worklist](worklist.md)'s owner rule says. The worklist is the run's state.
 
-Open every run and close every stop with: "Unsure? Run `/ask-agent-ready`."
+Open every run and close every stop with: "Unsure? Run `/what-to-do`."
 The **hand-over line** closes the PR body and the last answer: "Unsure which
 Pocock skill fits your next task? Run `/ask-matt`." In the plugin channel,
-say each command with its plugin prefix, as ask-agent-ready's
-[Answer](../ask-agent-ready/SKILL.md#3-answer) says.
+say each command with its plugin prefix, as what-to-do's
+[Answer](../what-to-do/SKILL.md#3-answer) says.
 
 `cleanup_comments`: `${user_config.cleanup_comments}`, filled in when the
 skill loads. Still in `${…}` form: measure's
@@ -27,9 +27,7 @@ unset → the routing table's
 
 ## 1. Start checks
 
-In order; the first that matches decides. `git fetch` first. Past Running,
-the checks read `<default>`: from a clean tree, check it out and
-`git pull --ff-only`.
+In order; the first that matches decides. `git fetch` first.
 
 1. **No setup**: `AGENTS.md` is missing on `origin/<default>` → stop: "Run
    `/setup-codebase-for-agents`, or merge its open pull request, first."
@@ -37,25 +35,29 @@ the checks read `<default>`: from a clean tree, check it out and
    for the branch `adopt-pocock-methodology`, through its Other runs check;
    where it reaches Start, go on at the next check. A run past its steering
    PR goes on at [Hand off to cleanup](#5-hand-off-to-cleanup).
-3. **Paused phase**: `.agents/refactor.local`, then `.agents/refactor.md` on
-   `origin/<default>`, says `paused:` → show the reason and ask "Resume the
+3. **Paused phase**: from here on the checks read `<default>`: from a clean
+   tree, check it out and `git pull --ff-only`. `.agents/refactor.local`,
+   then `.agents/refactor.md` on `origin/<default>`, says `paused:` → show the reason and ask "Resume the
    phase and migrate?". No: stop. Yes: `refactor.local` → delete its
    `paused:` line now (gitignored). `refactor.md` →
    [Branch and worklist](#2-branch-and-worklist) deletes the line in its
    first commit; with no block to run, a `cleanup` PR does
    ([Pause and resume](../cleanup/SKILL.md#6-pause-and-resume)).
-4. **Missing fixed rows**: run `scan-codebase-for-agents`. Its Missing fixed
+4. **Missing fixed rows**: run `scan-codebase-for-agents` once; its report
+   feeds this check, the next and `scan before:`. Its Missing fixed
    rows class has a finding other than the review window row, which this
    skill writes itself → stop: "Re-run `/setup-codebase-for-agents`,
    merge its pull request, then run `/adopt-pocock-methodology` again."
 5. **Blocks**: each block whose signal shows, from the scan and its
    [Old setup](../setup-codebase-for-agents/measure.md#4-old-setup):
-   - **preflight** (`retire-agent-setup`): a plugin, skill or hook hit, or an
-     overridden framework `.agents/deviations.md` does not list;
+   - **preflight** (`retire-agent-setup`): a plugin, skill or hook hit,
+     scratch, or an overridden framework, each one `.agents/deviations.md`
+     does not list;
    - **`model-codebase-domain`**: no `CONTEXT.md` or `CONTEXT-MAP.md` and no
      `domain` line in `.agents/deviations.md`, or a specs and plans hit;
    - **`route-codebase-docs`**: the scan is not green apart from the review
-     window row, or a framework section hit;
+     window row and a Specs row a specs and plans hit makes `misplaced`
+     (`model-codebase-domain` fixes that one), or a framework section hit;
    - **review window**: no `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` in the
      `env` of `.claude/settings.json`. It is no block:
      [Branch and worklist](#2-branch-and-worklist) writes it.
@@ -70,10 +72,16 @@ the checks read `<default>`: from a clean tree, check it out and
 ## 2. Branch and worklist
 
 The worklist's [Start](worklist.md#start-or-resume), with the branch
-`adopt-pocock-methodology`. A team pause the start checks lifted: delete its
-`paused:` line in the first commit. Of the worklist's settings, ask
-`specs:` when a specs and plans hit exists, and `architecture:` when
-`route-codebase-docs` runs and an architecture doc exists.
+`adopt-pocock-methodology`. Of the worklist's settings, ask `specs:` when a
+specs and plans hit exists, and `architecture:` when `route-codebase-docs`
+runs and an architecture doc exists. Start's one commit also holds:
+
+- a team pause the start checks lifted: its `paused:` line deleted;
+- the review window, below;
+- with no preflight row: a `.agents/deviations.md` line, class
+  `repo-specific`, for each repo-specific item Old setup lists that the file
+  lacks. Show them first; one the user strikes is a hit after all, and adds
+  the preflight row.
 
 Your section, one row per block the start checks chose, in their order:
 
@@ -93,13 +101,13 @@ say. Above 0 on a
 GitHub remote: run [labels.sh](../setup-codebase-for-agents/labels.sh) with
 `--review-only`.
 
-Commit.
-
 ## 3. Blocks
 
 Per open row, in order, call the block on this branch. When it hands back,
-tick its row and commit, with what its bullet puts under the row; then its
-bullet's stop, if any.
+tick its row, commit with what its bullet puts under the row, and push; then
+its bullet's stop, if any. A block's denied
+[confirmed step](../setup-codebase-for-agents/confirmed-steps.md) leaves its
+row open: name the gap and stop.
 
 - **preflight**: `retire-agent-setup`. Its summary goes under the row. It
   switched off a plugin or removed an override, skill or hook → after the

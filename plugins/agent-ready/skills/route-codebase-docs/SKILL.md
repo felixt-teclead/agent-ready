@@ -108,7 +108,9 @@ are is no target. Per row:
 - An architecture doc with every statement routed: before the first one
   goes, show `architecture:` again; its statements have homes now, so the
   answer is informed. A change goes into the worklist. `delete` → `git rm`
-  it and its `AGENTS.md` pointer; `keep` → it stays, with one pointer line
+  it, a
+  [confirmed step](../setup-codebase-for-agents/confirmed-steps.md), and
+  drop its `AGENTS.md` pointer; `keep` → it stays, with one pointer line
   in `AGENTS.md`.
 
 A row is done when its approved routes have landed and no file still
@@ -163,6 +165,6 @@ commit.
   lists, per topic, the count per route (home, tool, delete) and the files
   touched; the scan's numbers; the lines added to `.agents/deviations.md`.
   Tell the user: "After the merge, unsure what's next? Run
-  `/ask-agent-ready`."
+  `/what-to-do`."
 
 Done when every worklist row is ticked.

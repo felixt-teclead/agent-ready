@@ -9,7 +9,9 @@ every file gets one full comment pass.**
 A `cleanup` PR changes no behaviour. It may move statements into or out of
 steering files; such a PR fixes its pointers as
 [Moving a statement](../setup-codebase-for-agents/pointers.md#moving-a-statement)
-says.
+says. Deleting tracked files, pushing and writing `.claude/settings.json`
+are [confirmed steps](../setup-codebase-for-agents/confirmed-steps.md); a
+denied one leaves its step open, with the gap in the PR body or the report.
 
 Skill names take the `agent-ready:` prefix in the plugin channel.
 

@@ -80,15 +80,7 @@ No-plugin example, with the defaults, a 7-day window and one of the hooks:
 
 ## Writing the file
 
-Claude Code's auto mode denies an agent's write to `.claude/settings.json` as
-self-modification, and a permission prompt may too. Expect it. Before the
-write, show the owner the exact change: the JSON to add or replace, key by
-key.
-
-- **Owner at the keyboard:** ask them to confirm the write.
-- **Write denied, or nobody at the keyboard:** the owner writes that JSON
-  into `.claude/settings.json` on the branch, before the merge.
-
-Until the file holds the change, each row it carries is on the gap list by
-name, with the JSON: "`.claude/settings.json` not written (<denied or not
-confirmed>): <rows>". The agent leaves a denied write to the owner.
+The write is a [confirmed step](confirmed-steps.md): show the JSON to add or
+replace, key by key. Until the file holds the change, each row it carries is
+on the gap list by name, with the JSON: "`.claude/settings.json` not written
+(<denied or not confirmed>): <rows>".

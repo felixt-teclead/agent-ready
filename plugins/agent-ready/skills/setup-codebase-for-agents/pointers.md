@@ -55,6 +55,8 @@ Skip:
   needed. An `#anchor` or `§"…"` into one that exists resolves or fails like
   any other;
 - a path the sentence names as former, old, moved or removed;
+- a path a procedure in the repo creates when it runs (the `CHANGELOG.md`
+  a release skill writes);
 - a package or product name (`Next.js`);
 - a name a doc uses as an example, a placeholder or a stand-in for the
   repo's own file.
@@ -80,4 +82,14 @@ text. Point each hit at the new home; a gist clause beside the pointer moves
 with it and still names what the target covers. A hit in a steering file
 makes the PR a steering diff.
 
-Done when a repeat search finds no pointer to the old spot.
+A deleted statement has no new home. Per hit, the first that fits:
+
+- the fact now sits in a `CONTEXT.md` entry or an ADR → point there;
+- the hit needs the fact itself → a stub at the old path, a few lines that
+  state it and say "Historical";
+- the file must not change (an applied database migration) or the user
+  says leave → it stays, with its line in `.agents/deviations.md`, class
+  `old setup`.
+
+Done when a repeat search finds no pointer to the old spot but the ones
+`.agents/deviations.md` keeps.

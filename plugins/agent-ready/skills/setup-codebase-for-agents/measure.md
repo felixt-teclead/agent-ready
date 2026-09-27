@@ -44,7 +44,8 @@ For each file: its line count, and whether an always-loaded file cites it.
   cleanup phase does it.
 
 The Superpowers row is **n/a** when `docs/agents/superpowers.md` is absent
-and nothing shows Superpowers in use: no `.superpowers/`, and no enabled
+and nothing shows Superpowers in use: no `.superpowers/` that
+`.agents/deviations.md` does not keep, and no enabled
 `superpowers@` plugin ([Old setup](#4-old-setup) says when a plugin is
 enabled). A `docs/superpowers/` folder holds past work, not use.
 
@@ -83,13 +84,16 @@ Done when every row has a status and every old file found has its row.
 
 List what another agent setup left in the repo. A **hit** is an agent
 artifact that duplicates a Pocock or agent-ready step, or routes the agent
-through another framework. A repo-specific item is never a hit. Judge each
+through another framework. A repo-specific item is never a hit. List it
+apart as "repo-specific, no hit", so a skill records it, unless
+`.agents/deviations.md` already has its line. Judge each
 artifact by what it does, never by which framework it names. These are not
 the routing table's old files, which earlier agent-ready setups wrote.
 
 **Setup's own** are no hit: the `agent-ready` and `mattpocock-skills` plugin
 keys and the marketplace entry they use, agent-ready's skill folders, the
-files `.agents/agent-ready-manifest.json` lists, the hooks that run
+paths `.agents/agent-ready-manifest.json` lists (the keys of its `.files`
+object), the hooks that run
 agent-ready's scripts, and the template files. An item
 `.agents/deviations.md` lists is no hit either: the user kept it.
 
@@ -123,7 +127,8 @@ plugin. They are no hit. Its specs and plans folders stay hits.
 
 **Retired:** a framework none of whose plugins, skills or hooks Old setup
 lists or `.agents/deviations.md` keeps with class `old setup`. An overridden
-framework counts as retired for its committed specs and plans.
+framework counts as retired for its committed specs and plans. Kept scratch
+does not make a framework active.
 
 **Scratch** is listed too, but is not a hit on its own: a top-level dot folder
 that holds agent run state or worktrees, tracked or gitignored, plus the

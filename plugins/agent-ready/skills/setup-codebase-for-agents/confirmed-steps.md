@@ -1,0 +1,22 @@
+# Confirmed steps
+
+Claude Code's auto mode denies some agent actions, and a permission prompt
+may too: a write to `.claude/settings.json` (self-modification), a bulk
+`git rm` (irreversible deletion), and at times a `git push` (shared
+resources). Expect it. A step that writes a settings file, deletes tracked
+files or pushes is a **confirmed step**, in every skill:
+
+1. **Show** the owner exactly what it does: the command with its paths, or
+   the JSON to add or replace, key by key. Several confirmed steps of one
+   row go into one view.
+2. **Owner at the keyboard:** ask them to confirm, then run it.
+3. **Denied, or nobody at the keyboard:** the owner runs the shown command,
+   or writes the shown JSON, on the branch before the merge.
+
+A denied or unconfirmed step is a **gap**, named with what it holds:
+"<step> not run (<denied or not confirmed>): <command or JSON>". Its
+worklist row, or the skill step it belongs to, stays open, and the next run
+offers it again. The agent reaches the step's effect only through the step
+itself and leaves a denied step to the owner.
+
+Done when each confirmed step ran, or stands as a named gap on an open row.

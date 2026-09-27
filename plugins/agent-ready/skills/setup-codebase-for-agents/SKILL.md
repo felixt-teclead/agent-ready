@@ -87,7 +87,7 @@ owner can accept it in a word.
   hits by the summary in measure.md's [Old setup](measure.md#4-old-setup).
   Ask "Migrate, Stubborn or neither?", each option with what it does, when
   it is right and what it costs, in the words of
-  [Migrate, Stubborn or neither](../ask-agent-ready/TRADEOFFS.md#migrate-stubborn-or-neither).
+  [Migrate, Stubborn or neither](../what-to-do/TRADEOFFS.md#migrate-stubborn-or-neither).
   - **Migrate** (recommended): `/adopt-pocock-methodology`, typed after this
     pull request merges. With no hits, say what it does here: it builds
     `CONTEXT.md` and routes the docs.
