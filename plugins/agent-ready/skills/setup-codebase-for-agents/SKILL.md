@@ -107,7 +107,10 @@ answer unless the Superpowers row is `home`.
 ## 3. Write
 
 One branch, `setup-codebase-for-agents`, off `origin/<default>`; one pull
-request, one commit per step. Skip a step whose rows are all `home`, `n/a`
+request, one commit per step. A step re-run after that pull request merged,
+for a row still on the gap list (a denied settings write, a declined tool):
+its own branch, `setup-<step>`, such as `setup-settings`, and its own pull
+request, with only that step's rows. Skip a step whose rows are all `home`, `n/a`
 or on the gap list. In a step that runs, write its `missing` rows, and, from
 its template, the home file of each `misplaced` `fixed` row that has none
 yet, so `cleanup` has somewhere to move the statements. Merge into an
@@ -196,7 +199,8 @@ row matches its answer.
 - `.claude/settings.json` parses as JSON. Not written: its gap-list entry
   from [Writing the file](settings.md#writing-the-file) stands.
 - `sh <this skill's folder>/verify-hooks.sh` from the repo root: each line
-  reads `ok`. Each `FAIL` line goes on the gap list.
+  reads `ok`. No plugin: it also checks that `.claude/settings.json` runs
+  every `hooks.json` entry from `.agents/hooks/`. Each `FAIL` line goes on the gap list.
 
 Done when each check passes or is on the gap list with its output.
 

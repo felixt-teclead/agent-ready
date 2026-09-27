@@ -4,7 +4,7 @@
 # The commands the gates react to live in this file, not on the command line,
 # so a gate live in the session neither blocks a check nor fakes its result.
 # It tests the hooks beside this skill: .agents/hooks without the plugin, the
-# plugin's own with it.
+# plugin's own with it. Without the plugin it also checks their wiring.
 set -u
 hooks=$(cd -P "$(dirname "$0")/../../hooks" 2>/dev/null && pwd) || {
   echo "FAIL  no hooks folder beside this skill"
@@ -20,6 +20,34 @@ say $? "jq is on PATH; the steering gate and the reminder need it"
 if git remote -v 2>/dev/null | grep -qi github; then
   gh auth status >/dev/null 2>&1
   say $? "gh is logged in"
+fi
+
+# No plugin: .claude/settings.json must run every hooks.json entry from the
+# repo's copy, under the same event and matcher, as an executable file.
+root=$(git rev-parse --show-toplevel 2>/dev/null) && root=$(cd -P "$root" && pwd)
+if [ -n "$root" ] && [ "$hooks" = "$root/.agents/hooks" ]; then
+  us=$(printf '\037')
+  list='.hooks // {} | to_entries[] | .key as $e | .value[] | (.matcher // "") as $m
+    | .hooks[]? | "\($e)\u001f\($m)\u001f\(.command)"'
+  wired=$(jq -r "$list" "$root/.claude/settings.json" 2>/dev/null) || wired=
+  wanted=$(jq -r "$list" "$hooks/hooks.json")
+  while IFS="$us" read -r e m cmd; do
+    [ -n "$e" ] || continue
+    script=${cmd##*/hooks/}
+    script=${script%%\"*}
+    r=1
+    while IFS="$us" read -r we wm wcmd; do
+      [ "$we" = "$e" ] && [ "$wm" = "$m" ] || continue
+      path=$(printf '%s' "$wcmd" | sed -e 's/"//g' \
+        -e "s|\${CLAUDE_PROJECT_DIR}|$root|; s|\$CLAUDE_PROJECT_DIR|$root|")
+      [ "$path" = "$root/.agents/hooks/$script" ] && [ -x "$path" ] && r=0
+    done <<EOF_WIRED
+$wired
+EOF_WIRED
+    say $r ".claude/settings.json runs .agents/hooks/$script on $e${m:+ $m}"
+  done <<EOF_WANTED
+$wanted
+EOF_WANTED
 fi
 
 tmp=$(mktemp -d)

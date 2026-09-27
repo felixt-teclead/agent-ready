@@ -42,10 +42,41 @@ No-plugin channel also:
   the same event and matcher, or add that group. A group without a matcher
   matches one without.
 - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per [switch](#switches) answer, as
-  a string.
+  a string; `<KEY>` is the switch name in upper case:
+  `CLAUDE_PLUGIN_OPTION_COMMENT_REVIEW`, `CLAUDE_PLUGIN_OPTION_STEERING_GATE`,
+  `CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS`,
+  `CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS_MAX_FILES`.
 - `enabledPlugins`: `"agent-ready@teclead": false` and
   `"mattpocock-skills@teclead": false`. The copies in `.agents/` replace both
   plugins; a user-scope install left on loads every skill and hook twice.
+
+No-plugin example, with the defaults, a 7-day window and one of the hooks:
+
+```json
+{
+  "autoMemoryEnabled": false,
+  "env": {
+    "AGENT_READY_ARCHITECTURE_REVIEW_DAYS": "7",
+    "CLAUDE_PLUGIN_OPTION_COMMENT_REVIEW": "true",
+    "CLAUDE_PLUGIN_OPTION_STEERING_GATE": "true",
+    "CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS": "true",
+    "CLAUDE_PLUGIN_OPTION_CLEANUP_COMMENTS_MAX_FILES": "10"
+  },
+  "enabledPlugins": {
+    "agent-ready@teclead": false,
+    "mattpocock-skills@teclead": false
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/refactor-phase.sh" }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ## Writing the file
 
