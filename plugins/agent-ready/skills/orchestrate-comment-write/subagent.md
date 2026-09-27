@@ -6,7 +6,8 @@ constraint the code answers to — is fixed with the first of these that works:
 a better name, a type, a comment. An **intuition** fact — what a block
 accomplishes, so a reader can skip it — has no home but a comment, and a
 summary above a large block is one of the most common improvements a codebase
-can take. How to word a comment: [`WRITING.md`](WRITING.md). Calibration:
+can take. How to word a comment:
+[`WRITING.md`](../comment-write/WRITING.md). Calibration:
 [`EXAMPLES.md`](EXAMPLES.md).
 
 Input: one `path`, one scratch directory `work`. Sources: the file, its tests,
@@ -92,8 +93,7 @@ grep -rn '<export>' src tests scripts        # every caller, not just the neares
 
 A caller shows which slot is load-bearing and which is incidental. A sibling —
 the type this one mirrors, the SQL predicate that repeats this rule — is the
-fact the file cannot state: two definitions that must
-change together. Skip the sweep and the interface block documents the body
+fact the file cannot state: two definitions that must change together. Skip the sweep and the interface block documents the body
 instead of the contract. Return a fact that spans files this way as a `DOC?`
 block, with the sibling named.
 
@@ -153,10 +153,10 @@ Done when every tag carries an exit or a rung.
 
 ## 3. Write
 
-Edit the file, `WRITE` blocks only, per [`WRITING.md`](WRITING.md). Then
-re-read each line you wrote against the code: a named symbol exists and is
-used as stated, a named key or flag exists, a stated number or direction
-holds. A claim you cannot check now is a claim you invented — delete it.
+Edit the file, `WRITE` blocks only, per
+[`WRITING.md`](../comment-write/WRITING.md). Then re-read each line you wrote
+against the code: a named symbol exists and is used as stated, a named key or
+flag exists, a stated number or direction holds. A claim you cannot check now is a claim you invented — delete it.
 
 Return, in this order: the tags file path; counts per exit and rung; every
 `DOC?` block; every `BUG`, `MISLEADING`, `REDESIGN` and `UNSURE` block; the
