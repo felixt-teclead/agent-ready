@@ -20,7 +20,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - **The chain**: `/domain-modeling` → doc cleanup (with `/writing-for-agents`) → `/improve-codebase-architecture`. Always in this order. A housekeeping preflight runs before it (see [What migrating the current setup covers](issues/01-migration-scope.md)).
 - **Allowed Pocock skills**: `/domain-modeling`, `/writing-for-agents`, `/improve-codebase-architecture`, `/ask-matt`. The plugin's own skills stay usable.
 - **`/ask-matt` is not a step.** The skill points the user to it when they are unsure what comes next, why a step comes next, or where they are in the migration.
-- **Recurring architecture review**: a Claude Code hook on `gh pr create` checks whether `/improve-codebase-architecture` ran in the last N days. If not, it offers to run it. No CI job: map #1 decided "no doc CI", and CI cannot run an interactive skill. N defaults to 14; setup suggests 7. Where N lives: see [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md).
+- **Recurring architecture review**: a Claude Code hook on `gh pr create` checks whether `/improve-codebase-architecture` ran in the last N days. If not, it offers to run it. No CI job: map #1 decided "no doc CI", and CI cannot run an interactive skill. Setup proposes N = 7; unset means off. Where N lives: see [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md).
 - **Steering paths**: the hook lands in `plugins/agent-ready/hooks/`, so a human merges it.
 - **Parallel AFK agents**: one git worktree each.
 
@@ -31,6 +31,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - [What /domain-modeling produces during migration](issues/02-domain-modeling-step.md) — agent-invokable `migrate-*` skill copies on the migration branch; code is truth, old docs give language only; `CONTEXT.md` entries approved by topic; gitignored `CONTEXT.local.md` for personal wording; settings asked at start and end
 - [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md) — `gh pr list` for a merged PR labelled `architecture-review` in the last N days; N and opt-in in committed `.claude/settings.json` `env`; a skill-start hook tells the agent to label (reopened by 07, marker file dropped)
 - [What the repo keeps so the plugin can be switched off](issues/07-plugin-switch-off.md) — reuse the no-plugin channel (`fetch.sh` + settings wiring); a new `update-codebase-for-agents` step moves a repo off the plugin; hooks stay in `plugins/agent-ready/hooks/`
+- [PR hook behaviour](issues/05-pr-hook-behaviour.md) — `PostToolUse` after `gh pr create`, blocks nothing; skips the review PR and any merged or fresh open review PR in N days; offers once per clone per day; no 14-day default
 - [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md) — statements extracted, grouped by topic, routed with per-topic approval; lever verdicts plus scan green = done; comment pass as `cleanup` fast sub-tickets, one commit each, cap 10; migration answers status itself, `/ask-matt` only for next-task routing
 
 ## Not yet specified
