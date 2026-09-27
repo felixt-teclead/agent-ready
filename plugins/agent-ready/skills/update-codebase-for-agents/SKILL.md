@@ -57,7 +57,10 @@ Done when a run exits 0 and its changes are committed.
 ## 2. Settings
 
 `.claude/settings.json`, as
-[Settings file](../setup-codebase-for-agents/settings.md#settings-file) says.
+[Settings file](../setup-codebase-for-agents/settings.md#settings-file) says,
+written as
+[Writing the file](../setup-codebase-for-agents/settings.md#writing-the-file)
+says; a gap-list entry goes into the pull request body.
 
 **Hooks.** An entry is one hook. Its key is its event, its matcher and its
 script, the file name after `.agents/hooks/` in its command. Build the entries
@@ -148,7 +151,9 @@ Start from a clean tree on a new branch, `move-off-plugin`, off
    Commit `.agents/` and `.claude/skills`.
 2. **Settings.** Write `.claude/settings.json` as
    [Settings file](../setup-codebase-for-agents/settings.md#settings-file)
-   says for the no-plugin channel. The switch values in `env` are this
+   says for the no-plugin channel, written as
+   [Writing the file](../setup-codebase-for-agents/settings.md#writing-the-file)
+   says. The switch values in `env` are this
    user's plugin values:
 
    - `comment_review`: `${user_config.comment_review}`

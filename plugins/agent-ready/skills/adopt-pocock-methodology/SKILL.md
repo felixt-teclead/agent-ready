@@ -88,7 +88,8 @@ scan before: <the scan's three numbers>
 **Review window.** No `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` in the `env` of
 `.claude/settings.json` → ask and write it as setup's
 [Review window](../setup-codebase-for-agents/settings.md#review-window)
-says. Above 0 on a
+and [Writing the file](../setup-codebase-for-agents/settings.md#writing-the-file)
+say. Above 0 on a
 GitHub remote: run [labels.sh](../setup-codebase-for-agents/labels.sh) with
 `--review-only`.
 

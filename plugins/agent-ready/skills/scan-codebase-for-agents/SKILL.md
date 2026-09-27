@@ -84,7 +84,13 @@ Take the first class with a finding, in this order:
    symlink, or `.claude/skills` exists and is not a symlink. The step: re-run
    `/setup-codebase-for-agents`; it writes missing rows only. Only the
    architecture review row is missing → `/adopt-pocock-methodology` asks
-   the window and writes it.
+   the window and writes it. Every missing row lives in
+   `.claude/settings.json` → confirm or write `.claude/settings.json` as
+   setup's
+   [Writing the file](../setup-codebase-for-agents/settings.md#writing-the-file)
+   says, with the JSON its
+   [Settings file](../setup-codebase-for-agents/settings.md#settings-file)
+   gives.
 2. **Dead pointers.** A
    [dead pointer](../setup-codebase-for-agents/pointers.md#when-it-resolves).
    The step points it at the statement's new home or removes it.

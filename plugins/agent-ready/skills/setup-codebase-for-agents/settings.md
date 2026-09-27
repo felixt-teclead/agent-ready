@@ -1,7 +1,7 @@
 # Settings
 
-What setup writes into `.claude/settings.json`, and the questions behind it.
-Setup, update and the migration use it.
+What setup writes into `.claude/settings.json`, the questions behind it, and
+how the write happens. Setup, update and the migration use it.
 
 ## Switches
 
@@ -46,3 +46,18 @@ No-plugin channel also:
 - `enabledPlugins`: `"agent-ready@teclead": false` and
   `"mattpocock-skills@teclead": false`. The copies in `.agents/` replace both
   plugins; a user-scope install left on loads every skill and hook twice.
+
+## Writing the file
+
+Claude Code's auto mode denies an agent's write to `.claude/settings.json` as
+self-modification, and a permission prompt may too. Expect it. Before the
+write, show the owner the exact change: the JSON to add or replace, key by
+key.
+
+- **Owner at the keyboard:** ask them to confirm the write.
+- **Write denied, or nobody at the keyboard:** the owner writes that JSON
+  into `.claude/settings.json` on the branch, before the merge.
+
+Until the file holds the change, each row it carries is on the gap list by
+name, with the JSON: "`.claude/settings.json` not written (<denied or not
+confirmed>): <rows>". The agent leaves a denied write to the owner.

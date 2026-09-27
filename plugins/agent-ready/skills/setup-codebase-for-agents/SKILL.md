@@ -148,13 +148,14 @@ the gap list.
    [Inventory](measure.md#2-inventory) lists an architecture doc: one line in
    `AGENTS.md`, `Architecture: see <path>.`
 9. **`.claude/settings.json`** as [Settings file](settings.md#settings-file)
-   says.
+   says, written as [Writing the file](settings.md#writing-the-file) says.
 10. **Stubborn: the Superpowers override**, when answer I is Stubborn:
     `docs/agents/superpowers.md` from the template, the `### Superpowers`
     part of the block, `.superpowers/` in `.gitignore`, and the
     `permissions.deny` entries of
     [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
-    merged into `.claude/settings.json`.
+    merged into `.claude/settings.json`, written as
+    [Writing the file](settings.md#writing-the-file) says.
 11. **Steering gate,** on a GitHub remote, when `steering_gate` is on and
     answer H exists: [`CODEOWNERS`](templates/.github/CODEOWNERS) with
     answer H's handle,
@@ -175,7 +176,8 @@ row matches its answer.
   resolves.
 - The `check` command finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the command.
-- `.claude/settings.json` parses as JSON.
+- `.claude/settings.json` parses as JSON. Not written: its gap-list entry
+  from [Writing the file](settings.md#writing-the-file) stands.
 - `sh <this skill's folder>/verify-hooks.sh` from the repo root: each line
   reads `ok`. Each `FAIL` line goes on the gap list.
 
