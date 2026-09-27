@@ -1,6 +1,6 @@
 ---
 name: ask-agent-ready
-description: Orient in a repo's agent setup — read where it stands, say what happened, the one next step and why, and weigh the choices. Use for a newcomer's first question, when a user states a goal for agents here, asks what's next or where the repo stands, or is unsure at a setup or migration question, and when you meet state you cannot place — a phase file, a migration worklist, a kept or overridden framework.
+description: Orient in a repo's agent-ready setup — where it stands and the one next step. Use when a user asks what's next or states a goal for agents here, is unsure at a setup, migration or cleanup question, or you meet state you cannot place — a phase file, a migration worklist, a kept or overridden framework.
 ---
 
 # Ask agent-ready
@@ -8,7 +8,7 @@ description: Orient in a repo's agent setup — read where it stands, say what h
 **Goal: the asker knows where the repo stands, what happened, the one next
 step and why, and each alternative as a command to type.** You answer people
 new to Pocock's methodology, and agents that met state they cannot place.
-Read and explain; edit nothing. On a yes to a step an agent may run, run it.
+Read and explain; edit nothing.
 
 Speak plainly: say what a thing does before you name it, and gloss a term in
 one clause the first time it comes up:
@@ -23,6 +23,32 @@ one clause the first time it comes up:
 - **Phase**: a run of cleanup pull requests toward one goal.
 - **Stubborn**: keeping Superpowers, with agent-ready's override.
 
+## 0. Short answers
+
+Two cases skip the steps below:
+
+- **Inside another skill's question**: your last message is that skill's
+  question, or the asker names one. Explain it in plain words and give its
+  recommended answer and why, from its section in
+  [TRADEOFFS.md](TRADEOFFS.md) when it has one. Accepting it is safe: setup
+  and migration changes land in one pull request a human merges, an agent
+  merges a cleanup PR only when it touches no steering file
+  ([Merging a cleanup PR](../cleanup/SKILL.md#merging-a-cleanup-pr)), and
+  git keeps the old text. The exception is `retire-agent-setup`'s scratch,
+  deleted outside git after its unpushed-work check. Done when the asker
+  has the recommended answer and its reason; then ask the question again.
+- **An agent with no user in the chat** gets what the state asks of its
+  task, then goes back to it:
+  - a worklist in the checkout: a migration branch; resume it only when the
+    migration is the task;
+  - `.agents/refactor.md`: follow the session-start hook's line;
+  - `docs/agents/superpowers.md`: the team chose Stubborn; follow that
+    file;
+  - `.agents/deviations.md`: the team kept those findings; leave them.
+
+  Starting a migration or a phase needs a human's answers: name it in the
+  hand-back.
+
 ## 1. Read the state
 
 Live, every time; write none of it down. `git fetch` first. `<default>` is
@@ -33,11 +59,11 @@ team's state is on `origin/<default>` (`git show origin/<default>:<path>`);
 - **Setup**: `AGENTS.md` on `origin/<default>`. The channel, plugin or
   copies: measure's
   [Channel and switches](../setup-codebase-for-agents/measure.md#1-channel-and-switches).
-  No-plugin copies older than agent-ready's `main`: setup's
+  No-plugin copies behind agent-ready's `main`: setup's
   [Measure](../setup-codebase-for-agents/SKILL.md#1-measure) says how to
   tell.
 - **Framework**: `docs/agents/superpowers.md` exists → the team chose
-  Stubborn. Hits on the scan's `old` line → an old setup is still in place.
+  Stubborn.
 - **Kept findings**: `.agents/deviations.md`, one line per finding the team
   kept, with its class
   ([Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)).
@@ -65,11 +91,6 @@ team's state is on `origin/<default>` (`git show origin/<default>:<path>`);
   labels names.
 - **Recent work**:
   `gh pr list --state all --limit 20 --json number,title,state,headRefName,labels`.
-- **The scan**: a report from this session, else run
-  `scan-codebase-for-agents` when the answer turns on its three numbers, its
-  next step, or its `old`, `overridden` and `comments` lines. It edits
-  nothing, and as its caller you decide, so it makes no phase offer. On a
-  large repo it takes minutes: say so before you start it.
 
 Done when every item has a value, or is named unknown (`gh` missing or
 failing, no network).
@@ -77,20 +98,23 @@ failing, no network).
 ## 2. Place the repo
 
 First match wins. The table names the stage; the stage's skill decides the
-details.
+details. The rows from Setup gap down read the scan: a report from this
+session, else run `scan-codebase-for-agents` (it edits nothing, and as its
+caller you decide, so it makes no phase offer; on a large repo it takes
+minutes: say so first).
 
 | Stage | Signal | Next |
 |---|---|---|
 | Not set up | no `AGENTS.md` on `origin/<default>` | `/setup-codebase-for-agents`; its pull request open → a human merges it first |
-| Copies behind | the no-plugin copies are older than agent-ready's `main` | `/update-codebase-for-agents` |
-| Migration mid-run | a run's branch holds a worklist | `/<owner>`, from its `owner:` line, typed in a fresh session; it resumes at the first open row |
-| Steering PR open | a run's branch has an open pull request and no worklist | a human reviews and merges it; then `/adopt-pocock-methodology` again, which starts the comment pass |
+| Migration mid-run | a run's branch is not merged and has no open pull request | `/<branch>` (the owner's skill), typed in a fresh session; it resumes at the first open row or opens its pull request |
+| PR open | a run's branch has an open pull request and no worklist | a human reviews and merges it; then, after `adopt-pocock-methodology`, `/adopt-pocock-methodology` again, which offers the comment pass; after a block, the next block of the [Stance](TRADEOFFS.md#stance)'s order, or `/adopt-pocock-methodology` for the rest |
+| Copies behind | fetch.sh would change the no-plugin copies (setup's [Measure](../setup-codebase-for-agents/SKILL.md#1-measure) says how to tell) | `/update-codebase-for-agents` |
 | Phase paused | `paused:` in either phase file | say the reason; resuming: cleanup's [Pause and resume](../cleanup/SKILL.md#6-pause-and-resume) |
-| Phase running | `.agents/refactor.md` | fast: `cleanup` takes the next step ([Fast](../cleanup/SKILL.md#4-fast-one-child-issue-per-step)); continuous: work tasks as usual, each gets its cleanup PR |
+| Phase running | `.agents/refactor.md` | fast: `cleanup` takes the next step ([Fast](../cleanup/SKILL.md#4-fast-one-child-issue-per-step)); continuous: work tasks as usual, each gets its cleanup PR. `Else` `/adopt-pocock-methodology` when a signal of its Blocks shows |
 | Setup gap | the scan's Missing fixed rows | `/setup-codebase-for-agents` again; it writes missing rows only |
-| Not migrated | the scan shows `old` or is not green, or `CONTEXT.md` is missing and `.agents/deviations.md` has no `domain` line | a choice: [Stance](#stance), then [TRADEOFFS.md](TRADEOFFS.md); default `/adopt-pocock-methodology` |
+| Not migrated | a signal of adopt's [Start checks](../adopt-pocock-methodology/SKILL.md#1-start-checks), Blocks, shows | default `/adopt-pocock-methodology`. With `old` or `overridden`, the choice is [Migrate, Stubborn or neither](TRADEOFFS.md#migrate-stubborn-or-neither); else [Full migration or single blocks](TRADEOFFS.md#full-migration-or-single-blocks). Only not green: `Else` the scan's next step with `cleanup` |
 | Comment pass never ran | the scan's `comments` line | `cleanup`: on a green scan it offers the comment pass |
-| In shape | none of the above | feature work at `/grill-with-docs`; `needs-triage` issues → `/triage`; review due → `/improve-codebase-architecture` |
+| In shape | none of the above | the first that holds: review due → `/improve-codebase-architecture`; `needs-triage` issues → `/triage`; else feature work at `/grill-with-docs`. The others go in `Else` |
 
 In shape with `overridden` in the scan is Stubborn, a steady state:
 `/adopt-pocock-methodology` retires the override whenever the team drops
@@ -116,28 +140,15 @@ Else   <command> — <when it is the better pick>
   `/setup-codebase-for-agents`, `/update-codebase-for-agents`,
   `/adopt-pocock-methodology`, and Pocock's `/grill-with-docs`, `/to-spec`,
   `/to-tickets`, `/implement`, `/triage`, `/improve-codebase-architecture`,
-  `/ask-matt` and `/teach`. You may run the others on a yes. With the
+  `/ask-matt` and `/teach`. You run the others on a yes; a migration run,
+  new or resumed, the user types in a fresh session. With the
   plugin, agent-ready's are `/agent-ready:<name>`, Pocock's
   `/mattpocock-skills:<name>`.
 - A stated goal ([Goals](#goals)): the stage first, then the path toward the
-  goal. A choice: read [TRADEOFFS.md](TRADEOFFS.md) first.
-- "What do I answer here?", inside another skill's question: explain the
-  question in plain words and give its recommended answer. Accepting it is
-  safe: every change lands in one pull request a human merges, and git keeps
-  the old text. The exception is `retire-agent-setup`'s scratch, deleted
-  outside git after its unpushed-work check.
-- An agent with no user in the chat gets what the state asks of its task,
-  then goes back to it:
-  - a worklist in the checkout: a migration branch; resume it only when the
-    migration is the task;
-  - `.agents/refactor.md`: follow the session-start hook's line;
-  - `docs/agents/superpowers.md`: the team kept Superpowers; follow that
-    file;
-  - `.agents/deviations.md`: the team kept those findings; leave them.
-
-  Starting a migration or a phase needs a human's answers: name it in the
-  hand-back.
-
+  goal. A choice: read [TRADEOFFS.md](TRADEOFFS.md) first, and give its
+  Stance with it.
+- A why-question (why this step, this order, this rule): answer from its
+  section in [WHY.md](WHY.md).
 Done when the asker has one `Next` with its reason, and each alternative as
 a command.
 
@@ -174,47 +185,6 @@ a command.
 - **"Which skill fits my next task?"** `/ask-matt`.
 - **"Teach me Pocock's ideas."** `/teach <topic>`, such as
   `/teach CONTEXT.md and ADRs`, in an empty folder outside the repo: it
-  writes its lessons into the current directory. Why agent-ready chose what
-  it did: [WHY.md](WHY.md).
-
-## Stance
-
-For a team that splits work across people and agents and lets agents work
-unattended, a full migration makes the most sense: one methodology, so
-everyone follows the same flow; one `CONTEXT.md`, so everyone uses the same
-words; clean docs, so each rule sits in one place and nothing contradicts
-it. Say so when a choice comes up.
-
-A partial start is fine. Run one block at a time, each its own pull request,
-and measure: the scan's three numbers before and after, and how agents do on
-a few similar tickets before and after (how often a person corrects them).
-Suggested order:
-
-1. `model-codebase-domain`: the shared words and decisions every Pocock
-   skill reads. It works with the old framework still running.
-2. `route-codebase-docs`: every statement in one home, until the scan is
-   green.
-3. The comment pass: a `cleanup` phase.
-4. `retire-agent-setup`, once the team stops using the old framework; first,
-   when nobody uses it now.
-
-## How comments and docs get better
-
-- **New code**: `comment-review` checks the comments each branch adds before
-  it is pushed.
-- **Old code**: a phase gives every file one full comment pass, per task in
-  continuous mode, in batches of `cap:` files in fast mode (cleanup's
-  [Comment pass](../cleanup/SKILL.md#5-comment-pass)). Rules the pass finds
-  land in `docs/CODING_STANDARDS.md` in batches (cleanup's
-  [Rule queue](../cleanup/SKILL.md#rule-queue)).
-- **Docs**: the scan names one next change and `cleanup` lands it, until the
-  scan is green (the scan's
-  [One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step)). A
-  pull request that moves a statement fixes its pointers (cleanup's
-  [Moving a statement](../cleanup/SKILL.md#moving-a-statement)); the scan's
-  Dead pointers class catches the misses.
-- **Design**: after a pull request opens, a hook offers
-  `/improve-codebase-architecture` when no review merged within the window.
-- **Words**: `CONTEXT.md` grows as `/grill-with-docs` meets new terms.
-
-Progress shows in the scan's three numbers and in the phase's files left.
+  writes its lessons into the current directory.
+- **"How do docs and comments get better?"**
+  [WHY.md](WHY.md#how-comments-and-docs-get-better).

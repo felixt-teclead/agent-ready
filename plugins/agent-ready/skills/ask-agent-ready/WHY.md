@@ -7,8 +7,9 @@ itself: [TRADEOFFS.md](TRADEOFFS.md).
 ## The goal
 
 A team where people and coding agents take tickets side by side, and agents
-work unattended as much as possible. That needs every agent to follow the
-same flow, use the same words, and find each rule in one place.
+work unattended as much as possible. That needs **one flow, one language,
+one home per rule**: every agent follows the same flow, uses the same words,
+and finds each rule in one place.
 
 ## Why Pocock's methodology
 
@@ -34,10 +35,9 @@ second.
 
 ## Why a hit is judged by what it does
 
-The migration names no framework. It judges each artifact by what it does:
-a hit replaces a Pocock or agent-ready step, or routes the agent through
-another framework. A repo's own skills, hooks and tool plugins are never
-hits; they do what only this repo needs.
+The migration names no framework and judges each artifact by what it does
+([Old setup](../setup-codebase-for-agents/measure.md#4-old-setup)), so a
+repo's own skills stay, and the migration works for any framework.
 
 ## Why the old setup goes first, then a fresh session
 
@@ -50,14 +50,16 @@ one.
 
 A spec describes an intent at one moment; the code shows what was built. So
 behaviour comes from the code, and old specs give only words and decisions.
-Once folded into `CONTEXT.md`, ADRs and issues, the folder goes: a stale
-spec pulls every agent that searches the repo toward old decisions.
+Once folded into `CONTEXT.md`, ADRs and issues, the migration suggests
+removing the folder: a stale spec pulls every agent that searches the repo
+toward old decisions.
 
 ## Why a person approves every entry
 
 `CONTEXT.md` is the team's vocabulary: agents propose, people decide. A
 naming conflict is the team's call; a behaviour conflict is the code's.
-Entries come grouped by topic, so related words are judged side by side.
+Entries come grouped by topic, so people review a group at once and decide
+each entry: approve, edit or strike.
 
 ## Why one steering pull request, merged by a human
 
@@ -86,7 +88,8 @@ migration reuses cleanup instead of copying it.
 
 ## Why small cleanup pull requests, merged by agents
 
-A cap of 10 files keeps each pull request small enough to review. Hundreds
+A cap of a few files (`cap:`) keeps each pull request small enough to
+review. Hundreds
 of them cannot each wait for a person, so an agent merges its own when it
 touches no steering file
 ([Merging a cleanup PR](../cleanup/SKILL.md#merging-a-cleanup-pr)). The
@@ -121,3 +124,24 @@ Newcomers meet setup's framework question, the migration's approvals and
 cleanup's modes with nobody to ask. `/ask-matt` answers which Pocock skill
 fits a task, not where this repo stands. This skill reads the repo and
 answers that.
+
+## How comments and docs get better
+
+- **New code**: `comment-review` checks the comments each branch adds before
+  it is pushed.
+- **Old code**: a phase gives every file one full comment pass, per task in
+  continuous mode, in batches of `cap:` files in fast mode (cleanup's
+  [Comment pass](../cleanup/SKILL.md#5-comment-pass)). Rules the pass finds
+  land in `docs/CODING_STANDARDS.md` in batches (cleanup's
+  [Rule queue](../cleanup/SKILL.md#rule-queue)).
+- **Docs**: the scan names one next change and `cleanup` lands it, until the
+  scan is green (the scan's
+  [One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step)). A
+  pull request that moves a statement fixes its pointers (cleanup's
+  [Moving a statement](../cleanup/SKILL.md#moving-a-statement)); the scan's
+  Dead pointers class catches the misses.
+- **Design**: after a pull request opens, a hook offers
+  `/improve-codebase-architecture` when no review merged within the window.
+- **Words**: `CONTEXT.md` grows as `/grill-with-docs` meets new terms.
+
+Progress shows in the scan's three numbers and in the phase's files left.
