@@ -34,6 +34,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - [PR hook behaviour](issues/05-pr-hook-behaviour.md) — `PostToolUse` after `gh pr create`, blocks nothing; skips the review PR and any merged or fresh open review PR in N days; offers once per clone per day; no 14-day default
 - [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md) — statements extracted, grouped by topic, routed with per-topic approval; lever verdicts plus scan green = done; comment pass as `cleanup` fast sub-tickets, one commit each, cap 10; migration answers status itself, `/ask-matt` only for next-task routing
 - [How a user starts the migration later](issues/08-later-entry-point.md) — user-invoked skill named in setup's hand-over; scan names it as next step when an old setup remains; start checks setup ran, branch (resume), old setup, in shape (`CONTEXT.md` + scan green); no marker or label
+- [How a running cleanup phase meets the migration](issues/09-cleanup-phase-ordering.md) — migration takes over a running phase (path list, ends it in its PR); open `cleanup` PRs soft-gated; pauses lifted only on a yes; phase file lives on the branch only; after merge mode `none`
 
 ## Not yet specified
 
