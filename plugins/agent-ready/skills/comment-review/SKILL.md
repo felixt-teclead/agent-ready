@@ -30,9 +30,10 @@ Keep source files. Drop docs, config, lockfiles, generated and vendored files.
 
 If `.agents/refactor.md` sets mode `continuous` and not `comments: false`,
 and neither it nor `.agents/refactor.local` says `paused:`, drop every file
-left ([`cleanup`, Files](../cleanup/SKILL.md#files)). Its stacked cleanup PR
-gives it the full comment pass. A file created on this branch is never on
-the path list, so it stays.
+left that is not held ([`cleanup`, Files](../cleanup/SKILL.md#files)). Its
+stacked cleanup PR gives it the full comment pass. A held file keeps this
+review; its pass waits for a later PR. A file created on this branch is never
+on the path list, so it stays.
 
 One path per line into `<work>/files.txt`. Empty list → go to step 7.
 
@@ -122,6 +123,7 @@ after it.
 ## Report
 
 A `## Comment review` section for the pull request body: files reviewed,
+the files dropped for the cleanup PR under "Left to the cleanup PR",
 comments written, restored comments with `file:line` and their words, then
 the findings as a to-do list. An open pull request → read its body, replace
 or append that section only, and write it back with `gh pr edit --body-file`.
