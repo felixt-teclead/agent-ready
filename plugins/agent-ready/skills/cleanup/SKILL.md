@@ -10,6 +10,12 @@ every file gets one full comment pass.** The scan says what is wrong
 A `cleanup` PR changes no behaviour. It may move statements into or out of
 steering files; the merge hook then sends it to a human.
 
+A PR that moves a statement fixes its pointers. Before the commit, search
+the repo for the old spot, its file path and heading anchor, and point each
+hit at the new home. A hit in a steering file makes the PR a steering diff.
+A pointer is what the scan's "Dead pointers" class checks
+([scan §4](../scan-codebase-for-agents/SKILL.md#4-one-next-step)).
+
 ## Files
 
 `.agents/refactor.md`, the phase file, one `key: value` per line:

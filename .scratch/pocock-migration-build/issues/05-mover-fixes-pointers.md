@@ -4,8 +4,8 @@
 
 **Blocked by:** 04: Scan flags dead pointers
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `cleanup` states the rule where statements move
-- [ ] The rule names the steering-diff consequence
-- [ ] A scan after such a PR shows no dead pointer
+- [x] `cleanup` states the rule where statements move
+- [x] The rule names the steering-diff consequence
+- [x] A scan after such a PR shows no dead pointer
