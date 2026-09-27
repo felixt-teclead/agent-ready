@@ -4,9 +4,9 @@
 
 **Blocked by:** 10: Preflight skill: retire an old agent setup, 11: Step 1 skill: domain modeling, 12: Step 2a skill: route statements
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Each start case behaves as decided
-- [ ] Blocks called unchanged
-- [ ] Worklist and copies removed before the PR
-- [ ] Step 3 only on a yes
+- [x] Each start case behaves as decided
+- [x] Blocks called unchanged
+- [x] Worklist and copies removed before the PR
+- [x] Step 3 only on a yes
