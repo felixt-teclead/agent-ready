@@ -1,6 +1,6 @@
 ---
 name: cleanup
-description: Run a refactor phase — start one from a scan report, ship cleanup PRs in continuous or fast mode, pause it, end it.
+description: Fix what a scan found. Use to run the scan's next step as one pull request, or to run a refactor phase — start one from a scan report, ship cleanup PRs in continuous or fast mode, pause it, end it.
 ---
 
 **Goal: an existing codebase reaches its routing table one PR at a time, and
@@ -34,7 +34,21 @@ greps `mode:` and `paused:`, so keep both keys at the start of a line.
 `.agents/refactor.local`, then `.agents/refactor.md`: either says `paused:` →
 stop and say why. Earlier cleanup stays as it is.
 
-## 1. Start a phase
+## 1. One step, no phase
+
+No phase file: re-run the scan. Take the first step in its class 2 or
+class 3 (failing always-loaded lines, then misplaced statements and old
+files), with the action the
+[routing table](../setup-codebase-for-agents/routing-table.md) names. Class 1
+is setup's job: name it to the user as the scan does.
+
+One branch, one PR, label `cleanup`. A step on a steering path: say
+"steering diff, a human merges" in the body. Then stop. This step writes no
+phase file and no path list, asks no mode and runs no comment pass.
+
+A step too big for one PR starts a phase (§2).
+
+## 2. Start a phase
 
 Input: a scan report whose next step is a phase. Ask the human for the mode:
 
@@ -52,14 +66,14 @@ three numbers and its class list. Its number goes in `parent:`.
 Commit the phase file and path list in one PR labelled `cleanup`
 (`gh label create cleanup` if missing).
 
-## 2. Continuous: one cleanup PR per task
+## 3. Continuous: one cleanup PR per task
 
 After the task's logic PR is open, in the same session:
 
 1. Branch from the logic branch.
 2. Files = the logic PR's changed files that sit on the path list.
    Empty → done.
-3. Comment pass (§4) over them.
+3. Comment pass (§5) over them.
 4. Remove the files that got the pass from the path list.
 5. Open the PR against the logic branch, label `cleanup`, body starts with
    `Follows #<logic PR>.`
@@ -67,14 +81,14 @@ After the task's logic PR is open, in the same session:
 The logic PR's `comment-review` skips these files. Adjacent-line conflicts
 between two stacked cleanup PRs are expected; resolve them by hand.
 
-## 3. Fast: one child issue per step
+## 4. Fast: one child issue per step
 
 1. Re-run the scan. Take its next step, in its class order: setup regressed,
    failing always-loaded lines, misplaced statements and old files. An old
    file gets the action its row in the
    [routing table](../setup-codebase-for-agents/routing-table.md) names.
    Scan green → comment pass over the next files on the path list, up to the
-   cap (§4).
+   cap (§5).
 2. Open the step as a sub-issue of `parent:`, label `cleanup`.
 3. One branch, one PR, `Closes #<step>`. A step on a steering path: say
    "steering diff, a human merges" in the body.
@@ -83,7 +97,7 @@ between two stacked cleanup PRs are expected; resolve them by hand.
 
 Next step only after this PR merges.
 
-## 4. Comment pass
+## 5. Comment pass
 
 `cleanup_comments` = `${user_config.cleanup_comments}`, cap =
 `${user_config.cleanup_comments_max_files}`. Still in `${…}` form (no
@@ -113,15 +127,15 @@ Per file, in this order:
 Gate: `git diff HEAD` changes comment lines only. Commit as
 `docs: comment pass`.
 
-## 5. Pause and resume
+## 6. Pause and resume
 
 Team: add `paused: <reason>` to the phase file, commit, PR. One person: write
 the same line to `.agents/refactor.local`; confirm it is gitignored. Resume:
 delete the line.
 
-## 6. End
+## 7. End
 
 - **fast**: scan green and path list empty → delete the phase file and the
   path list in one `cleanup` PR, close the parent issue.
-- **continuous**: switch `mode:` to `fast` and set `parent:` (§1), then run §3
+- **continuous**: switch `mode:` to `fast` and set `parent:` (§2), then run §4
   over what is left.

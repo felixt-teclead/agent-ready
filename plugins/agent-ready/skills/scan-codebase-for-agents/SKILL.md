@@ -85,10 +85,13 @@ removes or moves. If it touches a steering file, say "steering diff, a human
 merges", and name any line in the repo that asks for consent before that file
 changes.
 
+The `cleanup` skill (`agent-ready:cleanup` in the plugin channel) runs a
+class 2 or class 3 step as one pull request.
+
 If the change does not fit one pull request, do not shrink it. Call the gap a
-phase, and point at the `cleanup` skill (`agent-ready:cleanup` in the plugin
-channel) to start a refactor phase. When `.agents/refactor.md` exists, a
-phase is already running: give its `mode:` and say `cleanup` takes the step.
+phase, and point at `cleanup` to start a refactor phase. When
+`.agents/refactor.md` exists, a phase is already running: give its `mode:`
+and say `cleanup` takes the step.
 
 ## 5. Writing skills
 
