@@ -31,10 +31,13 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 - [What /domain-modeling produces during migration](issues/02-domain-modeling-step.md) — agent-invokable `migrate-*` skill copies on the migration branch; code is truth, old docs give language only; `CONTEXT.md` entries approved by topic; gitignored `CONTEXT.local.md` for personal wording; settings asked at start and end
 - [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md) — `gh pr list` for a merged PR labelled `architecture-review` in the last N days; N and opt-in in committed `.claude/settings.json` `env`; a skill-start hook tells the agent to label (reopened by 07, marker file dropped)
 - [What the repo keeps so the plugin can be switched off](issues/07-plugin-switch-off.md) — reuse the no-plugin channel (`fetch.sh` + settings wiring); a new `update-codebase-for-agents` step moves a repo off the plugin; hooks stay in `plugins/agent-ready/hooks/`
+- [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md) — statements extracted, grouped by topic, routed with per-topic approval; lever verdicts plus scan green = done; comment pass as `cleanup` fast sub-tickets, one commit each, cap 10; migration answers status itself, `/ask-matt` only for next-task routing
 
 ## Not yet specified
 
 - **The "later" entry point.** How a user who said no during setup finds and starts the migration afterwards, and what the skill checks first (setup ran?). The detection signal is settled in [What migrating the current setup covers](issues/01-migration-scope.md).
-- **Ordering against `agent-ready:cleanup`.** Whether the cleanup phase runs after migration, is replaced by it, or stays unrelated.
+- **Ordering against `agent-ready:cleanup`.** The migration's comment pass is a `cleanup` fast phase (see [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md)). Still open: how a phase already running in the repo meets the migration, and whether anything is left for a phase after it.
 
 ## Out of scope
+
+- Running `/writing-for-agents` over the `agent-ready` plugin's own skills — plugin work in `blueprint`, not a migration step; the migration never edits fetched plugin skills (see [How /writing-for-agents shapes the doc-cleanup step](issues/03-doc-cleanup-step.md))

@@ -23,4 +23,4 @@ Grilled with the owner on 2026-09-27.
 
 **Step 1 (`/domain-modeling`)**: spec and plan folders are input. Terms go to `CONTEXT.md`, hard-to-reverse decisions go to ADRs, unfinished plans become GitHub issues. Then ask to delete the folder, because specs are not needed after the work is built. If the user says no, move it to `docs/archive/<folder>/` with a README: "Historical. Superseded by `CONTEXT.md` and `docs/adr/`. Do not follow."
 
-**Step 2 (doc cleanup)**: delete framework-specific sections of `CLAUDE.md`/`AGENTS.md`. `cleanup` routes all other statements.
+**Step 2 (doc cleanup)**: delete framework-specific sections of `CLAUDE.md`/`AGENTS.md`. Routing of all other statements: see [How /writing-for-agents shapes the doc-cleanup step](03-doc-cleanup-step.md).
