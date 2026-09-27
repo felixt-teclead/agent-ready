@@ -4,9 +4,9 @@
 
 **Blocked by:** 04: Scan flags dead pointers, 05: Moving PRs fix their pointers
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Nothing unapproved moves
-- [ ] Every lever has a verdict
-- [ ] Moved statements leave no dead pointer
-- [ ] Done = scan green (comment pass excluded)
+- [x] Nothing unapproved moves
+- [x] Every lever has a verdict
+- [x] Moved statements leave no dead pointer
+- [x] Done = scan green (comment pass excluded)
