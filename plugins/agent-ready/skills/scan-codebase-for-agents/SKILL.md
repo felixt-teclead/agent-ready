@@ -79,8 +79,17 @@ Take the first class with a finding:
 
 1. **Setup regressed.** `CLAUDE.md` or `.claude/skills` is no longer a
    symlink, or a `fixed` row is `missing`.
-2. **Failing always-loaded lines.**
-3. **Misplaced statements.**
+2. **Dead pointers.** In the inventory's docs only: a path in backticks or a
+   markdown link whose file is gone, or whose `#anchor` matches no heading
+   in it. Resolve a path from the repo root, then from the doc's folder and
+   its subfolders. An anchor matches a heading's GitHub slug: lowercase,
+   punctuation dropped except `-` and `_`, spaces as `-`, a repeated heading
+   gets `-1`, `-2`. Skip URLs, commands, placeholders, gitignored paths, lazy
+   homes, the steering list, and names a doc uses as an example or a
+   stand-in for the repo's own file. The fix points at the statement's new
+   home or removes the pointer.
+3. **Failing always-loaded lines.**
+4. **Misplaced statements.**
 
 Name one change that fits one pull request: the files it touches, and what it
 removes or moves. If it touches a steering file, say "steering diff, a human
@@ -118,4 +127,5 @@ tools  <writing skills found; leave the line out if none>
 ```
 
 Then the row table (statement, status, up to three `file:line` examples),
-then the failing lines grouped by file, `file:line`, and the reason.
+then the failing lines grouped by file, `file:line`, and the reason, then
+the dead pointers, `file:line`, and the missing file or anchor.

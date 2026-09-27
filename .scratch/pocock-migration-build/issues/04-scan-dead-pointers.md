@@ -4,9 +4,9 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] A dead path in a measured doc becomes the next step when setup is fine
-- [ ] A dead anchor is caught
-- [ ] Docs outside the measured set are not checked
-- [ ] Report shows the finding
+- [x] A dead path in a measured doc becomes the next step when setup is fine
+- [x] A dead anchor is caught
+- [x] Docs outside the measured set are not checked
+- [x] Report shows the finding
