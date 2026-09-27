@@ -28,6 +28,7 @@ A spec for a migration skill in the `agent-ready` plugin, ready for `/to-tickets
 
 - [What Superpowers leaves in a repo](issues/06-superpowers-footprint.md) — no repo steering: install touches at most `enabledPlugins` in `.claude/settings.json`, never `CLAUDE.md`/`AGENTS.md`; use leaves committed specs and plans in `docs/superpowers/` (project knowledge) plus `.superpowers/` and `.worktrees/` scratch
 - [What migrating the current setup covers](issues/01-migration-scope.md) — soft push gate + retire plugins/skills/hooks/scratch in a preflight; specs fold into `CONTEXT.md`/ADRs/issues, then delete (archive if declined); detection by generic inventory, listing hits
+- [How the PR hook knows the last architecture review](issues/04-architecture-review-marker.md) — committed `.agents/architecture-review` date, written only in the review's own PR, read from `origin/<default>`; its existence is the opt-in; a skill-start hook tells the agent to stamp
 
 ## Not yet specified
 
