@@ -10,7 +10,7 @@ The steering files are `AGENTS.md`, `CLAUDE.md`, `docs/agents/`, `docs/CODING_ST
 
 Two plugin paths are guarded too, because one line in either switches a safeguard off in every installed repo: `plugins/agent-ready/.claude-plugin/plugin.json` and `plugins/agent-ready/hooks/`.
 
-Never merge a diff that touches one. Stop, state plainly what the diff decides, write that exchange into the pull request, and leave the merge to a human. The merge click is the approval, and every real human is a pass.
+Never merge a diff that touches one. Stop, state plainly what the diff decides, write that exchange into the pull request, and leave the merge to a human. Any human's merge click is the approval.
 
 This rule guards itself: a diff that edits it is a steering diff.
 
