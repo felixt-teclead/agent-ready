@@ -5,7 +5,8 @@ description: Measure a codebase against the routing table, give three numbers an
 
 # Scan a codebase for agents
 
-You measure; you do not edit. The report goes to chat.
+You measure; you do not edit. The report goes to chat. The one exit is a yes
+to the phase offer in §4, which hands over to `cleanup`.
 
 The routing table and the measuring steps belong to setup. Read them from its
 folder: [routing-table.md](../setup-codebase-for-agents/routing-table.md) and
@@ -97,9 +98,11 @@ merges", and name any line in the repo that asks for consent before that file
 changes.
 
 If the change does not fit one pull request, do not shrink it. Call the gap a
-phase, and point at the `cleanup` skill (`agent-ready:cleanup` in the plugin
-channel) to start a refactor phase. When `.agents/refactor.md` exists, a
-phase is already running: give its `mode:` and say `cleanup` takes the step.
+phase. When `.agents/refactor.md` exists, a phase is already running: give
+its `mode:` and say `cleanup` takes the step. Otherwise, after the report,
+ask "Start a refactor phase with `cleanup` now?" (`agent-ready:cleanup` in
+the plugin channel). Yes: run its §1 with this report as input. No: the
+report stands.
 
 ## 5. Writing skills
 

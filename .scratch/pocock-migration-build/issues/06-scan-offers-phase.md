@@ -4,8 +4,8 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] Scan §4 phase case offers to start `cleanup` §1
-- [ ] Setup hand-over runs the scan
-- [ ] Update hand-over runs the scan
+- [x] Scan §4 phase case offers to start `cleanup` §1
+- [x] Setup hand-over runs the scan
+- [x] Update hand-over runs the scan

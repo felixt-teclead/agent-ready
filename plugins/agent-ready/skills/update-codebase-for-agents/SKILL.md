@@ -98,6 +98,9 @@ files. Do not merge; tell the owner a human merges it.
 Done when the pull request is open, its body names every behaviour change, and
 every kept edit was the owner's answer.
 
+Then ask the owner to say when it is merged. Update the default branch and run
+`scan-codebase-for-agents` on it.
+
 ## 4. Move this repo off the plugin
 
 The repo gets its own copies of the skills and hooks, and the plugin is
