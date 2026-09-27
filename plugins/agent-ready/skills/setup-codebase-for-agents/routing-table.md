@@ -26,10 +26,10 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Review rules, universal and scoped | `docs/CODING_STANDARDS.md` | fixed; content interviewed |
 | Mechanical rules | lint, typecheck, tests | interviewed |
 | Architecture | no architecture doc is written. If one exists, one pointer line in `AGENTS.md`. Architecture rules are scoped sections in `docs/CODING_STANDARDS.md`. | lazy |
-| Domain definitions | `CONTEXT.md`, written by `/domain-modeling` | lazy |
+| Domain definitions | `CONTEXT.md`, written by `/domain-modeling`; multi-context: `CONTEXT-MAP.md`, which also says which `CONTEXT.md` to read | lazy |
 | Decisions and rejected alternatives | `docs/adr/` | lazy |
 | Specs | issues, closed once shipped; never kept in the repo | fixed |
-| Tracker, domain-doc read rules | `docs/agents/issue-tracker.md`, `domain.md` | interviewed |
+| Tracker | `docs/agents/issue-tracker.md` | interviewed |
 | Triage labels | the `### Triage labels` line in `AGENTS.md`; renamed labels also `docs/agents/triage-labels.md` | interviewed |
 | What an AFK run needs: env vars, services, egress, token scopes | `docs/agents/environment.md` | interviewed |
 | What an AFK run hands back | `docs/agents/afk-handback.md` | fixed |

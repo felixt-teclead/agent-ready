@@ -56,7 +56,9 @@ file.
   typecheck or a test enforces. The tool wins, even when the line would save a
   red run.
 - **Pointers.** A line that points at a file passes when the file exists or
-  is gitignored, and the file is not always loaded. Otherwise it fails.
+  is gitignored, and the file is not always loaded. A missing domain file
+  (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`) passes: skills create it when
+  a term or decision first needs a home. Otherwise it fails.
 
 Judge each line; do not count keywords. A duplicate you did not find is a
 pass.

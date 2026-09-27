@@ -28,7 +28,7 @@ Verify with the manifest's `check` script.
 
 ### Domain docs
 
-<single-context or multi-context>. See `docs/agents/domain.md`.
+Domain terms: `CONTEXT.md` (multi-context: `CONTEXT-MAP.md`). Decisions: `docs/adr/`.
 
 ### AFK runs
 

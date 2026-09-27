@@ -56,7 +56,6 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   else local markdown. "Other" (Jira, Linear, ...) → the owner describes the
   workflow in one paragraph. Triage labels: defaults, renamed, or none?
   Renamed: the owner names the string per role; a dropped role is `—`.
-  Domain docs: single-context, unless the repo is a monorepo.
 - **F. AFK environment.** Env vars and where their values come from,
   services and network egress the `check` script needs.
 - **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
@@ -89,8 +88,8 @@ leave the file out and put its row on the gap list.
    deletes them; then run it again.
 3. **`docs/agents/`** from answer E: `issue-tracker.md` from
    `templates/docs/agents/issue-tracker-<github|gitlab|local>.md`, or from the
-   owner's paragraph; `triage-labels.md` only for renamed labels;
-   `domain.md`. Add the `## Agent skills` block from the template to `AGENTS.md`, without the
+   owner's paragraph; `triage-labels.md` only for renamed labels. Add the
+   `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
    place.
 4. **Commands** from answer A into the manifest scripts, and the
@@ -129,7 +128,9 @@ its answer.
 
 - `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves.
 - Every path in backticks in `AGENTS.md` and `docs/agents/*.md` exists,
-  except the steering list and the ones a template names as examples.
+  except the steering list, the ones a template names as examples, and the
+  domain files (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`), which skills
+  create when a term or decision first needs a home.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
