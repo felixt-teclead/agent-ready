@@ -3,9 +3,42 @@
 The record of the documentation and steering conventions for agent-driven repos,
 and the `agent-ready` Claude Code plugin that writes them into a codebase.
 
+## Start here
+
+agent-ready moves a repo to one shared way of working with agents, built on
+[Matt Pocock's skills](https://github.com/mattpocock/skills): one domain
+glossary (`CONTEXT.md`), decisions as ADRs, docs agents can trust, and work as
+tickets agents can take on their own. You don't need to know Pocock's
+methodology first.
+
+1. Install the plugin (below).
+2. In your repo, ask:
+
+   ```
+   /ask-agent-ready what's next for this repo?
+   ```
+
+   It reads the repo's state, recommends one next step, and explains the
+   options and their tradeoffs. State a goal instead if you have one: "agents
+   should take tickets unattended", "just fix our docs", "we use Superpowers".
+
+The usual path:
+
+| Step | Command | What you get |
+|---|---|---|
+| Set up | `/setup-codebase-for-agents` | `AGENTS.md`, hooks, tracker and labels, one pull request |
+| Check | `/scan-codebase-for-agents` | three numbers and the next change |
+| Migrate | `/adopt-pocock-methodology` | old setup retired, `CONTEXT.md` and ADRs, docs routed |
+| Improve over time | `cleanup` | comments and docs fixed one pull request at a time |
+
+A full migration pays off most for a team that wants agents to work in
+parallel. Starting with one part is fine: `/ask-agent-ready` names the order
+and how to compare before and after. From the plugin, commands carry its
+prefix, e.g. `/agent-ready:ask-agent-ready`.
+
 ## Install the plugin
 
-You need git read access to this repo.
+You need git read access to this repo: ask the repo owner to add you.
 
 ```sh
 claude plugin marketplace add felixt-teclead/agent-ready
