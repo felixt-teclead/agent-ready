@@ -174,6 +174,7 @@ Done when each check passes or is on the gap list with its output.
   the default branch and run `scan-codebase-for-agents` on it.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
 - Answer I is migrate: after the merge, ask the owner to type
-  `/adopt-pocock-methodology`; only a user can invoke it. Any other answer
-  and measure.md §4 lists hits: the pull request body and the hand-over say
-  once "Migrate later: run `/adopt-pocock-methodology`."
+  `/adopt-pocock-methodology`; only a user can invoke it. Neither, and
+  measure.md §4 lists hits: the pull request body and the hand-over say once
+  "Migrate later: run `/adopt-pocock-methodology`." Keep is a choice; say
+  nothing.
