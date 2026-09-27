@@ -70,22 +70,24 @@ accept it in a word.
   [switches](routing-table.md#switches); recommend its default.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
-- **I. Framework,** unless the Superpowers row is `home`. Name the hits by
-  the summary in measure.md's [Old setup](measure.md#4-old-setup), then ask.
-  Unsure? Run `/ask-agent-ready`.
-  - **Migrate** (recommended): after this pull request merges,
-    `/adopt-pocock-methodology` retires the old setup and moves the repo to
-    Pocock's methodology. One methodology, one `CONTEXT.md` and clean docs
-    serve parallel, unattended work best.
-  - **Stubborn**: keep Superpowers; agent-ready adds an override that sends
-    its steps to Pocock's skills where the two overlap. Offer it when the
-    Superpowers row is `missing`; otherwise only when the owner says someone
-    here runs Superpowers (a user-scope install leaves no trace in the
-    repo).
-  - **Neither**: leave the setup as it is.
+- **I. Framework,** always, unless the Superpowers row is `home`. Name the
+  hits by the summary in measure.md's [Old setup](measure.md#4-old-setup).
+  Row not `missing`: ask first, "Does anyone here run Superpowers? A
+  teammate's own install leaves no trace in the repo." No, and no hits →
+  I's answer is neither; ask nothing more. Otherwise ask "Migrate, Stubborn
+  or neither?", each option with what it does, when it is right and what it
+  costs, in the words of
+  [Migrate, Stubborn or neither](../ask-agent-ready/TRADEOFFS.md#migrate-stubborn-or-neither).
+  - **Migrate** (recommended): `/adopt-pocock-methodology`, typed after this
+    pull request merges. With no hits, say what it does here: it builds
+    `CONTEXT.md` and routes the docs.
+  - **Stubborn**, offered when the row is `missing` or the first answer was
+    yes.
+  - **Neither.**
 
-  Stubborn makes the row `missing`, and [Write](#3-write) writes it. Migrate
-  and neither leave it `n/a`.
+  Stubborn: the row counts as `missing`, and [Write](#3-write) writes it.
+  Migrate or neither: it counts as `n/a`; no step writes it, and the gap
+  list leaves it out.
 - **J. Architecture review.** "After a pull request opens, remind the team
   to run `/improve-codebase-architecture` when no review merged in the last
   N days?" Recommend 7. No → `"0"`.
@@ -187,12 +189,13 @@ Done when each check passes or is on the gap list with its output.
 - Steering gate on: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
 - Answer I is Stubborn: paste [the smoke run](smoke-superpowers.md) into the
-  pull request body. A Superpowers user runs it once after the merge, and
-  again after each Superpowers update.
+  pull request body, and open one tracker issue that links it: "Rerun the
+  Superpowers smoke run after each Superpowers update."
 - Answer I is migrate: the pull request body and the hand-over say "After
-  the merge, type `/adopt-pocock-methodology`; it runs the scan itself."
-  Only a user can invoke it. Neither, and the old setup has hits: they say
-  once "Migrate later: run `/adopt-pocock-methodology`."
+  the merge, type `/adopt-pocock-methodology`
+  (`/agent-ready:adopt-pocock-methodology` with the plugin); it runs the
+  scan itself." Only a user can invoke it. Neither, and the old setup has
+  hits: they say once "Migrate later: run `/adopt-pocock-methodology`."
 - Next, unless answer I is migrate: `scan-codebase-for-agents` measures the
   result after the merge.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
