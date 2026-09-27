@@ -1,8 +1,7 @@
 # Recite brief
 
 One **reader** dispatch per file with written rows, fresh context, on the
-edited file. The blind probe pointed at the result: it proves a reader
-recovers the reason from what the run wrote.
+edited file. It proves a reader recovers the reason from what the run wrote.
 
 **To the reader:** your dispatch gave `path`, `work`, `repo`, `docs`;
 substitute them below and work from `<repo>`. `<anchors>` = the `anchor`

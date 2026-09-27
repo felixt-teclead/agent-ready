@@ -9,9 +9,9 @@ what they dropped. Rules: [`RULES.md`](RULES.md). Writer
 prompt: [`subagent.md`](subagent.md).
 
 You are the parent and the only writer into the repository. Blind writers
-run on Opus, one per file, in parallel. `<work>` is a scratch directory outside the
-repository (`mktemp -d`); nothing in it is committed. `<skill>` is this
-directory.
+run on Opus, one per file, in parallel. `<work>` is a scratch directory
+outside the repository (`mktemp -d`); nothing in it is committed. `<skill>`
+is this directory.
 
 ## 1. Scope
 
@@ -48,9 +48,8 @@ into `<work>/lines/<path>.txt`. Copy the file to `<work>/stripped/<path>` and
 remove every comment that sits on an added line: line comments, block
 comments, doc comments, and docstrings where the language uses them. A line
 that held only a comment becomes an empty line, so line numbers match the
-repository file. Keep tool
-directives (lint, type checker, formatter, coverage, licence) and tracked
-markers (`TODO:`, `FIXME(`).
+repository file. Keep tool directives (lint, type checker, formatter,
+coverage, licence) and tracked markers (`TODO:`, `FIXME(`).
 
 Record each removed comment, with its line and anchor code, in
 `<work>/original/<path>.md`. It is what keeps the writers blind: it stays

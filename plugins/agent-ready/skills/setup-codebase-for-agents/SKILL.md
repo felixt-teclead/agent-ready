@@ -1,6 +1,6 @@
 ---
 name: setup-codebase-for-agents
-description: Interview the owner and write the agent steering structure into a codebase, new or existing. User-invoked, once per repo.
+description: Interview the owner and write the agent steering structure into a codebase, new or existing.
 disable-model-invocation: true
 ---
 
@@ -33,8 +33,7 @@ in `${…}` form is unset:
 - `cleanup_comments`: `${user_config.cleanup_comments}`
 - `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
 
-Done when every row is `home`, `misplaced`, `missing`, `n/a` or
-`not measured`.
+Done when every row and every old file found has a status.
 
 ## 2. Interview
 
@@ -60,15 +59,16 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   services and network egress the `check` script needs.
 - **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
   `steering_gate` (no recommendation: the owner decides), `cleanup_comments`
-  (on), `cleanup_comments_max_files` (10). In the plugin channel each user
-  set them at install; do not ask.
+  (on), `cleanup_comments_max_files` (10).
   Both channels, unless `env` already sets it: "Remind the team to run an
-  architecture review every N days?" (7). The cadence is a team decision, so
-  it lives in `env`, not `userConfig`. No → leave it unset.
+  architecture review every N days?" (7). A team decision, so it lives in
+  `env`, not `userConfig`. No → leave it unset.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
-- **I. Migration,** when measure.md §4 lists hits: "Migrate your current
-  setup to Pocock's methodology?", listing the hits.
+- **I. Framework.** Ask unless the Superpowers row is `home`: keep your
+  framework (Superpowers override), migrate to Pocock, or neither? Name the
+  hits [measure.md](measure.md) §4 lists. Recommend keep when measure found a
+  Superpowers trace, else neither. Migrate and neither leave the row `n/a`.
 
 Done when every missing row has an answer or a gap-list entry.
 
@@ -96,7 +96,9 @@ leave the file out and put its row on the gap list.
    owner's paragraph; `triage-labels.md` only for renamed labels. Add the
    `## Agent skills` block from the template to `AGENTS.md`, without the
    `### AFK runs` part. An existing `## Agent skills` block is updated in
-   place.
+   place. Answer I is keep: also `superpowers.md` from the template, the
+   `### Superpowers` part of the block, and `.superpowers/` in `.gitignore`.
+   Any other answer: the block goes without the `### Superpowers` part.
 4. **Commands** from answer A into the manifest scripts, and the
    `## Verify` section into `AGENTS.md`. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
@@ -110,8 +112,10 @@ leave the file out and put its row on the gap list.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
 9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`, and `env`
-   `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` from answer G as a string. No-plugin
-   channel also:
+   `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` from answer G as a string. Answer I
+   is keep: merge the `permissions.deny` entries of
+   [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
+   into existing `permissions.deny`. No-plugin channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
      `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
      `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`, which is
@@ -119,7 +123,6 @@ leave the file out and put its row on the gap list.
      it into existing `hooks`: append each entry to the group with the same
      event and matcher, or add that group. A group without a matcher
      (`SessionStart`, `UserPromptSubmit`) matches one without.
-     With the plugin, write none: each hook would fire twice.
    - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per switch answer from G, as a
      string.
    - `.gitignore`: add `.agents/refactor.local`.
@@ -136,9 +139,10 @@ its answer.
 
 - `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves.
 - Every path in backticks in `AGENTS.md` and `docs/agents/*.md` exists,
-  except the steering list, the ones a template names as examples, and the
-  domain files (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`), which skills
-  create when a term or decision first needs a home.
+  except the steering list, the ones a template names as examples,
+  gitignored paths, and the domain files (`CONTEXT.md`, `CONTEXT-MAP.md`,
+  `docs/adr/`), which skills create when a term or decision first needs a
+  home.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
@@ -163,9 +167,13 @@ Done when each check passes or is on the gap list with its output.
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
+- Answer I is keep: tell the owner that a Superpowers user runs
+  [the smoke run](smoke-superpowers.md) once after the merge, and again
+  after each Superpowers update.
 - Scan: ask the owner to say when the pull request is merged. Then update
   the default branch and run `scan-codebase-for-agents` on it.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
-- Answer I yes: after the merge, ask the owner to type
-  `/adopt-pocock-methodology`. No: the pull request body and the hand-over
-  say once "Migrate later: run `/adopt-pocock-methodology`."
+- Answer I is migrate: after the merge, ask the owner to type
+  `/adopt-pocock-methodology`; only a user can invoke it. Any other answer
+  and measure.md §4 lists hits: the pull request body and the hand-over say
+  once "Migrate later: run `/adopt-pocock-methodology`."

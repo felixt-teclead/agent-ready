@@ -1,8 +1,6 @@
 # Routing table
 
-Which file owns which statement. `setup-codebase-for-agents` writes the rows,
-`scan-codebase-for-agents` measures them, `cleanup` moves statements into
-them.
+Which file owns which statement.
 
 Every line in a steering file passes two tests:
 
@@ -31,6 +29,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Specs | issues, closed once shipped; never kept in the repo | fixed |
 | Tracker | `docs/agents/issue-tracker.md` | interviewed |
 | Triage labels | the `### Triage labels` line in `AGENTS.md`; renamed labels also `docs/agents/triage-labels.md` | interviewed |
+| Which skill runs each step while Superpowers is installed | `docs/agents/superpowers.md`, its pointer line in `AGENTS.md`, `.superpowers/` in `.gitignore`, `Skill(superpowers:…)` entries in `permissions.deny` of `.claude/settings.json` | interviewed |
 | What an AFK run needs: env vars, services, egress, token scopes | `docs/agents/environment.md` | interviewed |
 | What an AFK run hands back | `docs/agents/afk-handback.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |
@@ -39,8 +38,7 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 
 ## Old files
 
-Earlier setups wrote these. Measure gives each one it finds the status
-below, and `cleanup` takes the action.
+Earlier setups wrote these.
 
 | Old file | Status | Action |
 |---|---|---|
@@ -51,10 +49,9 @@ below, and `cleanup` takes the action.
 
 ## `docs/CODING_STANDARDS.md`
 
-- One line per mistake an agent made here. A rule a tool can check goes to
-  lint, typecheck or a test.
-- A rule for part of the code is a section that names its scope in prose.
-  Not `.claude/rules/`: a glob can miss a file, prose cannot.
+- What goes in it: [its header](templates/docs/CODING_STANDARDS.md).
+- A scoped rule is a prose section, not `.claude/rules/`: a glob can miss a
+  file, prose cannot.
 - Only review reads it, so it may grow. `AGENTS.md` carries no pointer to it:
   Pocock's `code-review` finds it by this name.
 

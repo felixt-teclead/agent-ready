@@ -4,11 +4,10 @@ description: Run a refactor phase — start one from a scan report, ship cleanup
 ---
 
 **Goal: an existing codebase reaches its routing table one PR at a time, and
-every file gets one full comment pass.** The scan says what is wrong
-(`scan-codebase-for-agents`); this skill fixes it in steps a human can review.
+every file gets one full comment pass.**
 
 A `cleanup` PR changes no behaviour. It may move statements into or out of
-steering files; the merge hook then sends it to a human.
+steering files.
 
 A PR that moves a statement fixes its pointers. Before the commit, search
 the repo for the old spot, its file path and heading anchor, and point each
@@ -41,7 +40,7 @@ greps `mode:` and `paused:`, so keep both keys at the start of a line.
 ## 0. Before any run
 
 `.agents/refactor.local`, then `.agents/refactor.md`: either says `paused:` →
-stop and say why. Paused means do not clean and do not undo earlier cleanup.
+stop and say why. Earlier cleanup stays as it is.
 
 ## 1. Start a phase
 
@@ -77,8 +76,8 @@ The logic PR's `comment-review` skips these files.
 ## 3. Fast: one child issue per step
 
 1. Re-run the scan. Take its next step, in its class order: setup regressed,
-   dead pointers, failing always-loaded lines, misplaced statements and old files. An old
-   file gets the action its row in the
+   dead pointers, failing always-loaded lines, misplaced statements and old
+   files. An old file gets the action its row in the
    [routing table](../setup-codebase-for-agents/routing-table.md) names.
    Scan green → comment pass over the next files left that are not held, up
    to the cap (§4).

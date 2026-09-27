@@ -30,6 +30,10 @@ Verify with the manifest's `check` script.
 
 Domain terms: `CONTEXT.md` (multi-context: `CONTEXT-MAP.md`). Decisions: `docs/adr/`.
 
+### Superpowers
+
+Before any `superpowers:` skill, read `docs/agents/superpowers.md`. It overrides them.
+
 ### AFK runs
 
 Before an AFK run, read `docs/agents/environment.md`. Hand back as `docs/agents/afk-handback.md` says.

@@ -1,17 +1,15 @@
 # Measure a repo against the routing table
 
-Shared by `setup-codebase-for-agents` and `scan-codebase-for-agents`;
-`retire-agent-setup` reads §4. Read [routing-table.md](routing-table.md)
-first. You read; you do not edit.
+Read [routing-table.md](routing-table.md) first. Edit nothing.
+Other skills run §4 alone.
 
 ## 1. Channel and switches
 
 - **Channel.** This skill's folder sits inside the repo (`.agents/skills/` or
   `.claude/skills/`) → no plugin. Anywhere else → plugin.
-- **Switches.** Plugin: the values the calling skill lists; only a skill's
-  own `SKILL.md` gets `${user_config.<key>}` filled in. No plugin: the `env` block of
-  `.claude/settings.json`, then `.claude/settings.local.json`. Not there →
-  unset.
+- **Switches.** Plugin: the values the calling skill lists. No plugin: the
+  `env` block of `.claude/settings.json`, then `.claude/settings.local.json`.
+  Not there → unset.
 
 ## 2. Inventory
 
@@ -39,6 +37,10 @@ For each file: its line count, and whether an always-loaded file cites it.
   not need, or a no-plugin row in the plugin channel.
 - **not measured**: the comments row. Reading every comment is costly; a
   cleanup phase does it.
+
+The Superpowers row is **n/a** when `docs/agents/superpowers.md` is absent
+and §4 lists no Superpowers trace: `docs/superpowers/`, `.superpowers/`, or a
+`superpowers@` key in `enabledPlugins`.
 
 Each old file in the routing table that exists gets the status its row
 names.
