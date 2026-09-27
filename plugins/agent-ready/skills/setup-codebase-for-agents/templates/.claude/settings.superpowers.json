@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Skill(superpowers:brainstorming)",
+      "Skill(superpowers:test-driven-development)",
+      "Skill(superpowers:systematic-debugging)",
+      "Skill(superpowers:verification-before-completion)",
+      "Skill(superpowers:requesting-code-review)",
+      "Skill(superpowers:finishing-a-development-branch)"
+    ]
+  }
+}
