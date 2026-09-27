@@ -1,21 +1,23 @@
 ---
 name: retire-agent-setup
-description: Retire an old agent setup — the plugins, skills, hooks and scratch another framework left, and its override — so it stops steering the agent. Use when the user wants a previous agent framework out of the repo, or a migration calls it as its preflight.
+description: Retire an old agent setup — switch off another framework's plugins and remove its skills, hooks, scratch and override. Use when the user wants a previous agent framework out of the repo.
 ---
 
 # Retire an old agent setup
 
 **Goal: every hit of the old setup, and the override of an overridden
 framework, is removed or kept by the user's choice; each retired plugin is
-off in this repo for everyone; nothing is lost that was not pushed or
-named.** Specs, plans and framework sections stay in place for
+off in this repo for everyone; whatever goes was pushed or named first.**
+Specs, plans and framework sections stay in place for
 `model-codebase-domain` and `route-codebase-docs`: list them in the summary.
 The override's part of `AGENTS.md` is no framework section; it goes with the
 override.
 
-**Alone:** the branch checks of the
-[worklist's Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume),
-then a new branch `retire-agent-setup`; [Apply](#8-apply) opens the PR.
+**Alone:** the worklist's
+[Start or resume](../adopt-pocock-methodology/worklist.md#start-or-resume)
+for the branch `retire-agent-setup`; its Start opens the branch without a
+worklist. [Apply](#8-apply)'s one commit is the run, its message the pull
+request body, and Apply opens the PR.
 **As a block:** a calling skill names its branch; work on it and hand the
 summary back instead of opening a PR.
 
@@ -38,10 +40,14 @@ List, each with its path or branch:
 - worktrees with uncommitted or unpushed work: `git worktree list`, then the
   two checks above inside each
 
-Empty → go on. Otherwise suggest pushing, and go on only after the user
-answers "continue anyway". Any other answer: run the checks again.
+Empty → go on. Otherwise suggest pushing. "continue anyway" → go on;
+"stop" → stop, and a calling skill stops too; any other answer: run the
+checks again.
 
 ## 3. Plugins
+
+Ask once: "Does anyone here run another agent framework plugin, installed
+only for themselves? Name its key." Each named key is a plugin hit too.
 
 Per plugin hit, its key goes `false` in the `enabledPlugins` of
 `.claude/settings.json`: the plugin is then off in this repo for everyone,
@@ -54,7 +60,7 @@ the summary tells every teammate to uninstall it with `/plugin`.
 
 ## 4. Override
 
-An overridden framework (Old setup) is one row with its plugins: they flip
+An overridden framework (Old setup) is one line with its plugins: they go
 together. Removing it removes every home of its row in the
 [routing table](../setup-codebase-for-agents/routing-table.md), each edited in
 place; drop a `deny` or `permissions` left empty. The `.gitignore` line goes
@@ -88,26 +94,27 @@ The worktree this run works in is never scratch.
   scratch folder (`git status --porcelain --ignored` inside each: an
   in-flight plan in `.superpowers/plans/` shows there), and run state its own
   tool deletes when a run ends (a self-ignored run folder).
-- **Ask:** every other untracked item. The user names delete or keep per
-  item.
+- **Ask:** every other scratch item, tracked or not. The user names delete
+  or keep per item.
 - **`.gitignore`:** remove the lines that name a folder marked delete.
 
 ## 7. Confirm once
 
 Show [Plugins](#3-plugins), [Override](#4-override), the table with its
-repo-specific items, and the scratch list together. The user strikes the rows to flip; repeat the edited
-set until they confirm. That one confirmation is the only one. Every
-deletion waits for it.
+repo-specific items, and the scratch list together. The user strikes each
+row that stays; repeat the edited set until they confirm. That one
+confirmation is the only one. Every change waits for it: Plugins through
+Scratch build the list, [Apply](#8-apply) changes the repo.
 
-A struck plugin, override, skill or hook stays, and so does a
-repo-specific item. Each gets a line in `.agents/deviations.md`, as the
-scan's
+A struck plugin, override, skill or hook stays: its line goes into
+`.agents/deviations.md`, as the scan's
 [Accepted deviations](../scan-codebase-for-agents/SKILL.md#accepted-deviations)
-says, class `old setup`: later runs skip it.
+says, class `old setup`. A repo-specific item gets a line with class
+`repo-specific`. Later runs skip both.
 
 ## 8. Apply
 
-In the order confirmed:
+Once confirmed, in this order:
 
 1. Settings: edit `.claude/settings.json` in place, by script. A hook entry's
    key is its event, its matcher and its script, as in
@@ -115,8 +122,8 @@ In the order confirmed:
    Drop a matcher group or object left empty. It must still parse as JSON.
 2. Override: `git rm` its file, and cut its part from `AGENTS.md`.
 3. Skills and hooks marked delete: `git rm -r` the folder or script.
-4. Scratch marked delete: `git worktree remove` for worktrees, `rm -rf` for
-   the rest; then the `.gitignore` lines.
+4. Scratch marked delete: `git worktree remove` for worktrees, `git rm -r`
+   for tracked items, `rm -rf` for the rest; then the `.gitignore` lines.
 5. Struck rows and repo-specific items: their `.agents/deviations.md`
    lines.
 
@@ -127,11 +134,12 @@ One commit, `chore: retire old agent setup`. Its message is the summary:
   repo." for each retired plugin
 - the override removed
 - the table with the confirmed actions
-- the scratch deleted (outside git, so not in the diff)
+- the scratch deleted; untracked items were outside git, so not in the diff
 - the specs, plans and framework sections [Inventory](#1-inventory) found,
   left in place
 
 **Alone:** push and open the PR, body = the summary; who merges: the
-worklist's [End](../adopt-pocock-methodology/worklist.md#end). Tell the user
-to start a fresh session: the running one still carries the retired setup.
+worklist's [End](../adopt-pocock-methodology/worklist.md#end). Tell the
+user: "Start a fresh session: this one still carries the retired setup.
+Unsure what's next? Run `/ask-agent-ready`."
 **As a block:** hand the summary to the caller.
