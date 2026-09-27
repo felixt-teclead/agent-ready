@@ -123,6 +123,21 @@ the gap list.
    symlink: `ln -s AGENTS.md CLAUDE.md`.
 2. **Skills.** `.agents/skills/`, and `ln -s ../.agents/skills .claude/skills`.
    Existing `.claude/skills/` content moves into `.agents/skills/` unchanged.
+   Before the move, look for **runtime skills**:
+   `git grep -n '\.claude/skills' -- ':!*.md' ':!.claude' ':!.agents'`. A hit
+   in code that reads skill files, or in build or deploy config
+   (`outputFileTracingIncludes` in `next.config.*`, a bundler copy glob, a
+   `Dockerfile` `COPY`), makes each skill it names a runtime skill. Show the
+   owner the hits, `file:line`: a build may not follow a symlink, so after the
+   move the deploy can ship without these files. Ask:
+   - **Keep them out** (recommended): the runtime skill folders stay in
+     `.claude/skills/`, which stays a folder, and each other skill gets its
+     own link, `ln -s ../../.agents/skills/<name> .claude/skills/<name>`.
+   - **Move all**: the hits go into the pull request body as a warning; the
+     owner checks the build after the merge.
+
+   Either way the runtime skills stay `misplaced`, for `cleanup` to move into
+   the source tree.
    Plugin channel with no skills in the repo: skip this step. No-plugin
    channel: run [fetch.sh](fetch.sh) from the repo root. If it lists
    clashing files, show them to the owner, who renames or deletes them; then
@@ -170,8 +185,8 @@ row matches its answer.
 
 ## 4. Verify
 
-- `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills` resolves when
-  the Skills step ran.
+- `readlink CLAUDE.md` is `AGENTS.md`; `.claude/skills`, or each link in
+  it, resolves when the Skills step ran.
 - Every [pointer](pointers.md) in `AGENTS.md` and `docs/agents/*.md`
   resolves.
 - The `check` command finishes with `</dev/null` and exits 0. A red run is a

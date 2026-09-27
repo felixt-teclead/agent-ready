@@ -46,7 +46,10 @@ sh .agents/skills/setup-codebase-for-agents/fetch.sh
   now uses; the owner renames or deletes it, then run it again. Any other
   exit 1 is agent-ready's bug or the network: show the output and stop.
 
-Keep the last run's output for the pull request. Commit `.agents/`.
+`.claude/skills` is a folder (setup kept runtime skills out): link each new
+`.agents/skills/<name>` into it as setup's Skills step does, and remove each
+link whose target is gone. Keep the last run's output for the pull request.
+Commit `.agents/` and `.claude/skills`.
 
 Fetch wrote `.agents/skills/update-codebase-for-agents/SKILL.md` → read that
 file now, and go on after its Fetch section: this session loaded the old

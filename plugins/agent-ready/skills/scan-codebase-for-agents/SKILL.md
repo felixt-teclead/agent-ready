@@ -81,7 +81,9 @@ Three numbers, none weighted:
 Take the first class with a finding, in this order:
 
 1. **Missing fixed rows.** A `fixed` row is `missing`, `CLAUDE.md` is not a
-   symlink, or `.claude/skills` exists and is not a symlink. The step: re-run
+   symlink, or `.claude/skills` exists and is not a symlink (a folder that
+   holds only runtime skills and links into `.agents/skills/` counts as
+   one). The step: re-run
    `/setup-codebase-for-agents`; it writes missing rows only. Only the
    architecture review row is missing → `/adopt-pocock-methodology` asks
    the window and writes it. Every missing row lives in

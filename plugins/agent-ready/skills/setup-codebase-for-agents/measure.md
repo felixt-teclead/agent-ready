@@ -55,9 +55,12 @@ The AFK hand-back row and the `### AFK runs` row are **n/a** while
 `docs/agents/environment.md` is absent. The AFK environment row carries the
 gap: it is **missing** until `docs/agents/environment.md` exists.
 
-A skill that production code loads at runtime (a source file reads the
-skill folder) is not an agent procedure: its row is **misplaced** while it
-sits in `.agents/` or `.claude/`. A repo's own consent rule ("change this
+A skill that production code loads at runtime (a source file or build config
+names the skill folder) is not an agent procedure: its row is **misplaced**
+while it sits in `.agents/` or `.claude/`. Build or deploy config that names
+a path through a symlink (`.claude/skills/**` while `.claude/skills` is a
+link) is one of its examples, `file:line`, flagged "build reads through a
+symlink": the deploy may ship without the files. A repo's own consent rule ("change this
 file only with approval") belongs to the steering-approval row.
 
 A Specs row made `misplaced` by a specs and plans hit of
