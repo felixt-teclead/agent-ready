@@ -68,6 +68,9 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   trace, else neither. Migrate puts the row on the gap list until
   felixt-teclead/agent-ready#58 ships the skill. Neither leaves the row
   `n/a`.
+- **J. Architecture review.** "After a pull request opens, remind the team
+  to run `/improve-codebase-architecture` when no review merged in the last
+  N days?" Recommend 7. No → `"0"`.
 
 Done when every missing row has an answer or a gap-list entry.
 
@@ -113,8 +116,9 @@ leave the file out and put its row on the gap list.
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
-9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. Answer I is
-   keep: merge the `permissions.deny` entries of
+9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`, and `env`
+   `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` from answer J. Answer I is keep:
+   merge the `permissions.deny` entries of
    [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
    into existing `permissions.deny`. No-plugin channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
@@ -145,17 +149,36 @@ its answer.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
-- No-plugin channel: each hook script runs. For the push gate:
-  `echo '{"tool_input":{"command":"git push"}}' | .agents/hooks/comment-review-gate.sh`
-  exits 2 until `comment-review` has stamped `HEAD`.
+- `command -v jq` and `gh auth status` succeed: the hooks need both.
+- No-plugin channel: each hook script runs, from the repo root.
+  - Push gate:
+    `echo '{"tool_input":{"command":"git push"}}' | .agents/hooks/comment-review-gate.sh`
+    exits 2 until `comment-review` has stamped `HEAD`.
+  - Steering gate:
+    `echo '{"tool_input":{"command":"gh api -X PUT repos/o/r/pulls/1/merge"}}' | .agents/hooks/steering-merge-gate.sh`
+    exits 2, or 0 when `steering_gate` is `false`.
+  - Review branch:
+    `echo '{"prompt":"/improve-codebase-architecture"}' | AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-branch.sh | grep -q architecture-review/`
+    exits 0.
+  - PR reminder, against a stub `gh` that finds no review, prints `pass`:
+
+    ```sh
+    stamp="$(git rev-parse --git-common-dir)/agent-ready-review-offered"
+    stub=$(mktemp -d); printf '#!/bin/sh\necho 0\n' >"$stub/gh"; chmod +x "$stub/gh"
+    in='{"hook_event_name":"PostToolUse","tool_input":{"command":"gh pr create"},"tool_response":{"stdout":"https://github.com/o/r/pull/1"}}'
+    rem() { echo "$in" | PATH="$stub:$PATH" AGENT_READY_ARCHITECTURE_REVIEW_DAYS=7 .agents/hooks/architecture-review-reminder.sh; }
+    rm -f "$stamp"
+    rem | grep -q improve-codebase-architecture && [ -f "$stamp" ] && [ -z "$(rem)" ] && echo pass
+    rm -f "$stamp"
+    ```
 
 Done when each check passes or is on the gap list with its output.
 
 ## 5. Hand over
 
-- GitHub tracker with triage labels: run [labels.sh](labels.sh). It
-  creates the labels that are missing, with the strings from
-  `triage-labels.md` when that file exists, and keeps existing ones.
+- GitHub remote: run [labels.sh](labels.sh), with `--review-only` unless
+  answer E is a GitHub tracker with triage labels. It creates the missing
+  labels and keeps existing ones.
 - Open the pull request. Its body lists what each commit decides, then the
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
