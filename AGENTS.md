@@ -22,7 +22,7 @@ Issues live as GitHub issues in `felixt-teclead/agent-ready`, driven with the `g
 
 ### Triage labels
 
-The five canonical triage roles, each label string equal to its name. See `docs/agents/triage-labels.md`.
+The five canonical triage roles, each label string equal to its name.
 
 ### Domain docs
 
