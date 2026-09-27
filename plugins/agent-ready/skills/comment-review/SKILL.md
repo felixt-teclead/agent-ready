@@ -28,10 +28,11 @@ On the default branch itself, use `@{upstream}` as `base`.
 
 Keep source files. Drop docs, config, lockfiles, generated and vendored files.
 
-If `.agents/refactor.md` sets mode `continuous` and neither it nor
-`.agents/refactor.local` says `paused:`, drop every file listed in
-`.agents/refactor-paths.txt`. Its stacked cleanup PR gives it the full comment
-pass.
+If `.agents/refactor.md` sets mode `continuous` and not `comments: false`,
+and neither it nor `.agents/refactor.local` says `paused:`, drop every file
+left ([`cleanup`, Files](../cleanup/SKILL.md#files)). Its stacked cleanup PR
+gives it the full comment pass. A file created on this branch is never on
+the path list, so it stays.
 
 One path per line into `<work>/files.txt`. Empty list → go to step 7.
 

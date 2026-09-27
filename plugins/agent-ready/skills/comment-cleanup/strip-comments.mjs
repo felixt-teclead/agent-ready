@@ -451,7 +451,7 @@ function headingRanges(doc) {
   lines.forEach((l, i) => {
     if (/^```/.test(l)) fence = !fence;
     if (fence) return;
-    const m = l.match(/^(#{2,4}) (.*)$/);
+    const m = l.match(/^(#{1,4}) (.*)$/);
     if (m) hs.push({ level: m[1].length, title: m[2].trim(), start: i + 1 });
   });
   return hs.map((h, i) => {
