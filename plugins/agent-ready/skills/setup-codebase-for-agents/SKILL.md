@@ -153,5 +153,6 @@ Done when each check passes or is on the gap list with its output.
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
   `sh .github/bootstrap-steering-ruleset.sh` once after the merge.
-- Next: `scan-codebase-for-agents` measures the result after the merge.
+- Scan: ask the owner to say when the pull request is merged. Then update
+  the default branch and run `scan-codebase-for-agents` on it.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
