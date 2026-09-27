@@ -2,6 +2,7 @@
 # Blocks every merge through `gh api`, and `gh pr merge` when the pull request touches a steering path.
 # The path set lives here, not in the repo, so a pull request cannot rewrite it.
 # Keep it in step with AGENTS.md §"Steering files" here and in the setup skill's templates/AGENTS.md.
+# docs/CODING_CONVENTIONS.md is the old name of docs/CODING_STANDARDS.md. A repo keeps it until cleanup renames it.
 [ "$CLAUDE_PLUGIN_OPTION_STEERING_GATE" = "false" ] && exit 0
 
 input=$(cat)
@@ -52,7 +53,7 @@ fi
 
 hits=$(printf '%s\n' "$patch" |
   awk '/^diff --git a\//{ sub(/^diff --git a\//, ""); n = index($0, " b/"); print substr($0, 1, n - 1); print substr($0, n + 3) }' |
-  grep -E '^(AGENTS\.md|CLAUDE\.md|docs/CODING_CONVENTIONS\.md|\.github/CODEOWNERS|\.claude/settings\.json|plugins/agent-ready/\.claude-plugin/plugin\.json|(docs/agents|\.agents/skills|\.agents/hooks|plugins/agent-ready/hooks)/.+)$' |
+  grep -E '^(AGENTS\.md|CLAUDE\.md|docs/CODING_(STANDARDS|CONVENTIONS)\.md|\.github/CODEOWNERS|\.claude/settings\.json|plugins/agent-ready/\.claude-plugin/plugin\.json|(docs/agents|\.agents/skills|\.agents/hooks|plugins/agent-ready/hooks)/.+)$' |
   sort -u)
 [ -z "$hits" ] && exit 0
 

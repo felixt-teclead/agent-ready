@@ -50,7 +50,7 @@ next. Put the recommended answer first, so the owner can accept it in a word.
 - **C. Mechanical checks.** For each missing lint, typecheck or test tool:
   name the stack's usual tool and offer to install it. A decline puts it on
   the gap list.
-- **D. Coding conventions.** Which mistakes do agents make here? One line
+- **D. Coding standards.** Which mistakes do agents make here? One line
   each. None known → the header only.
 - **E. Tracker.** GitHub when the remote is GitHub, GitLab when it is GitLab,
   else local markdown. "Other" (Jira, Linear, ...) → the owner describes the
@@ -97,9 +97,9 @@ leave the file out and put its row on the gap list.
    script. One commit per tool.
 6. **AFK files** from answer F: `docs/agents/environment.md` and
    `docs/agents/afk-handback.md`, plus the `### AFK runs` part of the block.
-7. **`docs/CODING_CONVENTIONS.md`**:
-   [the header](templates/docs/CODING_CONVENTIONS.md), then
-   [the comments section](templates/docs/CODING_CONVENTIONS.comments.md) when
+7. **`docs/CODING_STANDARDS.md`**:
+   [the header](templates/docs/CODING_STANDARDS.md), then
+   [the comments section](templates/docs/CODING_STANDARDS.comments.md) when
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`

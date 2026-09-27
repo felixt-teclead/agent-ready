@@ -23,9 +23,9 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Procedures with a predictable trigger | `.agents/skills/`; `.claude/skills` is a symlink to it | fixed |
 | A skill that production code loads at runtime | a tooling folder in the source tree, not `.agents/` or `.claude/` | lazy |
 | Steps for one topic | `docs/<topic>.md` plus a pointer line in `AGENTS.md` | lazy |
-| Review rules, universal and scoped | `docs/CODING_CONVENTIONS.md` | fixed; content interviewed |
+| Review rules, universal and scoped | `docs/CODING_STANDARDS.md` | fixed; content interviewed |
 | Mechanical rules | lint, typecheck, tests | interviewed |
-| Architecture | no architecture doc is written. If one exists, one pointer line in `AGENTS.md`. Architecture rules are scoped sections in `docs/CODING_CONVENTIONS.md`. | lazy |
+| Architecture | no architecture doc is written. If one exists, one pointer line in `AGENTS.md`. Architecture rules are scoped sections in `docs/CODING_STANDARDS.md`. | lazy |
 | Domain definitions | `CONTEXT.md`, written by `/domain-modeling` | lazy |
 | Decisions and rejected alternatives | `docs/adr/` | lazy |
 | Specs | issues, closed once shipped; never kept in the repo | fixed |
@@ -36,14 +36,14 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | Hooks and switch values, no-plugin channel only | `.agents/hooks/`; `.claude/settings.json` `hooks` and `env` | fixed |
 | Auto-memory | off: `"autoMemoryEnabled": false` in `.claude/settings.json` | fixed |
 
-## `docs/CODING_CONVENTIONS.md`
+## `docs/CODING_STANDARDS.md`
 
 - One line per mistake an agent made here. A rule a tool can check goes to
   lint, typecheck or a test.
 - A rule for part of the code is a section that names its scope in prose.
   Not `.claude/rules/`: a glob can miss a file, prose cannot.
 - Only review reads it, so it may grow. `AGENTS.md` carries no pointer to it:
-  a code-review skill finds it by search.
+  Pocock's `code-review` finds it by this name.
 
 ## Switches
 
