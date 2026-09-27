@@ -1,10 +1,23 @@
 #!/usr/bin/env sh
-# Creates the triage labels once. A label that exists keeps its colour and
+# Creates agent-ready's labels once: `architecture-review` always, the triage
+# labels unless --review-only. A label that exists keeps its colour and
 # description. With docs/agents/triage-labels.md, each role gets the label
 # string that file maps it to, and a role mapped to — gets no label.
+# Usage: labels.sh [--review-only] [owner/repo]
 set -u
+review_only=
+[ "${1:-}" = --review-only ] && { review_only=1; shift; }
 repo="${1:-$(gh repo view --json nameWithOwner --jq .nameWithOwner)}"
 map=docs/agents/triage-labels.md
+
+create() {
+  gh label create "$1" -R "$repo" --color "$2" --description "$3" 2>/dev/null ||
+    echo "Kept: $1"
+}
+
+# Not a triage role, so the mapping file never renames or skips it.
+create architecture-review 5319e7 "An architecture review; merging it resets the reminder"
+[ -n "$review_only" ] && exit 0
 
 label_for() {
   [ -f "$map" ] || { echo "$1"; return; }
@@ -19,8 +32,7 @@ while IFS='|' read -r role colour desc; do
   case "$name" in
     "" | "—") echo "Skipped: $role"; continue ;;
   esac
-  gh label create "$name" -R "$repo" --color "$colour" --description "$desc" 2>/dev/null ||
-    echo "Kept: $name"
+  create "$name" "$colour" "$desc"
 done <<'LABELS'
 needs-triage|d4c5f9|Maintainer needs to evaluate this issue
 needs-info|fbca04|Waiting on reporter for more information

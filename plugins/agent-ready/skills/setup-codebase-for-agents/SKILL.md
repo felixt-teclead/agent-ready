@@ -33,6 +33,12 @@ in `${…}` form is unset:
 - `cleanup_comments`: `${user_config.cleanup_comments}`
 - `cleanup_comments_max_files`: `${user_config.cleanup_comments_max_files}`
 
+No-plugin channel with `.agents/agent-ready-manifest.json`: its `"commit"`
+differs from agent-ready's `main`
+(`gh api repos/felixt-teclead/agent-ready/commits/main --jq .sha`) → the
+copies are older than this skill. Stop, and ask the owner to run
+`/update-codebase-for-agents` first; it brings the new hooks and settings.
+
 Done when every row and every old file found has a status.
 
 ## 2. Interview
@@ -58,9 +64,8 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   Renamed: the owner names the string per role; a dropped role is `—`.
 - **F. AFK environment.** Env vars and where their values come from,
   services and network egress the `check` script needs.
-- **G. Switches, no-plugin channel only.** `comment_review` (recommend on),
-  `steering_gate` (no recommendation: the owner decides), `cleanup_comments`
-  (on), `cleanup_comments_max_files` (20).
+- **G. Switches, no-plugin channel only.** Each of the
+  [switches](routing-table.md#switches); recommend its default.
 - **H. Steering owner,** when `steering_gate` is on: a GitHub handle or
   `@org/team` with write access to this repo.
 - **I. Framework.** Ask unless the Superpowers row is `home`: keep your
@@ -69,6 +74,9 @@ next. Put the recommended answer first, so the owner can accept it in a word.
   trace, else neither. Migrate puts the row on the gap list until
   felixt-teclead/agent-ready#58 ships the skill. Neither leaves the row
   `n/a`.
+- **J. Architecture review.** "After a pull request opens, remind the team
+  to run `/improve-codebase-architecture` when no review merged in the last
+  N days?" Recommend 7. No → `"0"`.
 
 Done when every missing row has an answer or a gap-list entry.
 
@@ -114,17 +122,22 @@ leave the file out and put its row on the gap list.
    `comment_review` is `false`, then the lines from answer D.
 8. **Architecture pointer**, when step 1 of measure found an architecture
    doc: one line in `AGENTS.md`, `Architecture: see <path>.`
-9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`. Answer I is
-   keep: merge the `permissions.deny` entries of
+9. **`.claude/settings.json`**: `"autoMemoryEnabled": false`, and `env`
+   `AGENT_READY_ARCHITECTURE_REVIEW_DAYS` from answer J. Answer I is keep:
+   merge the `permissions.deny` entries of
    [`settings.superpowers.json`](templates/.claude/settings.superpowers.json)
    into existing `permissions.deny`. No-plugin channel also:
    - `hooks`: the `hooks` object of `.agents/hooks/hooks.json`, with every
-     `${CLAUDE_PLUGIN_ROOT}/hooks/` changed to
-     `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`, which is
-     `\"$CLAUDE_PROJECT_DIR\"/.agents/hooks/` inside the JSON string. Merge
-     it into existing `hooks`: append each entry to the group with the same
-     event and matcher, or add that group.
+     `"${CLAUDE_PLUGIN_ROOT}"/hooks/` (quoted or not) changed to
+     `"$CLAUDE_PROJECT_DIR"/.agents/hooks/`. Inside a JSON string each `"`
+     is `\"`. Merge it into existing `hooks`: append each entry to the group
+     with the same event and matcher, or add that group. A group without a
+     matcher (`SessionStart`, `UserPromptSubmit`) matches one without.
    - `env`: one `CLAUDE_PLUGIN_OPTION_<KEY>` per answer from G, as a string.
+   - `enabledPlugins`: `"agent-ready@teclead": false` and
+     `"mattpocock-skills@teclead": false`. The copies in `.agents/` replace
+     both plugins; a user-scope install left on loads every skill and hook
+     twice.
    - `.gitignore`: add `.agents/refactor.local`.
 10. **Steering gate,** when `steering_gate` is on and answer H exists:
     [`CODEOWNERS`](templates/.github/CODEOWNERS) with the owner,
@@ -146,17 +159,18 @@ its answer.
 - The `check` script finishes with `</dev/null` and exits 0. A red run is a
   finding for the owner, not a reason to change the script.
 - `.claude/settings.json` parses as JSON.
-- No-plugin channel: each hook script runs. For the push gate:
-  `echo '{"tool_input":{"command":"git push"}}' | .agents/hooks/comment-review-gate.sh`
-  exits 2 until `comment-review` has stamped `HEAD`.
+- `sh <this skill's folder>/verify-hooks.sh` from the repo root: each line
+  reads `ok`. [The script](verify-hooks.sh) runs every hook beside this skill
+  (`.agents/hooks/`, or the plugin's) in a throwaway repo, and checks `jq` and,
+  on a GitHub remote, `gh auth status`. Each `FAIL` line goes on the gap list.
 
 Done when each check passes or is on the gap list with its output.
 
 ## 5. Hand over
 
-- GitHub tracker with triage labels: run [labels.sh](labels.sh). It
-  creates the labels that are missing, with the strings from
-  `triage-labels.md` when that file exists, and keeps existing ones.
+- GitHub remote: run [labels.sh](labels.sh), with `--review-only` unless
+  answer E is a GitHub tracker with triage labels. It creates the missing
+  labels and keeps existing ones.
 - Open the pull request. Its body lists what each commit decides, then the
   gap list. The branch touches steering files, so a human merges it.
 - Steering gate on: tell the owner to run
@@ -166,3 +180,7 @@ Done when each check passes or is on the gap list with its output.
   after each Superpowers update.
 - Next: `scan-codebase-for-agents` measures the result after the merge.
 - No-plugin channel: `update-codebase-for-agents` refreshes the copies later.
+- Plugin channel: `/agent-ready:update-codebase-for-agents` moves the repo
+  off the plugin at any time. Worth it once someone who works here, a person
+  or an AFK runner, has no plugin installed: the copies and the team's switch
+  values then come with every clone.

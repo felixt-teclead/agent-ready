@@ -6,11 +6,33 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/comment-review-gate.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/comment-review-gate.sh"
           },
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/steering-merge-gate.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/steering-merge-gate.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/architecture-review-reminder.sh",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/architecture-review-branch.sh"
           }
         ]
       }
@@ -20,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/refactor-phase.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/refactor-phase.sh"
           }
         ]
       }

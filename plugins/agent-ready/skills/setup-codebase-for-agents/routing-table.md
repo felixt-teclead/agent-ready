@@ -36,6 +36,8 @@ Kinds: `fixed` is the same in every repo. `interviewed` is asked by setup.
 | When to read the AFK files | the `### AFK runs` line in `AGENTS.md` | fixed |
 | Steering approval | `.github/CODEOWNERS`, `.github/steering-ruleset.json`, `.github/bootstrap-steering-ruleset.sh` | switch `steering_gate` |
 | Hooks and switch values, no-plugin channel only | `.agents/hooks/`; `.claude/settings.json` `hooks` and `env` | fixed |
+| The plugins the copies replace are off, no-plugin channel only | `.claude/settings.json` `enabledPlugins` | fixed |
+| How often the team runs an architecture review | `.claude/settings.json` `env` `AGENT_READY_ARCHITECTURE_REVIEW_DAYS`: days as a string, `"0"` for never | fixed; value interviewed |
 | Auto-memory | off: `"autoMemoryEnabled": false` in `.claude/settings.json` | fixed |
 
 ## Old files
@@ -60,12 +62,17 @@ Earlier setups wrote these.
 
 ## Switches
 
-`comment_review`, `steering_gate`, `cleanup_comments`,
-`cleanup_comments_max_files`.
+| Switch | Default |
+|---|---|
+| `comment_review` | on |
+| `steering_gate` | none: the owner decides |
+| `cleanup_comments` | on |
+| `cleanup_comments_max_files` | 10 |
 
 - **Plugin:** each user answers them at install. Skills read
   `${user_config.<key>}`, hooks read `CLAUDE_PLUGIN_OPTION_<KEY>`.
 - **No plugin:** `CLAUDE_PLUGIN_OPTION_<KEY>` in the `env` block of
   `.claude/settings.json` is the team value. `.claude/settings.local.json`
   overrides it for one person.
-- An unset switch is on. Only `false` switches a safeguard off.
+- An unset switch takes its default; an unset `steering_gate` is on. Only
+  `false` switches a safeguard off.
