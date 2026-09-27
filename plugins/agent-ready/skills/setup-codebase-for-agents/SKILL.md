@@ -83,8 +83,9 @@ leave the file out and put its row on the gap list.
 1. **`AGENTS.md`** from [the template](templates/AGENTS.md), without the
    `## Agent skills` block (step 3 adds it) and the `## Verify` section
    (step 4 adds it). An existing `CLAUDE.md` is renamed to `AGENTS.md`
-   (`git mv`) and keeps its text. `CLAUDE.md` becomes a symlink:
-   `ln -s AGENTS.md CLAUDE.md`.
+   (`git mv`) and keeps its text. When both exist as files, `CLAUDE.md`'s
+   text moves into `AGENTS.md`, each line once. `CLAUDE.md` becomes a
+   symlink: `ln -s AGENTS.md CLAUDE.md`.
 2. **Skills.** `.agents/skills/`, and `ln -s ../.agents/skills .claude/skills`.
    Existing `.claude/skills/` content moves into `.agents/skills/` unchanged.
    Plugin channel with no skills in the repo: skip this step. No-plugin
