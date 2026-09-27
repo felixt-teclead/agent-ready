@@ -5,7 +5,8 @@ description: Measure how agent-ready a repo is and name the one next change to i
 
 # Scan a codebase for agents
 
-Edit nothing. The report goes to chat.
+Edit nothing. The report goes to chat. The one exit is a yes to the phase
+offer in [One next step](#4-one-next-step), which hands over to `cleanup`.
 
 ## 0. Setup has run
 
@@ -52,10 +53,9 @@ in the [routing table](../setup-codebase-for-agents/routing-table.md). When
 - **No-op.** A line fails when it restates a default, the tree, or what lint,
   typecheck or a test enforces. The tool wins, even when the line would save a
   red run.
-- **Pointers.** A line that points at a file passes when the file exists or
-  is gitignored, and the file is not always loaded. A missing domain file
-  (`CONTEXT.md`, `CONTEXT-MAP.md`, `docs/adr/`) passes: skills create it when
-  a term or decision first needs a home. Otherwise it fails.
+- **Pointers.** A line with a [pointer](#pointers) passes when the pointer
+  resolves or is skipped, and its target is not always loaded. Otherwise it
+  fails.
 
 Judge each line by its meaning, not by keyword counts. A duplicate you did
 not find is a pass.
@@ -76,20 +76,30 @@ Three numbers, none weighted:
 
 - `rows X of Y in their home`: Y leaves out `n/a` and `not measured` rows.
   An old file counts only in its row.
-- `lines A of J pass`: J is the judged lines from §2.
+- `lines A of J pass`: J is the judged lines from [Lines](#2-lines).
 - `load L lines on every task`: every non-blank always-loaded line, judged
   or not.
 
 ## 4. One next step
 
-Take the first class with a finding:
+Take the first class with a finding, in this order:
 
 1. **Missing fixed rows.** A `fixed` row is `missing`, or `CLAUDE.md` or
    `.claude/skills` is not a symlink. Regressed or never written, the step
    is the same: re-run `/setup-codebase-for-agents`. It writes missing rows
    only.
-2. **Failing lines,** always-loaded lines first, then review rules.
-3. **Misplaced statements and old files.**
+2. **Dead pointers.** A [pointer](#pointers) that does not resolve. The fix
+   points it at the statement's new home or removes it.
+3. **Failing lines,** always-loaded lines first, then review rules.
+4. **Misplaced statements and old files.**
+
+Setup comes first because the other fixes need its homes. A dead pointer
+sends every reader nowhere and its fix is small, so it goes before the
+lines.
+
+The scan is **green** when no class has a finding. A finding listed in
+`.agents/deviations.md` ([Accepted deviations](#accepted-deviations)) is no
+finding.
 
 Name one change that fits one pull request: the files it touches, and what it
 removes or moves. If it touches a steering file, say "steering diff, a human
@@ -97,17 +107,68 @@ merges", and name any line in the repo that asks for consent before that file
 changes.
 
 The `cleanup` skill (`agent-ready:cleanup` in the plugin channel) runs a
-class 2 or class 3 step as one pull request.
+step of any class after Missing fixed rows as one pull request.
 
-If the change does not fit one pull request, do not shrink it. Call the gap a
-phase, and point at `cleanup` to start a refactor phase. When
-`.agents/refactor.md` exists, a phase is already running: give its `mode:`
-and say `cleanup` takes the step.
+If the change does not fit one pull request, do not shrink it: call the gap a
+phase. When `.agents/refactor.md` exists, a phase is already running: give
+its `mode:` and say `cleanup` takes the step. Otherwise, after the report,
+ask "Start a refactor phase with `cleanup` now?". Yes: run the "Start a
+phase" section of [`cleanup`](../cleanup/SKILL.md#2-start-a-phase) with this
+report as input. No: the report stands. When a calling skill runs the scan,
+it decides; do not offer. Only the next change decides the offer: a later
+class too big for one pull request reaches a phase when `cleanup` takes it
+as its one step.
+
+### Pointers
+
+A **pointer** is a markdown link target without a URL scheme or a path in
+backticks, in a doc of the inventory, or `See <path> §"<heading>"` in a code
+comment anywhere in the repo (`git grep -n 'See [^ ]* §"'`). Leave out the
+files `.agents/agent-ready-manifest.json` lists: they are fetched, not
+written here.
+
+A token in backticks is a **path** when it has no space, `<`, `*`, `{`, `$`,
+`…` or URL scheme, and it ends in a name with a file extension (`x.md`;
+`.md` alone is none) or has a `/` after a first segment that names a folder
+in the tree. `EUR/USDT`, `n/a` and `Cmd/Ctrl+Enter` are no paths. Drop a
+`:line`, `:line-line` or `#L…` suffix first.
+
+A path in backticks or in a `See` comment **resolves** when it exists from
+the repo root or from the doc's folder, or is the tail of at least one
+`git ls-files` path (`accounts/aggregate.ts` for
+`src/lib/accounts/aggregate.ts`). A markdown link target resolves as GitHub
+renders it: from the doc's folder, or from the repo root when it starts with
+`/`. A folder pointer resolves when the folder exists. An `#anchor` resolves
+when a heading's GitHub slug matches: lowercase, punctuation dropped except
+`-` and `_`, spaces as `-`, a repeated heading gets `-1`, `-2`. A
+`§"<heading>"` resolves when a heading or bold lead-in in the target reads
+the same.
+
+Skip gitignored paths; the domain files (`CONTEXT.md`, `CONTEXT-MAP.md`,
+`docs/adr/`), which skills create when a term or decision first needs a home;
+the steering list; a path the sentence names as former, old, moved or
+removed; a package or product name (`Next.js`); and a name a doc uses as an
+example, a placeholder or a stand-in for the repo's own file.
+
+### Accepted deviations
+
+`.agents/deviations.md` lists the findings the user chose to keep, one line
+each:
+
+```
+- `<file>`: "<the finding's line, pointer or path, quoted>" (<class>). <Why, one sentence.>
+```
+
+A finding with the same file and quoted text is no finding: it stays as it
+is, and no class counts it. A line an open PR adds to the file counts too,
+so a finding the user just kept stays kept while its PR waits. Only the user
+accepts a finding. The skill that
+asked writes the line into its own PR, and a human merges that PR.
 
 ## 5. Writing skills
 
-Only when the next step writes new prose or comments (a pure move or delete
-writes none), look for these in `.agents/skills/`, `.claude/skills/`,
+Only when the next step writes new prose or comments (a pure move, delete or
+repoint writes none), look for these in `.agents/skills/`, `.claude/skills/`,
 `~/.claude/skills/`, and among this plugin's skills:
 
 - `unslop` for English prose, `unslop-de-kompakt` for German prose
@@ -127,8 +188,17 @@ load   L lines on every task
 
 next   <one change, the files it touches; "steering diff, a human merges" if so>
 tools  <writing skills found; leave the line out if none>
+comments  full pass not run: cleanup
 ```
+
+The `comments` line only reports (`agent-ready:cleanup` in the plugin
+channel). It shows on a green scan when no comment pass has ever run: no
+`.agents/refactor.md`, and `git log -1 --format=%h -- .agents/refactor-done`
+prints nothing. Otherwise leave it out, also in a shallow clone
+(`git rev-parse --is-shallow-repository` prints `true`), whose history
+cannot tell.
 
 Then the row table (statement, status, up to three `file:line` examples),
 then the old files found with their row and action, then the failing
-lines grouped by file, `file:line`, and the reason.
+lines grouped by file, `file:line`, and the reason, then the dead pointers,
+`file:line`, and the missing file or anchor.

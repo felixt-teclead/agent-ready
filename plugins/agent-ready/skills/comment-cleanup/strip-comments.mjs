@@ -11,7 +11,7 @@
 //        table per file; changes nothing on disk)
 //        node strip-comments.mjs --apply <answers-dir>  (insert each answer row's
 //        text above its anchor; prints a worklist of what it would not place)
-//        node strip-comments.mjs --prepare <file-list> <work> [doc ...]  (step 1
+//        node strip-comments.mjs --prepare <file-list> <work> [doc|folder ...]  (step 1
 //        in one call, refuses a non-empty <work>: pre/ and stripped/ copies,
 //        anchors/, exports/, headings.txt with section line ranges,
 //        doc-refs.txt, ambiguous.txt)
@@ -451,7 +451,7 @@ function headingRanges(doc) {
   lines.forEach((l, i) => {
     if (/^```/.test(l)) fence = !fence;
     if (fence) return;
-    const m = l.match(/^(#{2,4}) (.*)$/);
+    const m = l.match(/^(#{1,4}) (.*)$/);
     if (m) hs.push({ level: m[1].length, title: m[2].trim(), start: i + 1 });
   });
   return hs.map((h, i) => {
@@ -496,7 +496,7 @@ function exportsOf(file) {
 
 if (process.argv[2] === "--prepare") {
   const [listFile3, work, ...docs] = process.argv.slice(3);
-  if (!listFile3 || !work) { console.error("usage: strip-comments.mjs --prepare <file-list> <work> [doc ...]"); process.exit(2); }
+  if (!listFile3 || !work) { console.error("usage: strip-comments.mjs --prepare <file-list> <work> [doc|folder ...]"); process.exit(2); }
   // Two runs must never share a work directory: the second `--prepare` wipes
   // the first's tables mid-flight, and a run that skips `--prepare` reads the
   // other's answers and reports them as its own. `<work>` keyed by repo
@@ -548,12 +548,17 @@ if (process.argv[2] === "--prepare") {
   put("files.txt", files3.join("\n") + "\n");
   put("stripped-files.txt", files3.map((f) => path.join(work, "stripped", f)).join("\n") + "\n");
   put("ambiguous.txt", ambiguous.join("\n") + (ambiguous.length ? "\n" : ""));
-  const heads = docs.filter((d) => fs.existsSync(d)).flatMap(headingRanges);
+  // A folder of docs (`docs/adr/`) stands for the markdown files in it.
+  const docFiles = docs.filter((d) => fs.existsSync(d)).flatMap((d) =>
+    fs.statSync(d).isDirectory()
+      ? fs.readdirSync(d).filter((e) => e.endsWith(".md")).sort().map((e) => path.join(d, e))
+      : [d]);
+  const heads = docFiles.flatMap(headingRanges);
   put("headings.txt", heads.join("\n") + (heads.length ? "\n" : ""));
   // Every doc line that names a file of the set: a comment the doc points at is
   // owned by the doc, and its reason belongs there.
   const refs = [];
-  for (const d of docs.filter((d) => fs.existsSync(d))) {
+  for (const d of docFiles) {
     fs.readFileSync(d, "utf8").split("\n").forEach((l, i) => {
       for (const f of files3) if (l.includes(path.basename(f))) refs.push(`${relDoc(d)}:${i + 1}\t${f}\t${l.trim().slice(0, 160)}`);
     });

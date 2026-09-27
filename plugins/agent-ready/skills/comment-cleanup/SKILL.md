@@ -36,7 +36,8 @@ basename. `<skill>` = this directory.
 
 File set = what the conversation names; inferred rather than read → print,
 stop for confirmation. Paths relative to repo root into `<work>/files.txt`.
-Docs = the design doc.
+Docs = the docs the caller names, else those `cleanup`'s
+[Comment pass](../cleanup/SKILL.md#5-comment-pass) names.
 
 ```bash
 node <skill>/strip-comments.mjs --prepare <work>/files.txt <work> <doc> [<doc> ...]
@@ -68,6 +69,10 @@ Done when `facts/<path>.md` and `answers/<path>.md` hold every anchor, and no
 answers anchor is in `ambiguous.txt`.
 
 ### 4. Apply
+
+First, each `DOC` row with a `text` whose doc the caller marks as queued
+([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)): make it a
+`COMMENT` row with that text, and list it in the report with its anchor.
 
 ```bash
 node <skill>/strip-comments.mjs <work>/files.txt
@@ -111,8 +116,8 @@ node <skill>/strip-comments.mjs --finish <work>/files.txt <work>
 ```
 
 Code hunk → revert. Lost marker → restore its original words. Then the
-repository's typecheck and lint, by the names `package.json` gives them. Tests
-only on request.
+repository's typecheck and lint, by the names the project manifest gives
+them. Tests only on request.
 
 ### 8. Report
 

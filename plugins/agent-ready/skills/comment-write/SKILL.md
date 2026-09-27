@@ -20,11 +20,12 @@ in it is committed.
 File set = what the conversation names; inferred rather than read → print,
 stop for confirmation. One path per line in `<work>/files.txt`.
 
-Docs = the architecture doc `CLAUDE.md` names (else `docs/ARCHITECTURE.md`).
-List their sections once, with line ranges, so you fetch one section at a time:
+Docs = the docs the caller names, else those `cleanup`'s
+[Comment pass](../cleanup/SKILL.md#5-comment-pass) names. List their
+sections once, with line ranges, so you fetch one section at a time:
 
 ```bash
-grep -nE '^#{2,4} ' <doc> | tee -a <work>/headings.txt
+grep -nE '^#{1,4} ' <doc> | tee -a <work>/headings.txt
 ```
 
 Files that already carry comments stay in the set.
@@ -138,9 +139,12 @@ interface tag either. Only `TYPE` or `WRITE`.
 
 **A `WRITE` is local or it is not.** A fact about this code alone is a comment
 at the anchor. A rule other files obey, a contract spanning files, a repo-wide
-gotcha, or a trap belongs in the design doc. The sentence goes there and the anchor
-keeps `See <doc> §"<anchor>"`. Either way the anchor ends up with a line; only
-its shape differs.
+gotcha, or a trap belongs in one of the docs. The sentence goes there and the
+anchor keeps `See <doc> §"<anchor>"`. Either way the anchor ends up with a
+line; only its shape differs. A doc the caller marks as queued
+([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)) takes no new
+sentence: the fact stays a comment at the anchor, and the report lists the
+sentence with its anchors.
 
 **An existing comment at the anchor is joined, not doubled.** A `WRITE` at an
 anchor that already has a comment adds its sentence to that block, so the
@@ -172,7 +176,7 @@ pointer.
 
 Then the gates, in this order:
 
-1. Typecheck and lint, by the names `package.json` gives them.
+1. Typecheck and lint, by the names the project manifest gives them.
 2. Code identity. This prints every removed line and every added line that is
    not a comment. A removed code line or an added one is a code change; revert
    it. A removed comment line means you reshaped an existing block; confirm
@@ -180,6 +184,8 @@ Then the gates, in this order:
    ```bash
    git diff -U0 -- $(cat <work>/files.txt) | grep -E '^-[^-]|^\+[^+]' | grep -vE '^\+\s*(//|/\*|\*|\{/\*)'
    ```
+   The last pattern knows `//` and `/* */`; add the file's own comment
+   marker (`#`, `--`) for another language.
 3. **JSX only.** A `//` in JSX child text renders as page text and passes
    typecheck. If the lint config lacks `react/jsx-no-comment-textnodes`, read
    every `//` you placed in a `.tsx` file and confirm it sits in code, not

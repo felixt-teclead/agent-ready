@@ -17,11 +17,12 @@ in it is committed.
 File set = what the conversation names; inferred rather than read → print,
 stop for confirmation. One path per line in `<work>/files.txt`.
 
-Docs = the architecture doc `CLAUDE.md` names (else `docs/ARCHITECTURE.md`).
-List their sections once, with line ranges, so you fetch one section at a time:
+Docs = the docs the caller names, else those `cleanup`'s
+[Comment pass](../cleanup/SKILL.md#5-comment-pass) names. List their
+sections once, with line ranges, so you fetch one section at a time:
 
 ```bash
-grep -nE '^#{2,4} ' <doc> | tee -a <work>/headings.txt
+grep -nE '^#{1,4} ' <doc> | tee -a <work>/headings.txt
 ```
 
 Done when `files.txt` is confirmed and `headings.txt` covers every doc.
@@ -64,6 +65,11 @@ grep -rn '<symbol>' src tests scripts
 | pointer                        | a doc section states it, or the fact is a rule, contract, gotcha or trap  | write the sentence into the section if absent; place `See <doc> §"<anchor>"` at every anchor in the group |
 | `WRITE`                        | no doc states it and it is true of that one file alone                    | send the block back to its subagent as `WRITE`                                                      |
 
+A doc the caller marks as queued
+([`cleanup`, Rule queue](../cleanup/SKILL.md#rule-queue)) takes no new
+sentence: send the block back as `WRITE`, and list the sentence with its
+anchors in the report. Its existing sections take pointers as usual.
+
 Pointer rules and doc-entry form: [`WRITING.md`](../comment-write/WRITING.md) §"Pointers".
 
 Done when every `DOC?` block has an outcome.
@@ -72,7 +78,7 @@ Done when every `DOC?` block has an outcome.
 
 Run once, over the whole set, after step 3 has placed its lines:
 
-1. Typecheck and lint, by the names `package.json` gives them.
+1. Typecheck and lint, by the names the project manifest gives them.
 2. Code identity. This prints every removed line and every added line that is
    not a comment. A removed code line or an added one is a code change; revert
    it. A removed comment line means a block was reshaped; confirm every word of
@@ -80,6 +86,8 @@ Run once, over the whole set, after step 3 has placed its lines:
    ```bash
    git diff -U0 -- $(cat <work>/files.txt) | grep -E '^-[^-]|^\+[^+]' | grep -vE '^\+\s*(//|/\*|\*|\{/\*)'
    ```
+   The last pattern knows `//` and `/* */`; add the file's own comment
+   marker (`#`, `--`) for another language.
 3. **JSX only.** A `//` in JSX child text renders as page text and passes
    typecheck. If the lint config lacks `react/jsx-no-comment-textnodes`, read
    every added `//` in a `.tsx` file and confirm it sits in code, not between
