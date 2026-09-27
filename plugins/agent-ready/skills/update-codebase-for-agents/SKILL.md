@@ -19,14 +19,14 @@ Start from a clean tree on a new branch, `update-codebase-for-agents`. From
 the repo root:
 
 ```sh
-sh .agents/skills/setup-codebase-for-agents/fetch.sh --update
+sh .agents/skills/setup-codebase-for-agents/fetch.sh
 ```
 
 - **Exit 0, "Up to date"**: tell the owner, delete the branch, stop.
 - **Exit 3**: each listed file was edited here and changed or dropped in
   blueprint. Show its diff and ask the owner: keep or replace. One file per
-  question. Then run the command again with the printed `--at <sha>` and one
-  `--keep <path>` or `--replace <path>` per file.
+  question. Then run it again with the printed `BLUEPRINT_REF=<sha>` in front
+  and one `--keep <path>` or `--replace <path>` per file.
 - **Exit 1**: show the output and stop. A file outside the manifest blocks
   the path blueprint now uses; the owner renames or deletes it.
 
@@ -74,7 +74,7 @@ file list:
   allows. Per skill added or removed: what it does, from its description.
 - **Switches.** New keys with the chosen value; removed keys.
 - **Kept edits.** Every `kept` file and kept hook entry. Each now differs from
-  blueprint and is asked about again on the next update.
+  blueprint and is asked about again when blueprint changes it again.
 - **Why.** The blueprint commits that touch `plugins/agent-ready/`, newest
   first; stop at the old commit, which the list also holds:
 
