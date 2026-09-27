@@ -83,8 +83,9 @@ between two stacked cleanup PRs are expected; resolve them by hand.
 
 ## 4. Fast: one child issue per step
 
-1. Re-run the scan. Take its next step, in its class order: setup regressed,
-   failing always-loaded lines, misplaced statements and old files. An old
+1. Re-run the scan. Take its next step, in its class order: missing fixed
+   rows (re-run `/setup-codebase-for-agents`), failing always-loaded lines,
+   misplaced statements and old files. An old
    file gets the action its row in the
    [routing table](../setup-codebase-for-agents/routing-table.md) names.
    Scan green → comment pass over the next files on the path list, up to the

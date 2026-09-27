@@ -77,8 +77,10 @@ Three numbers, none weighted:
 
 Take the first class with a finding:
 
-1. **Setup regressed.** `CLAUDE.md` or `.claude/skills` is no longer a
-   symlink, or a `fixed` row is `missing`.
+1. **Missing fixed rows.** A `fixed` row is `missing`, or `CLAUDE.md` or
+   `.claude/skills` is not a symlink. Regressed or never written, the step
+   is the same: re-run `/setup-codebase-for-agents`. It writes missing rows
+   only.
 2. **Failing always-loaded lines.**
 3. **Misplaced statements and old files.**
 

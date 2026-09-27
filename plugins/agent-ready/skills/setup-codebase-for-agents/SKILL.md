@@ -40,10 +40,11 @@ Done when every row and every old file found has a status.
 Ask only about rows marked `missing`. One section, one answer, then the
 next. Put the recommended answer first, so the owner can accept it in a word.
 
-- **A. Commands.** Which commands run lint, typecheck and test. Then one
-  `check` script in the manifest that runs all three. It exits non-zero on a
-  failure, never prompts or watches, and needs no service that
-  `docs/agents/environment.md` does not declare.
+- **A. Commands,** also when only the verify row is missing and the
+  manifest has no `check` script. Which commands run lint, typecheck and
+  test. Then one `check` script in the manifest that runs all three. It
+  exits non-zero on a failure, never prompts or watches, and needs no
+  service that `docs/agents/environment.md` does not declare.
 - **B. README.** Does the code need setup before it runs? No → no
   `README.md` is written.
 - **C. Mechanical checks.** For each missing lint, typecheck or test tool:
@@ -74,7 +75,8 @@ Done when every missing row has an answer or a gap-list entry.
 ## 3. Write
 
 One branch, one pull request, one commit per step. Skip a step whose rows
-are all `home`, `n/a` or on the gap list. Merge into an existing file: it
+are all `home`, `n/a` or on the gap list; in a step that runs, write only
+its missing rows. Merge into an existing file at the template's place: it
 keeps its text. Placeholders in a template are `<...>`; fill each one, or
 leave the file out and put its row on the gap list.
 
@@ -99,7 +101,8 @@ leave the file out and put its row on the gap list.
    `### Superpowers` part of the block, and `.superpowers/` in `.gitignore`.
    Any other answer: the block goes without the `### Superpowers` part.
 4. **Commands** from answer A into the manifest scripts, and the
-   `## Verify` section into `AGENTS.md`. **`README.md`** from answer B.
+   `## Verify` section into `AGENTS.md`. No `check` script → the verify row
+   goes on the gap list. **`README.md`** from answer B.
 5. **Each tool** the owner accepted in answer C: the tool, its config, its
    script. One commit per tool.
 6. **AFK files** from answer F: `docs/agents/environment.md` and
