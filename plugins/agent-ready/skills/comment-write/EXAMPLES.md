@@ -3,9 +3,6 @@
 A tag, its rung, and the block that follows. The code is invented and the doc
 is `docs/DESIGN.md`; substitute the repository's own.
 
-Nine tags. Two end in code, two in nothing, one in a report; four put a line
-at the anchor, and one of those four is a pointer.
-
 ## 1. `NAME`
 
 ```ts

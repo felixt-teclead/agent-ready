@@ -14,8 +14,7 @@ passed.
 4. **A stranger could not write it from the adjacent code?** At an interface
    the adjacent code is the signature alone.
 5. **Stands alone without a tracker?** Name no ticket, PR, review round or
-   person. The reader has no access to yours — neither does a fresh agent
-   session. Keep the reason, drop the id.
+   person. Keep the reason, drop the id.
 
 ```
 // Gateway field order varies per request.          passes
