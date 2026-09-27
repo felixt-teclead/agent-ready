@@ -1,6 +1,6 @@
 ---
 name: update-codebase-for-agents
-description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. User-invoked, in a repo set up without the plugin.
+description: Refresh the skills and hooks that setup copied into .agents/ to agent-ready's current main, and rewire .claude/settings.json. User-invoked, in a repo set up without the plugin, or to move a repo off the plugin.
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,8 @@ lost without the owner saying so, and whoever merges knows what changes.**
 
 No `.agents/agent-ready-manifest.json` (or `agent-ready-manifest.json`, its old name): stop. With the plugin, auto-update
 under `/plugin` → Marketplaces does this job. Without the plugin, run
-`/setup-codebase-for-agents` first.
+`/setup-codebase-for-agents` first. One exception: the owner wants this repo
+off the plugin. Go to step 4.
 
 ## 1. Fetch
 
@@ -96,3 +97,42 @@ files. Do not merge; tell the owner a human merges it.
 
 Done when the pull request is open, its body names every behaviour change, and
 every kept edit was the owner's answer.
+
+## 4. Move this repo off the plugin
+
+The repo gets its own copies of the skills and hooks, and the plugin is
+switched off for this project. Any repo set up with the plugin can run this,
+at any time.
+
+Start from a clean tree on a new branch, `move-off-plugin`.
+
+1. **Copies.** Run setup step 2 as the no-plugin channel does, with the
+   plugin's copy of the script:
+
+   ```sh
+   sh "${CLAUDE_PLUGIN_ROOT}/skills/setup-codebase-for-agents/fetch.sh"
+   ```
+
+   Commit `.agents/` and `.claude/skills`.
+2. **Settings.** Write `.claude/settings.json` as setup step 9 does for the
+   no-plugin channel. The `env` values come from this user's plugin config:
+
+   ```sh
+   jq '.pluginConfigs["agent-ready@teclead"]' ~/.claude/settings.json
+   ```
+
+   A key with no value there is asked as under **Switches** in step 2 above.
+   Tell the owner these values now hold for everyone who clones the repo.
+3. **Switch off.** In the same file, set `enabledPlugins` to
+   `"agent-ready@teclead": false` and `"mattpocock-skills@teclead": false`.
+   The repo now holds both plugins' skills and hooks; left on, each loads
+   twice.
+   Commit `.claude/settings.json` and `.gitignore`.
+4. **Verify.** Run setup step 4's `settings.json` and no-plugin checks.
+
+Open one pull request. Its body names the switch values and says the plugin
+is off for this repo; `/update-codebase-for-agents` refreshes the copies from
+now on. It touches steering files: a human merges it.
+
+Done when the pull request is open, every hook in `settings.json` points into
+`.agents/hooks/`, and each switch has an `env` value.
