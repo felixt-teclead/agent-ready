@@ -14,6 +14,9 @@ its old name): stop. With the plugin, auto-update under `/plugin` →
 Marketplaces does this job. Without the plugin, run
 `/setup-codebase-for-agents` first.
 
+Setup's steps named below are in
+[its SKILL.md](../setup-codebase-for-agents/SKILL.md).
+
 ## 1. Fetch
 
 Start from a clean tree on a new branch, `update-codebase-for-agents`. From
@@ -28,26 +31,28 @@ sh .agents/skills/setup-codebase-for-agents/fetch.sh
   agent-ready. Show its diff and ask the owner: keep or replace. One file per
   question. Then run it again with the printed `AGENT_READY_REF=<sha>` in front
   and one `--keep <path>` or `--replace <path>` per file.
-- **Exit 1**: show the output and stop. A file outside the manifest blocks
-  the path agent-ready now uses; the owner renames or deletes it.
+- **Exit 1**: show the output and stop. A list of files not in the manifest
+  is the owner's: each blocks a path agent-ready now uses, and the owner
+  renames or deletes it. Any other exit 1 is agent-ready's bug or the
+  network.
 
 The last run prints the old and new commits and every file as `written`,
-`deleted` or `kept`. Keep that output for step 3. Commit `.agents/`.
+`deleted` or `kept`. Keep that output for the pull request. Commit `.agents/`.
 
 ## 2. Settings
 
-`.claude/settings.json`, as setup step 9 wrote it.
+`.claude/settings.json`, as setup's `.claude/settings.json` step wrote it.
 
-**Hooks.** An entry is one hook; its script is the file name after
-`.agents/hooks/` in its command. Build the entries the old
-`.agents/hooks/hooks.json` gives, from the branch's base
+**Hooks.** An entry is one hook. Its key is its event, its matcher and its
+script, the file name after `.agents/hooks/` in its command. Build the entries
+the old `.agents/hooks/hooks.json` gives, from the branch's base
 (`git show $(git merge-base HEAD <default branch>):.agents/hooks/hooks.json`),
-with setup step 9's rewrite. Compare each with the `settings.json` entry for
-the same script. One that differs was edited by hand: show its diff and ask
-keep or replace, one entry per question.
+with the rewrite in setup's `.claude/settings.json` step. Compare each with
+the `settings.json` entry of the same key. One that differs was edited by
+hand: show its diff and ask keep or replace, one entry per question.
 
 Then build the new entries the same way from the working tree's `hooks.json`
-and edit `settings.json` in place, by script:
+and edit `settings.json` in place, by key:
 
 - in both old and new: replace the entry where it stands, unless kept;
 - only in old: remove it, and drop a matcher group left empty;
@@ -69,6 +74,12 @@ Keep every existing `CLAUDE_PLUGIN_OPTION_<KEY>` value. Ask about each new
 key with its description and default; a key with no default has no
 recommendation. Remove the `env` entry of a key that is gone.
 
+**Newer setup writes.** Setup's `.claude/settings.json` step also writes
+`enabledPlugins` and the architecture review window. Write each one missing as
+that step says; ask the window as setup's interview J does. A window above 0
+on a GitHub remote: also run
+`sh .agents/skills/setup-codebase-for-agents/labels.sh --review-only`.
+
 Commit `settings.json` on its own. Skip the commit when nothing changed.
 
 ## 3. Pull request
@@ -78,7 +89,8 @@ file list:
 
 - **Behaviour.** Per hook added, removed or changed: what it now blocks or
   allows. Per skill added or removed: what it does, from its description.
-- **Switches.** New keys with the chosen value; removed keys.
+- **Switches.** New keys with the chosen value; removed keys; the review
+  window when it was asked.
 - **Kept edits.** Every `kept` file and kept hook entry. Each now differs from
   agent-ready and is asked about again when agent-ready changes it again.
 - **Why.** The agent-ready commits that touch `plugins/agent-ready/`, newest
@@ -92,8 +104,8 @@ file list:
   When the Pocock tag moved: old and new tag, and
   `https://github.com/mattpocock/skills/releases/tag/<new>`.
 
-`.agents/skills/`, `.agents/hooks/` and `.claude/settings.json` are steering
-files: tell the owner a human merges it.
+It touches steering files (the list in `AGENTS.md`): tell the owner a human
+merges it.
 
 Done when the pull request is open, its body names every behaviour change, and
 every kept edit was the owner's answer.
