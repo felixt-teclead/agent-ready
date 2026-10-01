@@ -113,8 +113,7 @@ says; unset → the routing table's
 
 Open the parent issue as `docs/agents/issue-tracker.md` says, title
 `Refactor: <goal>`. Body: the scan's three numbers and its class list, or,
-for a comment pass, the length of the path list; the
-[Rule queue](comment-pass.md#rule-queue) grows below. Its number goes in
+for a comment pass, the length of the path list. Its number goes in
 `parent:`.
 
 Commit the phase file and path list in one PR labelled `cleanup` (create the
@@ -136,17 +135,13 @@ After the task's logic PR is open, in the same session:
 4. Open the PR against the logic branch, label `cleanup`, body starting with
    `Follows #<logic PR>. Merge this first; if #<logic PR> merged first,
    rebase this onto the default branch.`, then the pass's report.
-5. The pass's held-back sentences → [Rule queue](comment-pass.md#rule-queue)
-   items in the parent issue, with this PR's number.
-6. Merge it into the logic branch by
+5. Merge it into the logic branch by
    [Merging a cleanup PR](#merging-a-cleanup-pr), before the logic PR
    merges. The logic PR merged first →
    `git rebase --onto origin/<default> <head>`, with `<head>` from
    `gh pr view <logic PR> --json headRefOid`; stamp again, and retarget the
    PR to the default branch.
-7. The merge brings the done files to a multiple of 10 → open the
-   [rule-queue PR](comment-pass.md#rule-queue).
-8. No files left → [End](#7-end).
+6. No files left → [End](#7-end).
 
 Done when the cleanup PR is merged, or open with the reason a human merges
 it.
@@ -173,18 +168,14 @@ it.
    picked files.
 5. Open the PR, `Closes #<step>`, with the pass's report. A comment pass on a
    green scan: the body says `Scan green at <the scanned commit>`.
-6. The pass's held-back sentences → [Rule queue](comment-pass.md#rule-queue)
-   items in the parent issue, with this PR's number.
-7. Merge it by [Merging a cleanup PR](#merging-a-cleanup-pr).
-8. The merge brings the done files to a multiple of 10 → open the
-   [rule-queue PR](comment-pass.md#rule-queue).
+6. Merge it by [Merging a cleanup PR](#merging-a-cleanup-pr).
 
 Done when the step's PR is merged, or open with the reason a human merges
 it. One step per run.
 
 ## 5. Comment pass
 
-The steps, the docs and the rule queue: [comment-pass.md](comment-pass.md).
+The steps: [comment-pass.md](comment-pass.md).
 
 ## 6. Pause and resume
 
@@ -194,9 +185,12 @@ delete the line.
 
 ## 7. End
 
-- **fast**: one `cleanup` PR, body `Closes #<parent>`: it lands the unticked
-  [Rule queue](comment-pass.md#rule-queue) items and deletes the phase file,
-  the path list and `.agents/refactor-done/`. Merge it by
+- **fast**: first every `[ ]` line in `.agents/refactor-log.md` needs a
+  human decision: list them, ask `keep` or `cut` for each, mark it. Any
+  `[ ]` left → the phase is not done; stop. Then one `cleanup` PR, body
+  `Closes #<parent>`: it applies each `cut` (delete the comment), and deletes
+  the phase file, the path list, the log and `.agents/refactor-done/`. Merge
+  it by
   [Merging a cleanup PR](#merging-a-cleanup-pr).
 - **continuous**: no files left, or the human asks → switch `mode:` to
   `fast` in a `cleanup` PR, then run [Fast](#4-fast-one-child-issue-per-step)

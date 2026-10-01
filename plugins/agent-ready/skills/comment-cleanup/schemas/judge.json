@@ -1,0 +1,258 @@
+{
+ "type": "object",
+ "properties": {
+  "files": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string"
+     },
+     "blocks": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "string"
+        },
+        "facts": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "fact": {
+            "type": "string"
+           },
+           "flag": {
+            "type": "string",
+            "enum": [
+             "KEEP",
+             "KEEP?",
+             "RESTATES",
+             "VISIBLE",
+             "FINDABLE",
+             "UNEARNED",
+             "DUPLICATE",
+             "NO-PITFALL",
+             "HISTORY",
+             "PROCESS",
+             "UNSTABLE",
+             "WRONG",
+             "MISLEADING",
+             "BUG",
+             "HARD-TO-DESCRIBE"
+            ]
+           },
+           "truth": {
+            "type": "string"
+           },
+           "source": {
+            "type": "string"
+           },
+           "protected": {
+            "type": "boolean"
+           }
+          },
+          "required": [
+           "fact",
+           "flag",
+           "truth",
+           "source",
+           "protected"
+          ],
+          "additionalProperties": false
+         }
+        },
+        "verdict": {
+         "type": "string",
+         "enum": [
+          "KEEP",
+          "KEEP?",
+          "CUT",
+          "BUG",
+          "HARD-TO-DESCRIBE"
+         ]
+        },
+        "sentences": {
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "from": {
+            "type": "array",
+            "items": {
+             "type": "string"
+            }
+           },
+           "action": {
+            "type": "string",
+            "enum": [
+             "keep",
+             "cut",
+             "rewrite"
+            ]
+           },
+           "text": {
+            "type": "string"
+           },
+           "why_rewrite": {
+            "type": "string",
+            "enum": [
+             "",
+             "wrong",
+             "history",
+             "untranslated"
+            ]
+           },
+           "pitfall": {
+            "type": "string"
+           },
+           "facts": {
+            "type": "array",
+            "items": {
+             "type": "integer"
+            }
+           },
+           "tests": {
+            "type": "array",
+            "items": {
+             "type": "string"
+            }
+           }
+          },
+          "required": [
+           "from",
+           "action",
+           "text",
+           "why_rewrite",
+           "pitfall",
+           "facts",
+           "tests"
+          ],
+          "additionalProperties": false
+         }
+        },
+        "pointer": {
+         "type": "string"
+        },
+        "pointer_hard": {
+         "type": "string"
+        },
+        "pointer_critical": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "facts",
+        "verdict",
+        "sentences",
+        "pointer",
+        "pointer_hard",
+        "pointer_critical"
+       ],
+       "additionalProperties": false
+      }
+     },
+     "findings": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "category": {
+         "type": "string",
+         "enum": [
+          "bug",
+          "wrong-info",
+          "doc-drift",
+          "missing-doc",
+          "unsure",
+          "dead-ref",
+          "hard-to-describe",
+          "weak-type",
+          "missing-test",
+          "named-constant",
+          "sensitive-data",
+          "conflict"
+         ]
+        },
+        "status": {
+         "type": "string",
+         "enum": [
+          "acted",
+          "open"
+         ]
+        },
+        "line": {
+         "type": "integer"
+        },
+        "claim": {
+         "type": "string"
+        },
+        "why": {
+         "type": "string"
+        },
+        "done": {
+         "type": "string"
+        },
+        "if_wrong": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "category",
+        "status",
+        "line",
+        "claim",
+        "why",
+        "done",
+        "if_wrong"
+       ],
+       "additionalProperties": false
+      }
+     },
+     "docfixes": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "doc": {
+         "type": "string"
+        },
+        "heading": {
+         "type": "string"
+        },
+        "old": {
+         "type": "string"
+        },
+        "new": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "doc",
+        "heading",
+        "old",
+        "new"
+       ],
+       "additionalProperties": false
+      }
+     }
+    },
+    "required": [
+     "path",
+     "blocks",
+     "findings",
+     "docfixes"
+    ],
+    "additionalProperties": false
+   }
+  }
+ },
+ "required": [
+  "files"
+ ],
+ "additionalProperties": false
+}

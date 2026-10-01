@@ -1,0 +1,93 @@
+{
+ "commit": "b0636603",
+ "about": "The 8 wrong claims traced in hallucination-trace.md (A/B and production runs of 2026-09-30), as the judge answered them (old-style text/tests). Files are the originals at verum b0636603. Facts, text and tests are quoted from the trace; a `reconstructed` note names what the trace does not quote and was filled in. `wrong` matches the wrong sentence as the judge wrote it; `pin` names a wrong pin.",
+ "cases": [
+  {
+   "case": "1a", "cause": "R2 original claim kept unchecked (pill hues 'documented exception')",
+   "file": "src/app/(app)/portfolio/recent-tables.tsx", "block": "A1",
+   "answer": { "id": "A1", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [
+     { "fact": "Pill hues are data colour, the documented exception to the token rule", "flag": "KEEP", "truth": "Hardcoded hues used in oklch pills", "source": "", "protected": false, "F": 0, "C": 1 },
+     { "fact": "Pill text always labels itself", "flag": "KEEP", "truth": "Pills render label text", "source": "", "protected": false, "F": 0, "C": 1 }],
+    "text": ["// Pill hues are data colour, the documented exception to the token rule, because the pill text labels itself."], "tests": [] },
+   "wrong": "documented exception"
+  },
+  {
+   "case": "1b", "cause": "R3 test picked from a name-only match in a test comment",
+   "file": "src/app/(app)/portfolio/recent-tables.tsx", "block": "A3",
+   "reconstructed": "facts (the trace quotes only text and tests); the text's ending after 'server-rendered'",
+   "answer": { "id": "A3", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [{ "fact": "Options carry a precomputed href so the re-sort stays SSR", "flag": "KEEP", "truth": "sortOptions builds hrefs", "source": "code", "protected": false, "F": 1, "C": 1 }],
+    "text": ["Hrefs are precomputed so the re-sort stays server-rendered."], "tests": ["tests/dashboard-recent-sort.test.ts"] },
+   "pin": "tests/dashboard-recent-sort.test.ts"
+  },
+  {
+   "case": "2", "cause": "R1 'Defensive' dropped, 'X because Y' reverses the logic",
+   "file": "src/app/(app)/settings/entities/entities-panel.tsx", "block": "A14",
+   "reconstructed": "C and F scores",
+   "answer": { "id": "A14", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [{ "fact": "loadEntityChildren seeds every entity id so miss is not expected", "flag": "KEEP", "truth": "doc confirms seeding", "source": "docs/comment-cleanup-batch-l-entities-detail.md", "protected": false, "F": 0, "C": 1 }],
+    "text": ["Empty fallback because loadEntityChildren seeds every entity id, so a miss is not expected."], "tests": [] },
+   "wrong": "Empty fallback because"
+  },
+  {
+   "case": "3", "cause": "R1 true qualifier '(the other forced to null)' dropped, overstatement kept",
+   "file": "src/app/(app)/settings/entities/shareholder-form-modal.tsx", "block": "A7",
+   "reconstructed": "C and F scores",
+   "answer": { "id": "A7", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [{ "fact": "Exactly one holder non-null, other forced to null, so the refine fails only when chosen side is blank", "flag": "KEEP", "truth": "true; DB check num_nonnulls=1", "source": "code", "protected": false, "F": 0, "C": 2 }],
+    "text": ["Exactly one holder is non-null, so the exactly-one-holder refine fails only when the chosen side is blank."], "tests": [] },
+   "wrong": "Exactly one holder is non-null"
+  },
+  {
+   "case": "4", "cause": "R1 the example (\"1234.567\", dot + 3 digits) generalised to every dot decimal",
+   "file": "src/app/(app)/settings/entities/entity-form-modal.tsx", "block": "A3",
+   "reconstructed": "source (the verifier's fact line shows none, so empty); C and F scores",
+   "answer": { "id": "A3", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [{ "fact": "String() gives dot decimal that de-DE parse reads as thousands", "flag": "KEEP", "truth": "parseMoneyField uses de-DE", "source": "", "protected": true, "F": 0, "C": 2 }],
+    "text": ["Stored value arrives as a JS number, and a dot decimal would be re-read as a thousands separator."], "tests": [] },
+   "wrong": "a dot decimal would be re-read"
+  },
+  {
+   "case": "5", "cause": "R2 'else from the newest row' kept unchecked; R4 pin placed after the wrong sentence",
+   "file": "src/app/(app)/settings/fx-rates/health.ts", "block": "A14",
+   "reconstructed": "text[0] (the trace quotes only text[1]); C and F scores",
+   "answer": { "id": "A14", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [
+     { "fact": "A single matured run with no newer row is Stale", "flag": "KEEP", "truth": "Code returns Stale immediately", "source": "code", "protected": false, "F": 0, "C": 2 },
+     { "fact": "Lag measured from delivering run, else newest row", "flag": "KEEP", "truth": "deliveredAt ?? ranAt", "source": "code", "protected": false, "F": 1, "C": 1 }],
+    "text": ["A single matured scheduled run with no newer row is already Stale, not a Lagging warning.", "Lag counts from the last delivering run, else from the newest row, the only age available."], "tests": ["tests/fx-health.test.ts"] },
+   "wrong": "else from the newest row",
+   "pin": "tests/fx-health.test.ts"
+  },
+  {
+   "case": "6", "cause": "R3 test picked from a name-only match in a test comment",
+   "file": "src/app/(app)/settings/banks-accounts/account-form-modal.tsx", "block": "A23",
+   "reconstructed": "text (the trace quotes the fact and tests only); C and F scores",
+   "answer": { "id": "A23", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [{ "fact": "Keep red/emerald palette verbatim; inline feedback text, not a bubble box; do not migrate to Alert", "flag": "KEEP", "truth": "", "source": "tests/sign-colour.test.ts", "protected": false, "F": 0, "C": 1 }],
+    "text": ["Keep the red/emerald palette verbatim: this is inline feedback text, not a bubble box, so do not migrate to Alert."], "tests": ["tests/sign-colour.test.ts"] },
+   "pin": "tests/sign-colour.test.ts"
+  },
+  {
+   "case": "7", "cause": "R1 compression dropped the exception ('the only column with room is Last update')",
+   "file": "src/app/(app)/settings/banks-accounts/bank-detail.tsx", "block": "A17",
+   "reconstructed": "text[0] (the trace quotes only text[1]); C and F scores",
+   "answer": { "id": "A17", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [{ "fact": "icon-only because wording is 92px and no column has room; Badge cannot wrap", "flag": "KEEP", "truth": "per comment", "source": "comment", "protected": false, "F": 0, "C": 1 }],
+    "text": ["The origin badge sits with the account's identity because origin says how the account came into being.", "It is icon-only: the wording needs 92px, no column has that room, and Badge cannot wrap."], "tests": [] },
+   "wrong": "no column has that room"
+  },
+  {
+   "case": "8", "cause": "R4 pin appended after the wrong sentence (and the spec never imports the file)",
+   "file": "src/app/(app)/settings/entities/entity-history.tsx", "block": "A3",
+   "reconstructed": "facts' wording and scores (the trace quotes their truth fields)",
+   "answer": { "id": "A3", "verdict": "KEEP", "pointer": "", "doc_sentence": "", "after": "",
+    "facts": [
+     { "fact": "Expander with a View action opening the shared ChangeDetailDialog", "flag": "KEEP", "truth": "matches code", "source": "code", "protected": false, "F": 0, "C": 1 },
+     { "fact": "History is prop-loaded, no fetch-on-open", "flag": "KEEP", "truth": "history prop rendered when open", "source": "code", "protected": false, "F": 0, "C": 1 }],
+    "text": ["Expander for the entity detail view, with a View action opening the change detail dialog.", "History is passed in and never fetched on open."], "tests": ["tests/e2e/ah36-followup-entity-ui.spec.ts"] },
+   "pin": "tests/e2e/ah36-followup-entity-ui.spec.ts"
+  }
+ ]
+}
