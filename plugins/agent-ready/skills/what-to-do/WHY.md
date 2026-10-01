@@ -92,10 +92,7 @@ A cap of a few files (`cap:`) keeps each pull request small enough to
 review. Hundreds
 of them cannot each wait for a person, so an agent merges its own when it
 touches no steering file
-([Merging a cleanup PR](../cleanup/SKILL.md#merging-a-cleanup-pr)). The
-review rules a pass finds are steering, so they wait in the phase's issue
-for a human-merged batch
-([Rule queue](../cleanup/comment-pass.md#rule-queue)).
+([Merging a cleanup PR](../cleanup/SKILL.md#merging-a-cleanup-pr)).
 
 ## Why the phase keeps its state in files
 
@@ -131,9 +128,7 @@ answers that.
   it is pushed.
 - **Old code**: a phase gives every file one full comment pass, per task in
   continuous mode, in batches of `cap:` files in fast mode
-  ([Comment pass](../cleanup/comment-pass.md)). Rules the pass finds
-  land in `docs/CODING_STANDARDS.md` in batches
-  ([Rule queue](../cleanup/comment-pass.md#rule-queue)).
+  ([Comment pass](../cleanup/comment-pass.md)).
 - **Docs**: the scan names one next change and `cleanup` lands it, until the
   scan is green (the scan's
   [One next step](../scan-codebase-for-agents/SKILL.md#4-one-next-step)). A

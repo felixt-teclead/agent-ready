@@ -1,0 +1,64 @@
+{
+ "type": "object",
+ "properties": {
+  "files": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string"
+     },
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "key": {
+         "type": "string"
+        },
+        "status": {
+         "type": "string",
+         "enum": [
+          "OK",
+          "WRONG",
+          "NO-PITFALL",
+          "ELSEWHERE",
+          "UNSURE",
+          "RESTORE"
+         ]
+        },
+        "correction": {
+         "type": "string"
+        },
+        "evidence": {
+         "type": "string"
+        },
+        "note": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "key",
+        "status",
+        "correction",
+        "evidence",
+        "note"
+       ],
+       "additionalProperties": false
+      }
+     }
+    },
+    "required": [
+     "path",
+     "items"
+    ],
+    "additionalProperties": false
+   }
+  }
+ },
+ "required": [
+  "files"
+ ],
+ "additionalProperties": false
+}

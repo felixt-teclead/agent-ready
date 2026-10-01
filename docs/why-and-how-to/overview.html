@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why we move from Superpowers to Pocock's skills</title>
+<style>
+  :root {
+    --ink: #14213D; --ink2: #22305A; --slate: #4A5468; --muted: #8D99B3; --line: #D7DDE8; --mist: #F1F4F9;
+    --teal: #1F9E89; --indigo: #4F5BD5; --orange: #F26B38; --violet: #7C4DDB;
+    --red: #D64545; --green: #2E9E5B; --green-l: #DFF3E7; --code: #1B2440;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: var(--ink); }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace; font-size: .92em; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+  header { background: var(--ink); color: #fff; }
+  header .wrap { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: center; padding-top: 56px; padding-bottom: 56px; }
+  .over { font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); }
+  h1 { font-size: 48px; line-height: 1.08; margin: 12px 0 16px; }
+  .sub { font-size: 19px; color: #C9D2E3; margin: 0; }
+  h2 { font-size: 30px; margin: 0 0 6px; }
+  .lede { color: var(--slate); margin: 0 0 22px; font-size: 17px; }
+  section { padding: 48px 0 0; }
+  .why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .layer { border-radius: 12px; padding: 16px 18px; color: #fff; }
+  .layer b { display: block; font-size: 18px; }
+  .layer span { color: rgba(255,255,255,.85); font-size: 14.5px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px 20px 18px; box-shadow: 0 2px 10px rgba(20,33,61,.06); display: flex; flex-direction: column; }
+  .tag { align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #fff; padding: 4px 10px; border-radius: 99px; }
+  .card h3 { font-size: 20px; margin: 12px 0 12px; line-height: 1.25; }
+  .ba { font-size: 14.5px; margin: 0 0 10px; }
+  .ba .k { display: block; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 2px; }
+  .before { color: var(--slate); } .before .k { color: var(--muted); }
+  .now .k { color: var(--indigo); }
+  .gain { margin-top: auto; background: var(--green-l); border-radius: 10px; padding: 10px 12px; font-size: 14.5px; font-weight: 650; }
+  .gain::before { content: "You get: "; color: var(--green); font-weight: 800; }
+  .flow { display: grid; grid-template-columns: 170px 1fr; gap: 10px 16px; align-items: center; }
+  .steps { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .step { border-radius: 9px; padding: 8px 12px; font-weight: 700; font-size: 14.5px; }
+  .old .step { background: var(--mist); color: var(--slate); }
+  .new .step { background: var(--ink); color: #fff; }
+  .arr { color: var(--muted); font-weight: 800; }
+  .left { font-size: 13px; color: var(--slate); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .box { background: var(--mist); border-radius: 14px; padding: 20px 22px; }
+  .box h3 { margin: 0 0 10px; font-size: 19px; }
+  .box ul { margin: 0; padding-left: 20px; } .box li { margin: 7px 0; }
+  .how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; counter-reset: s; }
+  .how .box { position: relative; padding-top: 50px; }
+  .how .box::before { counter-increment: s; content: counter(s); position: absolute; top: 16px; left: 22px; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  pre.code { background: var(--code); color: #E6EAF2; border-radius: 10px; padding: 12px 14px; margin: 10px 0 0; font-size: 13px; overflow-x: auto; }
+  footer { color: var(--muted); font-size: 13px; padding: 40px 0 56px; }
+  @media (max-width: 900px) { header .wrap, .why, .grid, .two, .how { grid-template-columns: 1fr; } .flow { grid-template-columns: 1fr; } h1 { font-size: 36px; } }
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div>
+    <div class="over">Teclead engineering · 2-minute read</div>
+    <h1>Why we move from Superpowers to Pocock's skills</h1>
+    <p class="sub">Agents now write more PRs than we can review. The new setup catches more problems before a person has to look, and it keeps the team's rules in the repo, where everyone can see and change them.</p>
+  </div>
+  <svg viewBox="0 0 460 300" role="img" aria-label="PRs pass automated checks, then automated review, then human review">
+    <g fill="#22305A" stroke="#33436E"><rect x="40" y="6" width="56" height="32" rx="6"/><rect x="120" y="22" width="56" height="32" rx="6"/><rect x="200" y="2" width="56" height="32" rx="6"/><rect x="280" y="20" width="56" height="32" rx="6"/><rect x="360" y="6" width="56" height="32" rx="6"/></g>
+    <rect x="25" y="72" width="410" height="54" rx="10" fill="#1F9E89"/><text x="230" y="106" fill="#fff" font-size="19" font-weight="800" text-anchor="middle">Automated checks</text>
+    <rect x="85" y="136" width="290" height="54" rx="10" fill="#4F5BD5"/><text x="230" y="170" fill="#fff" font-size="19" font-weight="800" text-anchor="middle">Automated review</text>
+    <rect x="145" y="200" width="170" height="54" rx="10" fill="#F26B38"/><text x="230" y="234" fill="#fff" font-size="19" font-weight="800" text-anchor="middle">Human review</text>
+    <circle cx="230" cy="280" r="12" fill="#2E9E5B"/><path d="M224 280 l4 4 l8 -8" stroke="#fff" stroke-width="3" fill="none"/>
+  </svg>
+</div></header>
+
+<div class="wrap">
+
+<section>
+  <h2>The idea in one line</h2>
+  <p class="lede">From Matt Pocock's talk "Fixing the PR bottleneck": catch each problem in the cheapest layer, so people only review what needs a person.</p>
+  <div class="why">
+    <div class="layer" style="background:var(--teal)"><b>Automated checks</b><span>Lint, types, tests. They cost CPU time and give the same answer every time.</span></div>
+    <div class="layer" style="background:var(--indigo)"><b>Automated review</b><span>An agent in its own context checks the code against our standards. It costs tokens.</span></div>
+    <div class="layer" style="background:var(--orange)"><b>Human review</b><span>The scarcest layer. It should get the few PRs that need judgment.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Five strengths of the new setup</h2>
+  <p class="lede">Each card compares what Superpowers does today with what Pocock's skills plus our agent-ready plugin do.</p>
+  <div class="grid">
+    <div class="card">
+      <span class="tag" style="background:var(--teal)">Tests</span>
+      <h3>Tests that only pin behaviour</h3>
+      <p class="ba before"><span class="k">Superpowers</span>No design skill. Agents write tests against a module's internals, and those tests get merged unread. The next agent treats them as rules nobody chose and bends its change around them.</p>
+      <p class="ba now"><span class="k">New setup</span>Deep modules and tests only at seams agreed up front. Tests pin what a module does, and the inside stays free to change.</p>
+      <div class="gain">better tests, and no hidden constraints piling up in code nobody reviewed.</div>
+    </div>
+    <div class="card">
+      <span class="tag" style="background:var(--violet)">Shared knowledge</span>
+      <h3>What one developer learns, every agent knows</h3>
+      <p class="ba before"><span class="k">Superpowers</span>The process lives in each person's plugin, and conventions sit in personal setups.</p>
+      <p class="ba now"><span class="k">New setup</span><code>AGENTS.md</code>, <code>docs/CODING_STANDARDS.md</code>, <code>CONTEXT.md</code> and ADRs live in the repo. A lesson one person writes down reaches every session on the team.</p>
+      <div class="gain">knowledge that spreads through the repo instead of staying with one person.</div>
+    </div>
+    <div class="card">
+      <span class="tag" style="background:var(--ink)">Decided together</span>
+      <h3>We change the rules together</h3>
+      <p class="ba before"><span class="k">Superpowers</span>A plugin update changes how agents work in every repo, and nobody sees a diff.</p>
+      <p class="ba now"><span class="k">New setup</span>Every change to a steering file is a PR, and a human merges it. A hook stops agents from merging those PRs themselves.</p>
+      <div class="gain">rule changes get discussed and reviewed like code.</div>
+    </div>
+    <div class="card">
+      <span class="tag" style="background:var(--indigo)">One standard</span>
+      <h3>Everyone ships against the same standard</h3>
+      <p class="ba before"><span class="k">Superpowers</span>The reviewer checks a generic list from the plugin. Each person adds their own conventions.</p>
+      <p class="ba now"><span class="k">New setup</span><code>/code-review</code> checks every diff against one <code>docs/CODING_STANDARDS.md</code> and the ticket, each in a fresh sub-agent.</p>
+      <div class="gain">every PR is judged by the same rules, whoever or whatever wrote it.</div>
+    </div>
+    <div class="card">
+      <span class="tag" style="background:var(--orange)">Automation</span>
+      <h3>Shared labels let us automate more</h3>
+      <p class="ba before"><span class="k">Superpowers</span>Plan files in the repo. Nothing tells an agent which work it may take on its own.</p>
+      <p class="ba now"><span class="k">New setup</span>Every repo uses the same triage labels. Agents take <code>ready-for-agent</code> tickets with nobody watching; <code>ready-for-human</code> tickets stay with people.</p>
+      <div class="gain">agents pick up work safely on their own, and people keep the work that needs judgment.</div>
+    </div>
+    <div class="card" style="border:2px dashed var(--violet);box-shadow:none">
+      <span class="tag" style="background:var(--violet)">Next</span>
+      <h3>What we stack on next</h3>
+      <p class="ba now"><span class="k">/retro</span>Turns what we fix by hand in reviews into a check or a rule, so nobody solves the same problem twice. In beta at Pocock today.</p>
+      <p class="ba now"><span class="k">/improve-codebase-architecture</span>Finds modules worth deepening, on a regular reminder, so the tests keep getting better.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What you type, before and after</h2>
+  <p class="lede">The path from idea to PR stays familiar. What it leaves behind changes.</p>
+  <div class="flow">
+    <b>Superpowers</b>
+    <div class="steps old"><span class="step">brainstorming</span><span class="arr">&rarr;</span><span class="step">writing-plans</span><span class="arr">&rarr;</span><span class="step">subagent-driven-development</span><span class="arr">&rarr;</span><span class="step">finishing-a-development-branch</span></div>
+    <span></span><div class="left">Leaves a spec file and a plan file in <code>docs/superpowers/</code>.</div>
+    <b>New setup</b>
+    <div class="steps new"><span class="step">/grill-with-docs</span><span class="arr">&rarr;</span><span class="step">/to-spec</span><span class="arr">&rarr;</span><span class="step">/to-tickets</span><span class="arr">&rarr;</span><span class="step">/implement</span><span class="arr">&rarr;</span><span class="step">PR</span></div>
+    <span></span><div class="left">Leaves <code>CONTEXT.md</code> and ADR updates, a spec issue, ticket issues, and a PR that closes its ticket. <code>/implement</code> works test-first and runs <code>/code-review</code> itself.</div>
+  </div>
+</section>
+
+<section>
+  <h2>The honest part</h2>
+  <div class="two">
+    <div class="box">
+      <h3>What Superpowers still does better</h3>
+      <ul>
+        <li>More written rules against tests that lie, checked at review too. Its <code>writing-good-tests.md</code> is worth copying into our review rules.</li>
+        <li>Not ready to let go? The Stay Stubborn tier keeps its plan-and-execute loop and sends design, specs, tickets and review to Pocock's skills.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>What the switch costs</h3>
+      <ul>
+        <li>Setup: about 99k tokens and 9 minutes. Scan: about 103k tokens and 6.5 minutes. One trial on a repo with 2,333 files.</li>
+        <li>The migration needs a person to approve glossary entries and merge one PR. Its token cost is not measured yet.</li>
+        <li>Pocock's skills for PR bodies and retros are still in beta, so the plugin does not ship them yet.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How to switch</h2>
+  <div class="how">
+    <div class="box"><h3>Install the plugin</h3>
+<pre class="code">claude plugin marketplace add \
+  felixt-teclead/agent-ready
+claude plugin install \
+  agent-ready@teclead</pre></div>
+    <div class="box"><h3>Ask where your repo stands</h3>Type <code>/agent-ready:what-to-do</code>. It reads the repo, names one next step and explains the options.</div>
+    <div class="box"><h3>Migrate</h3><code>/agent-ready:adopt-pocock-methodology</code> switches Superpowers off for the repo, folds old specs and plans into <code>CONTEXT.md</code>, ADRs and issues, and puts it all in one PR that a human merges.</div>
+  </div>
+</section>
+
+<footer>
+  Sources: Matt Pocock, "Fixing the PR bottleneck", AI Engineer Paris 2026. obra/superpowers v6.4.2, 2026-09-25. mattpocock/skills v1.2.3. agent-ready main, 2026-09-27. More detail: <code>fixing-the-pr-bottleneck.pptx</code>, 20 slides.
+</footer>
+</div>
+</body>
+</html>

@@ -30,6 +30,11 @@ per line, written once when the phase starts.
 ran the comment pass, the files it covered, one per line. `/` in the branch
 name becomes `-`.
 
+`.agents/refactor-log.md`, the log: append-only, for agents to read. One
+line per open `KEEP?` row a pass left: `- [ ] <file>:<line> "<the words>"`.
+A decision turns `[ ]` into `[x] keep` or `[x] cut`. The SessionStart hook
+does not print it.
+
 **Files left** = the path list, minus every done file, minus paths no longer
 in the tree.
 
