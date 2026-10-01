@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixing the PR bottleneck: Matt Pocock's model, agent-ready and Superpowers</title>
+<style>
+  :root {
+    --ink: #14213D; --ink2: #22305A; --slate: #4A5468; --muted: #8D99B3; --line: #D7DDE8; --mist: #F1F4F9;
+    --teal: #1F9E89; --teal-l: #DDF2EE; --indigo: #4F5BD5; --indigo-l: #E4E7FB;
+    --orange: #F26B38; --orange-l: #FDE7DD; --violet: #7C4DDB; --violet-l: #EEE7FE;
+    --red: #D64545; --red-l: #FBE3E3; --amber: #E0962B; --amber-l: #FCF0DA; --green: #2E9E5B; --green-l: #DFF3E7;
+    --code: #1B2440;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: var(--ink); background: #fff; }
+  code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace; }
+  a { color: var(--indigo); }
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(20,33,61,.97); color: #fff; }
+  nav .in { max-width: 1240px; margin: 0 auto; padding: 10px 28px; display: flex; gap: 22px; flex-wrap: wrap; font-size: 14px; }
+  nav a { color: #C9D2E3; text-decoration: none; font-weight: 600; }
+  nav a:hover { color: #fff; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+  header.hero { background: var(--ink); color: #fff; }
+  header.hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; padding-top: 64px; padding-bottom: 64px; }
+  .over { font-size: 12px; font-weight: 800; letter-spacing: .22em; color: var(--orange); text-transform: uppercase; }
+  h1 { font-size: 56px; line-height: 1.05; margin: 12px 0 18px; }
+  .sub { font-size: 20px; color: #C9D2E3; margin: 0; }
+  section { padding: 56px 0 8px; }
+  h2 { font-size: 34px; line-height: 1.15; margin: 10px 0 8px; }
+  h3 { font-size: 21px; margin: 0 0 8px; }
+  .lede { font-size: 18px; color: var(--slate); margin: 0 0 26px; max-width: 900px; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #fff; padding: 5px 12px; border-radius: 99px; }
+  .p-teal { background: var(--teal); } .p-indigo { background: var(--indigo); } .p-orange { background: var(--orange); }
+  .p-violet { background: var(--violet); } .p-ink { background: var(--ink); } .p-slate { background: var(--slate); } .p-red { background: var(--red); }
+  .grid { display: grid; gap: 18px; }
+  .g2 { grid-template-columns: repeat(2, 1fr); } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card { background: var(--mist); border-radius: 14px; padding: 20px 22px; }
+  .card.white { background: #fff; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(20,33,61,.06); }
+  .card.dark { background: var(--ink); color: #fff; }
+  .card.dark p, .card.dark li { color: #C9D2E3; }
+  .muted { color: var(--slate); }
+  .small { font-size: 14px; }
+  .kicker { font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  pre.code { background: var(--code); color: #E6EAF2; border-radius: 10px; padding: 14px 16px; font-size: 13.5px; line-height: 1.5; overflow-x: auto; margin: 12px 0; }
+  pre.code .c { color: #8894B0; }
+  .tldr { background: var(--ink); color: #fff; border-radius: 16px; padding: 26px 30px; margin-top: 36px; }
+  .tldr ol { margin: 8px 0 0; padding-left: 22px; } .tldr li { margin: 7px 0; color: #E6EAF2; }
+  .tldr b { color: #fff; }
+  /* flows */
+  .flow { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
+  .flow .arrow { align-self: center; color: var(--muted); font-size: 26px; font-weight: 700; }
+  .box { border-radius: 12px; padding: 14px 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; text-align: center; }
+  /* layers */
+  .cake { display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; align-items: center; }
+  .layers { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .layer { color: #fff; font-weight: 800; font-size: 20px; text-align: center; padding: 22px 10px; border-radius: 12px; }
+  .costs .row { display: grid; grid-template-columns: 90px 1fr; gap: 14px; align-items: center; min-height: 74px; }
+  .coins { display: flex; gap: 5px; } .coin { width: 22px; height: 22px; border-radius: 50%; }
+  /* context bars */
+  .ctx { display: grid; grid-template-columns: 150px 1fr 190px; gap: 14px; align-items: center; margin: 12px 0; }
+  .ctx .frame { border: 2px solid var(--ink); border-radius: 8px; padding: 5px; display: flex; gap: 5px; }
+  .ctx .seg { border-radius: 5px; padding: 14px 8px; text-align: center; font-size: 14px; background: var(--indigo-l); }
+  .ctx .seg.std { background: var(--indigo); color: #fff; font-weight: 800; }
+  .ctx .seg.free { background: #fff; border: 1.5px dashed var(--muted); color: var(--muted); }
+  .overflow { border: 2px dashed var(--red); background: var(--red-l); color: var(--red); border-radius: 8px; padding: 12px 10px; font-weight: 800; text-align: center; font-size: 14px; }
+  /* matrix */
+  .door { display: grid; grid-template-columns: 90px 1fr 1fr; grid-template-rows: 1fr 1fr auto; gap: 8px; }
+  .door .cell { border-radius: 10px; padding: 26px 12px; font-weight: 800; text-align: center; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+  .door .lab { display: flex; align-items: center; font-weight: 800; }
+  .door .xl { text-align: center; font-weight: 800; }
+  /* comparison */
+  table.cmp { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14.5px; }
+  table.cmp th { text-align: left; padding: 12px 12px; font-size: 14px; }
+  table.cmp th.sp { background: var(--slate); color: #fff; border-radius: 8px 8px 0 0; }
+  table.cmp th.ar { background: var(--ink); color: #fff; border-radius: 8px 8px 0 0; }
+  table.cmp td { padding: 11px 12px; vertical-align: top; border-bottom: 1px solid var(--line); }
+  table.cmp tr:nth-child(even) td { background: var(--mist); }
+  table.cmp td.m { font-weight: 700; width: 27%; }
+  .st { display: inline-flex; width: 20px; height: 20px; border-radius: 50%; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; margin-right: 8px; vertical-align: -4px; flex: none; }
+  .st.y { background: var(--green); } .st.p { background: var(--amber); } .st.n { background: #fff; border: 1.5px solid var(--line); color: var(--muted); }
+  .bk { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; margin-right: 8px; vertical-align: -5px; }
+  .cellflex { display: flex; align-items: flex-start; }
+  /* lanes */
+  .lane { display: grid; grid-template-columns: 220px 1fr 220px; gap: 14px; align-items: stretch; margin-bottom: 12px; }
+  .lane .out { color: #fff; border-radius: 12px; padding: 16px; font-weight: 800; display: flex; align-items: center; font-size: 17px; }
+  .chip { display: inline-block; background: var(--teal-l); border-radius: 8px; padding: 6px 10px; margin: 4px 6px 4px 0; font-weight: 700; font-size: 14px; }
+  .file { display: inline-block; background: var(--ink2); color: #E6EAF2; border-radius: 6px; padding: 5px 10px; margin: 4px 6px 4px 0; font-size: 13px; font-weight: 700; }
+  /* tiers */
+  .tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: end; }
+  .tier { background: #fff; border: 2px solid; border-radius: 14px; padding: 16px; }
+  .tier .n { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; color: #fff; font-weight: 900; align-items: center; justify-content: center; margin-right: 8px; }
+  /* review */
+  .find { border-left: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
+  .find h4 { margin: 0 0 6px; font-size: 17px; }
+  .find .ev { font-size: 14px; color: var(--slate); margin: 6px 0; }
+  .find .fix { font-size: 14.5px; margin: 6px 0 0; }
+  .find .fix b { color: var(--green); }
+  .sev { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; margin-right: 8px; vertical-align: 2px; }
+  .sev.h { background: var(--red-l); color: var(--red); } .sev.m { background: var(--amber-l); color: #9A5E00; } .sev.l { background: var(--mist); color: var(--slate); }
+  .internal { border: 2px dashed var(--red); border-radius: 18px; padding: 8px 28px 26px; margin-top: 20px; }
+  .q { background: var(--violet-l); border-radius: 12px; padding: 14px 18px; margin: 10px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 40px 0 60px; }
+  @media (max-width: 900px) {
+    header.hero .wrap, .cake, .g2, .g3, .g4, .tiers, .lane { grid-template-columns: 1fr; }
+    .ctx { grid-template-columns: 1fr; }
+    h1 { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav><div class="in">
+  <a href="#problem">Problem</a><a href="#model">Model</a><a href="#brake1">Brake 1</a><a href="#brake2">Brake 2</a>
+  <a href="#brake3">Brake 3</a><a href="#loop">Loop</a><a href="#compare">vs Superpowers</a><a href="#mechanisms">agent-ready</a>
+  <a href="#adopt">Adoption</a><a href="#review">Critical review</a><a href="#questions">Open questions</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div>
+    <div class="over">Teclead engineering</div>
+    <h1>Fixing the PR bottleneck</h1>
+    <p class="sub">Matt Pocock's three brakes for code that agents write, how agent-ready builds them into our repos, and how that compares with Superpowers.</p>
+  </div>
+  <svg viewBox="0 0 520 380" role="img" aria-label="PRs fall into a funnel of automated checks, automated review and human review, then merge">
+    <g fill="#22305A" stroke="#33436E">
+      <rect x="40" y="10" width="62" height="36" rx="6"/><rect x="130" y="30" width="62" height="36" rx="6"/><rect x="220" y="4" width="62" height="36" rx="6"/>
+      <rect x="310" y="26" width="62" height="36" rx="6"/><rect x="400" y="8" width="62" height="36" rx="6"/><rect x="85" y="70" width="62" height="36" rx="6"/>
+      <rect x="175" y="84" width="62" height="36" rx="6"/><rect x="265" y="66" width="62" height="36" rx="6"/><rect x="355" y="80" width="62" height="36" rx="6"/>
+    </g>
+    <rect x="30" y="140" width="460" height="62" rx="10" fill="#1F9E89"/><text x="260" y="179" fill="#fff" font-size="21" font-weight="800" text-anchor="middle">Automated checks</text>
+    <rect x="95" y="214" width="330" height="62" rx="10" fill="#4F5BD5"/><text x="260" y="253" fill="#fff" font-size="21" font-weight="800" text-anchor="middle">Automated review</text>
+    <rect x="160" y="288" width="200" height="62" rx="10" fill="#F26B38"/><text x="260" y="327" fill="#fff" font-size="21" font-weight="800" text-anchor="middle">Human review</text>
+    <circle cx="260" cy="366" r="12" fill="#2E9E5B"/><path d="M254 366 l4 4 l8 -8" stroke="#fff" stroke-width="3" fill="none"/>
+  </svg>
+</div></header>
+
+<div class="wrap">
+  <div class="tldr">
+    <div class="kicker" style="color:#F26B38">The short version</div>
+    <ol>
+      <li><b>Agents multiply PRs, and human review does not scale.</b> Matt's answer is brakes: layers that catch problems before a person has to.</li>
+      <li><b>Three layers, cheapest first.</b> Automated checks cost CPU, automated review costs tokens, human review costs people's time. Push each finding down.</li>
+      <li><b>Checks lie, so design and review catch the lies.</b> Deep modules keep tests honest. Coding standards go to a reviewer in its own context, not to the overloaded implementer. The reviewer commits fixes instead of posting comments.</li>
+      <li><b>Human review is triaged and compounds.</b> Door and blast radius decide how deep to look. A retro turns every repeated comment into a check or a rule.</li>
+      <li><b>agent-ready puts these rules in the repo, where the team reviews them.</b> Superpowers keeps them in each person's plugin. We win on owned standards, gates and governance. Superpowers wins on test rules. Both are thin on PR bodies and the retro loop.</li>
+    </ol>
+  </div>
+
+  <!-- PROBLEM -->
+  <section id="problem">
+    <span class="pill p-slate">The problem</span>
+    <h2>Agents multiply the PRs. The reviewers stay the same.</h2>
+    <p class="lede">In Matt's "software factory", code starts more and more of the work: a classifier turns a bug report into a fix, a slow-query report triggers a run. Every trigger adds PRs. Without brakes, the factory becomes a slop cannon, and because the codebase is the next agent's environment, bad code begets bad code.</p>
+    <div class="flow">
+      <div class="card" style="min-width:200px"><div class="kicker">Who starts work</div>Developers<br>Agents<br>Bug reports<br>Error alerts<br>Slow-query reports</div>
+      <div class="arrow">&rarr;</div>
+      <div class="box" style="background:var(--ink);color:#fff;min-width:200px">Software factory<br><span style="font-weight:400;font-size:14px;color:#C9D2E3">agents implement</span></div>
+      <div class="arrow">&rarr;</div>
+      <div class="card white mono small" style="min-width:150px">PR #481<br>PR #482<br>PR #483<br>PR #484<br>PR #485<br>PR #486</div>
+      <div class="arrow">&rarr;</div>
+      <div class="box" style="background:var(--orange-l);color:var(--orange);border:2px solid var(--orange);min-width:190px">Human review<br><span style="font-weight:400;font-size:14px">same people, same hours</span></div>
+    </div>
+  </section>
+
+  <!-- MODEL -->
+  <section id="model">
+    <span class="pill p-ink">The model</span>
+    <h2>Three layers of review. Catch each finding in the cheapest one.</h2>
+    <div class="cake">
+      <div class="layers">
+        <div class="layer" style="background:var(--orange);width:52%">Human review</div>
+        <div class="layer" style="background:var(--indigo);width:76%">Automated review</div>
+        <div class="layer" style="background:var(--teal);width:100%">Automated checks</div>
+      </div>
+      <div class="costs">
+        <div class="row"><div class="coins"><span class="coin" style="background:var(--orange)"></span><span class="coin" style="background:var(--orange)"></span><span class="coin" style="background:var(--orange)"></span></div><div><b style="color:var(--orange)">People's time.</b> People read the PR and decide whether it merges.</div></div>
+        <div class="row"><div class="coins"><span class="coin" style="background:var(--indigo)"></span><span class="coin" style="background:var(--indigo)"></span><span class="coin" style="background:var(--line)"></span></div><div><b style="color:var(--indigo)">Tokens.</b> An agent looks for what the tests missed, and at the structure of the code.</div></div>
+        <div class="row"><div class="coins"><span class="coin" style="background:var(--teal)"></span><span class="coin" style="background:var(--line)"></span><span class="coin" style="background:var(--line)"></span></div><div><b style="color:var(--teal)">CPU cycles.</b> Lint, types, tests and code-quality metrics. Same result every time.</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px"><b>Stop the slop.</b> Better code going in means fewer human interventions coming out. The two lower layers exist to make the top one fast.</div>
+  </section>
+
+  <!-- BRAKE 1 -->
+  <section id="brake1">
+    <span class="pill p-teal">Brake 1 · automated checks</span>
+    <h2>Checks are cheap. But a green CI can lie.</h2>
+    <p class="lede">Matt's agents wrote these in good faith. Each one passes, and each one proves little. Code reconstructed from the talk.</p>
+    <div class="grid g3">
+      <div class="card white"><span class="pill p-red">Lie 1</span><h3 style="margin-top:10px">Tautological test</h3>
+<pre class="code"><span class="c">// x-post.ts</span>
+export const X_POST_CHAR_LIMIT = 280;
+<span class="c">// x-post.test.ts</span>
+expect(X_POST_CHAR_LIMIT).toBe(280);</pre>
+        <p>The test restates the code. A rename breaks it, and a wrong limit still passes.</p>
+        <p class="small"><b style="color:var(--green)">Better:</b> assert behaviour. A post of 281 characters is rejected.</p></div>
+      <div class="card white"><span class="pill p-red">Lie 2</span><h3 style="margin-top:10px">Structure-sensitive test</h3>
+<pre class="code">const src = read('PitchDetail.tsx');
+const a = src.indexOf('&lt;ContentPlan');
+const b = src.indexOf('&lt;Videos');
+expect(b).toBeGreaterThan(a);</pre>
+        <p>It reads the source text instead of rendering the page. Any reformat breaks it.</p>
+        <p class="small"><b style="color:var(--green)">Better:</b> render the page and check the order the user sees.</p></div>
+      <div class="card white"><span class="pill p-red">Lie 3</span><h3 style="margin-top:10px">Test that cannot fail</h3>
+<pre class="code">vi.stubGlobal('AudioContext', class {
+  createGain() { return fakeGain; }
+});
+renderHook(() =&gt; useAudioBoost());</pre>
+        <p>The stub removes the real AudioContext and its error modes. Those errors reach production untested.</p>
+        <p class="small"><b style="color:var(--green)">Better:</b> put the platform behind a seam you own, and test the seam against the real API.</p></div>
+    </div>
+
+    <h3 style="margin-top:34px">Design your way out: deep modules keep tests honest</h3>
+    <div class="grid g2" style="align-items:center">
+      <svg viewBox="0 0 560 300" role="img" aria-label="A deep module has a small interface over a large implementation; a shallow module has a large interface over a thin implementation">
+        <text x="120" y="20" text-anchor="middle" font-weight="800" fill="#1F9E89" font-size="17">Deep module</text>
+        <g fill="#DDF2EE"><rect x="45" y="36" width="44" height="24" rx="5"/><rect x="98" y="36" width="44" height="24" rx="5"/><rect x="151" y="36" width="44" height="24" rx="5"/></g>
+        <g font-size="11" font-weight="700" fill="#1F9E89" text-anchor="middle"><text x="67" y="52">test</text><text x="120" y="52">test</text><text x="173" y="52">test</text></g>
+        <g stroke="#1F9E89" stroke-width="2"><line x1="67" y1="60" x2="120" y2="96"/><line x1="120" y1="60" x2="120" y2="96"/><line x1="173" y1="60" x2="120" y2="96"/></g>
+        <rect x="75" y="96" width="90" height="26" rx="4" fill="#14213D"/><text x="120" y="114" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">interface</text>
+        <rect x="20" y="126" width="200" height="150" rx="10" fill="#F1F4F9" stroke="#D7DDE8"/>
+        <g fill="#D7DDE8"><rect x="36" y="140" width="38" height="20"/><rect x="82" y="140" width="38" height="20"/><rect x="128" y="140" width="38" height="20"/><rect x="174" y="140" width="30" height="20"/>
+        <rect x="36" y="170" width="38" height="20"/><rect x="82" y="170" width="38" height="20"/><rect x="128" y="170" width="38" height="20"/><rect x="174" y="170" width="30" height="20"/>
+        <rect x="36" y="200" width="38" height="20"/><rect x="82" y="200" width="38" height="20"/><rect x="128" y="200" width="38" height="20"/><rect x="174" y="200" width="30" height="20"/></g>
+        <text x="120" y="262" text-anchor="middle" fill="#4A5468" font-size="12">implementation</text>
+        <text x="420" y="20" text-anchor="middle" font-weight="800" fill="#D64545" font-size="17">Shallow module</text>
+        <g fill="#FBE3E3"><rect x="310" y="36" width="32" height="24" rx="5"/><rect x="347" y="36" width="32" height="24" rx="5"/><rect x="384" y="36" width="32" height="24" rx="5"/><rect x="421" y="36" width="32" height="24" rx="5"/><rect x="458" y="36" width="32" height="24" rx="5"/><rect x="495" y="36" width="32" height="24" rx="5"/></g>
+        <g fill="#14213D"><rect x="310" y="96" width="32" height="26"/><rect x="347" y="96" width="32" height="26"/><rect x="384" y="96" width="32" height="26"/><rect x="421" y="96" width="32" height="26"/><rect x="458" y="96" width="32" height="26"/><rect x="495" y="96" width="32" height="26"/></g>
+        <g stroke="#D64545" stroke-width="2"><line x1="326" y1="60" x2="326" y2="96"/><line x1="400" y1="60" x2="400" y2="96"/><line x1="474" y1="60" x2="474" y2="96"/></g>
+        <g stroke="#D64545" stroke-width="2" stroke-dasharray="5 4"><line x1="363" y1="60" x2="363" y2="150"/><line x1="437" y1="60" x2="437" y2="150"/><line x1="511" y1="60" x2="511" y2="150"/></g>
+        <rect x="310" y="126" width="217" height="40" rx="8" fill="#F1F4F9" stroke="#D7DDE8"/><text x="418" y="151" text-anchor="middle" fill="#4A5468" font-size="12">implementation</text>
+        <text x="418" y="200" text-anchor="middle" fill="#14213D" font-size="13">Tests reach into the structure</text>
+        <text x="418" y="218" text-anchor="middle" fill="#14213D" font-size="13">(dashed) and break on every change.</text>
+      </svg>
+      <div>
+        <p>If tests may only use a small interface, they cannot couple to the internals. John Ousterhout's deep modules, in the words of Pocock's <code>codebase-design</code> skill:</p>
+        <p><b>Seam:</b> where the interface lives. Tests go here.<br><b>Depth:</b> behaviour a caller gets per unit of interface it must learn.<br><b>Leverage:</b> what callers gain from depth.<br><b>Locality:</b> change, bugs and checks stay in one place.</p>
+        <div class="card dark"><b class="mono" style="color:#fff">/improve-codebase-architecture</b><p style="margin:6px 0 0">Scans any codebase for deepening opportunities and writes an HTML report with a before and an after for each.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAKE 2 -->
+  <section id="brake2">
+    <span class="pill p-indigo">Brake 2 · automated review</span>
+    <h2>The implementer is overloaded. The reviewer is not.</h2>
+    <p class="lede">One context window must explore, change the files and keep budget for debugging. Coding standards on top make it worse. The reviewer gets a diff and has room. "While implementation is overloaded, review is actually underloaded."</p>
+    <div class="ctx">
+      <b>Implementer</b>
+      <div class="frame"><div class="seg" style="flex:1">Explore the code</div><div class="seg" style="flex:1">Change the files</div><div class="seg" style="flex:1">Run checks, debug</div></div>
+      <div class="overflow">+ coding standards<br><span style="font-weight:400">no room left</span></div>
+    </div>
+    <div class="ctx">
+      <b>Reviewer</b>
+      <div class="frame"><div class="seg" style="flex:.6">Read the diff</div><div class="seg" style="flex:.8">Explore a little</div><div class="seg std" style="flex:1.1">Coding standards</div><div class="seg free" style="flex:.5">room left</div></div>
+      <div></div>
+    </div>
+    <div class="grid g3" style="margin-top:22px">
+      <div class="card"><h3>Implement makes it work. Review makes it good.</h3><p class="muted">Red and green in one context window, refactor in a second one. Stop trying to one-shot good code.</p></div>
+      <div class="card"><h3>Build your reviewer, do not buy it</h3><p class="muted">Generic bots are too general, with false positives, or too specific, fit for one stack. Grow <code>CODING_STANDARDS.md</code> from your team's own mistakes. <code>AGENTS.md</code> stays small, with navigation pointers only.</p></div>
+      <div class="card"><h3>The reviewer commits</h3><p class="muted">A reviewer that comments creates work for the human. It should commit its fixes, so the human reviews a clean result. Comments only for real questions.</p></div>
+    </div>
+  </section>
+
+  <!-- BRAKE 3 -->
+  <section id="brake3">
+    <span class="pill p-orange">Brake 3 · human review</span>
+    <h2>Write the PR for the human. Not every PR needs a deep review.</h2>
+    <div class="grid g2">
+      <div>
+        <div class="kicker">Merge danger</div>
+        <div class="door">
+          <div class="lab">One-way</div><div class="cell" style="background:var(--orange-l)">Review carefully</div><div class="cell" style="background:var(--orange);color:#fff">Review the hell out of it</div>
+          <div class="lab">Two-way</div><div class="cell" style="background:var(--teal-l)">Skim it</div><div class="cell" style="background:var(--amber-l)">Check what it can break</div>
+          <div></div><div class="xl">Localized</div><div class="xl">Wide</div>
+        </div>
+        <p class="muted small" style="text-align:center;margin:4px 0 12px"><b>Door</b> (rows) against <b>blast radius</b> (columns)</p>
+        <p>One-way doors: a data migration, data loss, an email that goes out to 60,000 people. Most PRs are two-way doors: you can revert them.</p>
+      </div>
+      <div class="card white">
+        <h3>A PR body in the shape of <code>/pr</code></h3>
+<pre class="code"><span style="color:#F7A072">## Summary</span>
+on(save)
+  if content is unchanged
+    return cached result
+  write new content
+
+<span style="color:#F7A072">## Evidence</span>
+Before: save.test.ts fails
+After:  save.test.ts passes
+
+<span style="color:#F7A072">## Merge danger</span>
+Door: two-way
+Blast radius: localized</pre>
+        <p class="small muted">Pseudo-code and diagrams instead of prose. Credit: the show-me skill by Dex Horthy, HumanLayer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOOP -->
+  <section id="loop">
+    <span class="pill p-violet">The loop</span>
+    <h2>Review the system that writes the code, not only the code.</h2>
+    <div class="grid g2" style="align-items:center">
+      <svg viewBox="0 0 520 380" role="img" aria-label="Loop: human review, retro, better checks and rules, cleaner next PR">
+        <defs><marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7C4DDB"/></marker></defs>
+        <rect x="170" y="10" width="180" height="62" rx="12" fill="#F26B38"/><text x="260" y="47" fill="#fff" font-weight="800" text-anchor="middle" font-size="16">Human review</text>
+        <rect x="330" y="160" width="180" height="62" rx="12" fill="#7C4DDB"/><text x="420" y="187" fill="#fff" font-weight="800" text-anchor="middle" font-size="15">/retro reads sessions</text><text x="420" y="207" fill="#fff" font-weight="800" text-anchor="middle" font-size="15">and PR reviews</text>
+        <rect x="170" y="308" width="180" height="62" rx="12" fill="#EEE7FE"/><text x="260" y="335" fill="#14213D" font-weight="800" text-anchor="middle" font-size="15">Checks, rules and</text><text x="260" y="355" fill="#14213D" font-weight="800" text-anchor="middle" font-size="15">pointers improve</text>
+        <rect x="10" y="160" width="180" height="62" rx="12" fill="#DDF2EE"/><text x="100" y="196" fill="#14213D" font-weight="800" text-anchor="middle" font-size="15">Next PR is cleaner</text>
+        <g stroke="#7C4DDB" stroke-width="3" fill="none" marker-end="url(#ah)"><path d="M350 55 Q420 80 420 152"/><path d="M420 230 Q420 320 360 335"/><path d="M165 335 Q100 320 100 230"/><path d="M100 152 Q100 70 162 50"/></g>
+        <text x="260" y="198" text-anchor="middle" font-family="Georgia" font-style="italic" fill="#7C4DDB" font-size="16">never the same</text>
+        <text x="260" y="220" text-anchor="middle" font-family="Georgia" font-style="italic" fill="#7C4DDB" font-size="16">comment twice</text>
+      </svg>
+      <div>
+        <p style="font-family:Georgia;font-style:italic;font-size:26px;color:var(--violet);margin-top:0">"Never write the same review comment twice."</p>
+        <div class="kicker">What /retro proposes</div>
+        <ul>
+          <li>An automated check, for a mechanical mistake. The retro skill says: build the check, full stop.</li>
+          <li>A <code>CODING_STANDARDS.md</code> rule, only for a real judgment call.</li>
+          <li>A navigation pointer in <code>AGENTS.md</code>, where the agent searched too long.</li>
+          <li>A cheaper tool, where a tool call burned tokens.</li>
+          <li>Cuts to bloated steering files and skills.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card"><b style="color:var(--teal)">1.</b> Layer on cheap checks. <b style="color:var(--teal)">2.</b> Design deep modules.</div>
+      <div class="card"><b style="color:var(--indigo)">3.</b> Standards go to the reviewer. <b style="color:var(--indigo)">4.</b> Own the reviewer, let it commit.</div>
+      <div class="card"><b style="color:var(--orange)">5.</b> Write PRs for humans. <b style="color:var(--violet)">6.</b> Run a retro on your reviews.</div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section id="compare">
+    <span class="pill p-ink">Comparison</span>
+    <h2>Superpowers disciplines one session. agent-ready puts the team's rules in the repo.</h2>
+    <div class="grid g2">
+      <div class="card white"><h3 style="color:var(--slate)">Superpowers v6.4.2</h3>
+        <ul class="muted">
+          <li>Flow: brainstorm, plan, one sub-agent per task, review, finish the branch.</li>
+          <li>The process lives in the plugin, in each person's home directory. A session-start hook loads it.</li>
+          <li>Reviewers check a generic list that ships with the plugin. No repo standards file.</li>
+          <li>Specs and plans are dated markdown files. Implementers run one after another.</li>
+        </ul>
+        <div class="card" style="padding:12px 16px"><b>Strongest at:</b> test discipline inside one session.</div></div>
+      <div class="card white"><h3>Pocock's skills + agent-ready</h3>
+        <ul class="muted">
+          <li>Flow: grill the idea, spec, tickets, implement test-first, review, PR.</li>
+          <li>Rules, standards, domain words and gates live in the repo. A human merges every change to them.</li>
+          <li>The reviewer reads the team's own <code>docs/CODING_STANDARDS.md</code>.</li>
+          <li>Specs become issues. Agents take <code>ready-for-agent</code> tickets with nobody watching.</li>
+        </ul>
+        <div class="card" style="padding:12px 16px;background:var(--indigo-l)"><b>Strongest at:</b> team-owned rules and many agents in parallel.</div></div>
+    </div>
+
+    <h3 style="margin-top:32px">Mechanism by mechanism</h3>
+    <p class="small muted"><span class="st y">&#10003;</span>covers it &nbsp; <span class="st p">~</span>partly, or prose only &nbsp; <span class="st n">&ndash;</span>not covered</p>
+    <table class="cmp">
+      <thead><tr><th>What Matt's model asks for</th><th class="sp">Superpowers v6.4.2</th><th class="ar">Pocock's skills + agent-ready</th></tr></thead>
+      <tbody>
+        <tr><td class="m"><span class="bk" style="background:var(--teal)">1</span>One check command for lint, types and tests</td><td><div class="cellflex"><span class="st p">~</span>Demands fresh evidence before it says "done". Sets up no command.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span>Setup writes one <code>check</code> command and offers the missing tools. Not wired into CI.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--teal)">1</span>Rules against tests that lie</td><td><div class="cellflex"><span class="st y">&#10003;</span><code>writing-good-tests.md</code> bans mirror asserts, change detectors like <code>expect(MAX_RETRIES).toBe(5)</code>, source-grepping tests, mock-only asserts.</div></td><td><div class="cellflex"><span class="st p">~</span><code>tdd</code> names tautological and implementation-coupled tests. Tests only at agreed seams.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--teal)">1</span>Deep modules, designed on purpose</td><td><div class="cellflex"><span class="st n">&ndash;</span>No design skill. One hint: a hard test means a complex interface.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span><code>codebase-design</code> terms, <code>/improve-codebase-architecture</code>, a reminder hook every N days.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--indigo)">2</span>Review in a separate context</td><td><div class="cellflex"><span class="st y">&#10003;</span>A read-only reviewer sub-agent per task, plus a final branch review.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span><code>/code-review</code> runs a Standards and a Spec sub-agent in parallel.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--indigo)">2</span>Team standards only the reviewer reads</td><td><div class="cellflex"><span class="st n">&ndash;</span>A generic checklist inside the plugin. It reads no repo standards file.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span><code>docs/CODING_STANDARDS.md</code> lives in the repo and stays out of <code>AGENTS.md</code>.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--indigo)">2</span>The reviewer commits its fixes</td><td><div class="cellflex"><span class="st n">&ndash;</span>"Your review is read-only on this checkout." The implementer fixes, for up to 5 rounds.</div></td><td><div class="cellflex"><span class="st p">~</span><code>comment-review</code> commits its fixes. <code>/code-review</code> only reports.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--indigo)">2</span>No push without a review</td><td><div class="cellflex"><span class="st n">&ndash;</span>Prose only. Its one hook runs at session start.</div></td><td><div class="cellflex"><span class="st p">~</span>A push hook waits for <code>comment-review</code>. <code>/code-review</code> runs by instruction.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--orange)">3</span>A PR body written for the reviewer</td><td><div class="cellflex"><span class="st n">&ndash;</span>No template. It follows the repo's PR template, if one exists.</div></td><td><div class="cellflex"><span class="st p">~</span>Hand-back body: goal, decisions, not done, verification, least sure. <code>/pr</code> is in beta.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--orange)">3</span>Review effort that follows risk</td><td><div class="cellflex"><span class="st n">&ndash;</span>Every branch ends in one menu: merge locally, open a PR, or keep it.</div></td><td><div class="cellflex"><span class="st p">~</span>Agents merge behaviour-neutral cleanup PRs. Steering diffs go to a human. Feature PRs all get the same treatment.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--orange)">3</span>One-way doors stop the agent</td><td><div class="cellflex"><span class="st p">~</span>The executor stops before a merge, a push to a shared branch, or a publish.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span>A hard-to-undo change stops the agent before coding. A hook blocks steering merges.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--violet)">&#8635;</span>Findings turn into checks and rules</td><td><div class="cellflex"><span class="st n">&ndash;</span>No retro. The run ledger is deleted, diagnostics go to upstream issues.</div></td><td><div class="cellflex"><span class="st p">~</span>The comment pass queues rules for <code>CODING_STANDARDS.md</code>. Pocock's <code>/retro</code> is a beta stub.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--ink)">&#9632;</span>The team reviews changes to agent rules</td><td><div class="cellflex"><span class="st n">&ndash;</span>Rules live in the plugin. An update changes behaviour with no repo diff.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span>Steering files live in the repo. A merge hook, CODEOWNERS and a ruleset guard them.</div></td></tr>
+        <tr><td class="m"><span class="bk" style="background:var(--ink)">&#9632;</span>Parallel work with nobody watching</td><td><div class="cellflex"><span class="st p">~</span>Markdown plans. One session runs the implementers one after another.</div></td><td><div class="cellflex"><span class="st y">&#10003;</span><code>ready-for-agent</code> issues, an AFK environment file and hand-back rules.</div></td></tr>
+      </tbody>
+    </table>
+    <p class="small muted">Fair footnote: agent-ready's plugin channel auto-updates too. Its copies channel brings every update as a pull request. Pocock's <code>/pr</code> and <code>/retro</code> sit in <code>skills/in-progress/</code> on his main branch; agent-ready pins v1.2.3, the latest tag, which has neither.</p>
+  </section>
+
+  <!-- MECHANISMS -->
+  <section id="mechanisms">
+    <span class="pill p-teal">agent-ready · the mechanisms</span>
+    <h2>Every rule goes to the cheapest place that enforces it</h2>
+    <div class="grid g3">
+      <div class="card"><b style="color:var(--teal)">Lint, typecheck, tests.</b> A tool can check it. The tool wins, and the scan fails any steering line that restates it.</div>
+      <div class="card"><b class="mono" style="color:var(--indigo)">docs/CODING_STANDARDS.md</b><br>A judgment call. Only the reviewer reads it, so it may grow.</div>
+      <div class="card"><b class="mono">AGENTS.md</b><br>What every task needs. Loaded every time, so kept small.</div>
+      <div class="card"><b class="mono" style="color:var(--violet)">CONTEXT.md</b><br>A domain word. Every Pocock skill reads it.</div>
+      <div class="card"><b class="mono">docs/adr/</b><br>A decision that is hard to reverse, with the options rejected.</div>
+      <div class="card"><b style="color:var(--orange)">Issues.</b> A spec. Closed once shipped, never left as a stale file.</div>
+    </div>
+    <div class="card dark" style="margin-top:16px"><b>The scan measures it:</b> <span class="mono">rows X of Y in their home</span> · <span class="mono">lines A of J pass</span> · <span class="mono">load: L lines on every task</span></div>
+
+    <h2 style="margin-top:40px">Review runs before the push, in fresh contexts</h2>
+    <div class="flow">
+      <div class="box" style="background:var(--mist)">Agent runs git push or gh pr create</div><div class="arrow">&rarr;</div>
+      <div class="box" style="background:var(--indigo-l);border:2px solid var(--indigo)">Hook: is this commit stamped as reviewed?</div><div class="arrow">&rarr;</div>
+      <div class="box" style="background:var(--green-l);color:var(--green)">yes: push, open the PR</div>
+    </div>
+    <p class="small" style="color:var(--red);font-weight:700;margin:10px 0 4px">no: blocked, run comment-review</p>
+    <div class="flow">
+      <div class="card white" style="flex:1"><b>Strip</b><br><span class="muted small">Remove the comments this branch added.</span></div><div class="arrow">&rarr;</div>
+      <div class="card white" style="flex:1"><b>Blind writers</b><br><span class="muted small">One Opus sub-agent per file writes comments from the code alone.</span></div><div class="arrow">&rarr;</div>
+      <div class="card white" style="flex:1"><b>Judge</b><br><span class="muted small">Keep what passes the rules. Restore facts the code cannot carry.</span></div><div class="arrow">&rarr;</div>
+      <div class="card white" style="flex:1"><b>Commit and stamp</b><br><span class="muted small">Commit "docs: review comments", stamp the commit, push again.</span></div>
+    </div>
+    <div class="card dark" style="margin-top:14px"><b class="mono" style="color:#fff">/code-review</b>, called by <code style="color:#fff">/implement</code>: a Standards sub-agent with <code style="color:#fff">CODING_STANDARDS.md</code> and a Fowler smell baseline, and a Spec sub-agent with the ticket, in parallel. Two reports side by side, so neither axis hides the other.</div>
+
+    <h2 style="margin-top:40px">Review effort follows the blast radius</h2>
+    <div class="lane"><div class="card"><b>Cleanup PR</b><br><span class="small muted">two-way door, small blast radius</span></div>
+      <div><span class="chip">No behaviour change</span><span class="chip">No steering file</span><span class="chip">Review stamp on the head</span><span class="chip">check passes</span></div>
+      <div class="out" style="background:var(--teal)">The agent merges it</div></div>
+    <div class="lane"><div class="card"><b>Feature PR</b><br><span class="small muted">mostly two-way, blast radius varies</span></div>
+      <div class="card white small">Body: goal, decisions with the rejected option, what was left out, verification, least sure parts. <b>A hard-to-undo change stops the agent before it writes code.</b></div>
+      <div class="out" style="background:var(--orange)">A human reviews and merges</div></div>
+    <div class="lane"><div class="card"><b>Steering diff</b><br><span class="small muted">two-way door, blast radius: every later agent session</span></div>
+      <div class="card white small"><span class="file">AGENTS.md</span><span class="file">CLAUDE.md</span><span class="file">docs/CODING_STANDARDS.md</span><span class="file">docs/agents/</span><span class="file">.agents/skills/</span><span class="file">.claude/skills</span><span class="file">.agents/hooks/</span><span class="file">.claude/settings.json</span><span class="file">.github/CODEOWNERS</span><br>A hook blocks <code>gh pr merge</code> on these paths and every <code>gh api</code> merge. CODEOWNERS and a ruleset back it where the GitHub plan allows.</div>
+      <div class="out" style="background:var(--ink)">Only a human merges</div></div>
+
+    <h2 style="margin-top:40px">How findings feed back today</h2>
+    <div class="grid g2">
+      <div class="card">Setup asks which mistakes agents make here. Each answer becomes a review rule.</div>
+      <div class="card">The comment pass queues shared facts. Every 10 files, a human-merged PR adds them to <code>CODING_STANDARDS.md</code>.</div>
+      <div class="card"><code>/grill-with-docs</code> adds each new domain word to <code>CONTEXT.md</code>.</div>
+      <div class="card">A finding the team keeps goes into <code>.agents/deviations.md</code>, so the scan stops raising it.</div>
+    </div>
+  </section>
+
+  <!-- ADOPT -->
+  <section id="adopt">
+    <span class="pill p-ink">Adoption</span>
+    <h2>Adopt it in steps. Each tier builds on Basic.</h2>
+<pre class="code">claude plugin marketplace add felixt-teclead/agent-ready
+claude plugin install agent-ready@teclead
+<span style="color:#F7A072">/agent-ready:what-to-do</span></pre>
+    <div class="tiers">
+      <div class="tier" style="border-color:var(--teal)"><span class="n" style="background:var(--teal)">1</span><b>Basic</b><div class="mono small">/setup-basics</div><p class="small muted">AGENTS.md, CODING_STANDARDS.md, CONTEXT.md. Comment review on every PR.</p></div>
+      <div class="tier" style="border-color:var(--slate);border-style:dashed;margin-bottom:20px"><span class="n" style="background:var(--slate)">2</span><b>Stay Stubborn</b><div class="mono small">framework question</div><p class="small muted">Optional, for Superpowers teams. Design, specs, tickets and review go to Pocock's skills.</p></div>
+      <div class="tier" style="border-color:var(--indigo);margin-bottom:40px"><span class="n" style="background:var(--indigo)">3</span><b>Migrate</b><div class="mono small">/adopt-pocock-methodology</div><p class="small muted">One method. Old setup retired, docs routed, one steering PR.</p></div>
+      <div class="tier" style="border-color:var(--violet);margin-bottom:60px"><span class="n" style="background:var(--violet)">4</span><b>Cleanup</b><div class="mono small">cleanup phase</div><p class="small muted">Docs trimmed, then comments rewritten in small PRs that agents merge.</p></div>
+    </div>
+    <div class="card" style="margin-top:16px"><b>Cost, one trial on a 2,333-file repo:</b> setup about 99k tokens and 9 minutes, scan about 103k tokens and 6.5 minutes. <b style="color:var(--red)">Not measured yet:</b> the migration, and the comment pass, which took about 230 PRs at the default cap on that repo.</div>
+  </section>
+
+  <!-- REVIEW -->
+  <section id="review">
+    <div class="internal">
+      <p style="margin:14px 0 0"><span class="pill p-red">Internal · not for the presentation</span></p>
+      <h2>Critical review of the repo and the approach</h2>
+      <p class="lede">Each finding names what breaks and where, then one fix. Ordered by impact.</p>
+
+      <h3>A. Adoption</h3>
+      <div class="find"><h4><span class="sev h">high</span>The repo fails its own scan</h4>
+        <div class="ev"><code>AGENTS.md</code> carries the steering rule that <code>routing-table.md</code> lists under Old files. Its <code>### Domain docs</code> line differs from the template and points at <code>CONTEXT.md</code>, which does not exist, a dead pointer by <code>pointers.md</code>. ADR 0001 says the rule is "written twice", in CLAUDE.md and a CI guard, and that "the guard prints its enforcement status on every run"; #42 deleted that guard. <code>.agents/skills/</code> holds older, diverged copies of <code>comment-cleanup</code> and <code>orchestrate-comment-write</code> plus a <code>comment-write</code> skill the plugin does not ship, and <code>docs/CODING_STANDARDS.md</code> points there. The plugin is not installed on this machine, so its merge hook does not guard this repo; <code>.claude/settings.json</code> denies only <code>gh api</code> merges.</div>
+        <div class="fix"><b>Fix:</b> run the scan on this repo, fix or record each finding in <code>.agents/deviations.md</code>, and supersede ADR 0001. Coworkers open this repo first.</div></div>
+      <div class="find"><h4><span class="sev h">high</span>Auto-update repeats the Superpowers problem</h4>
+        <div class="ev">The README says "every merge to <code>main</code> ships". A hook or skill change then reaches every installed repo with no diff in that repo. That is the argument the deck makes against Superpowers.</div>
+        <div class="fix"><b>Fix:</b> ship tagged releases with a changelog and pin the marketplace entry to a tag, or recommend the copies channel, where <code>/update-codebase-for-agents</code> opens a PR, for team repos.</div></div>
+      <div class="find"><h4><span class="sev h">high</span>No outcome numbers</h4>
+        <div class="ev">The scan's three numbers measure doc hygiene, not the bottleneck. <code>TRADEOFFS.md</code> lists migration and comment-pass cost as "Not measured yet". Leads will ask for both.</div>
+        <div class="fix"><b>Fix:</b> baseline one pilot repo before and after: median time to merge, human review comments per PR, share of PRs merged without a human, repeated comments. <code>gh</code> gives the first three.</div></div>
+      <div class="find"><h4><span class="sev m">medium</span>Ownership and bus factor</h4>
+        <div class="ev">A private repo on a personal Free account (ADR 0001: "ownership beat enforcement"). Every coworker needs read access by hand. All 41 commits come from two git identities in seven days, and names still move: one tier was renamed hours after it got its name. A company-wide method that ships from one personal account breaks in every repo if that account goes.</div>
+        <div class="fix"><b>Fix:</b> decide where the company copy lives before rollout, and freeze a v1.</div></div>
+      <div class="find"><h4><span class="sev m">medium</span>Stubborn tier drifts silently</h4>
+        <div class="ev">The override denies Superpowers skills by name. A rename upstream disables a deny rule without an error, and Superpowers updates arrive without notice, so nobody knows when the manual smoke run is due. v6.0 already merged the two reviewers into one.</div>
+        <div class="fix"><b>Fix:</b> record the smoke-tested Superpowers version in <code>docs/agents/superpowers.md</code>; a SessionStart hook warns when the installed version differs.</div></div>
+      <div class="find"><h4><span class="sev l">low</span>The vocabulary is the product's, not the listener's</h4>
+        <div class="ev">Routing table, fixed rows, gap list, confirmed steps, held files, rule queue, phase, worklist, Stubborn, deviations. <code>/what-to-do</code> needs a glossary to explain them.</div>
+        <div class="fix"><b>Fix:</b> pitch in Matt's terms, as the deck does, plus one page "what changes in my day": three commands.</div></div>
+
+      <h3 style="margin-top:26px">B. The approach</h3>
+      <div class="find"><h4><span class="sev h">high</span>Brake 1 is not deterministic</h4>
+        <div class="ev">Setup writes a <code>check</code> command but nothing wires it into CI or a pre-commit hook (no CI, workflow or pre-commit in <code>plugins/agent-ready/</code>). Agents run it because a line tells them to; humans may not run it at all. Pocock's <code>retro</code> calls a repo without such a guardrail "itself a finding".</div>
+        <div class="fix"><b>Fix:</b> setup offers a CI job that runs <code>check</code> on every PR, and optionally a pre-commit hook (Pocock ships <code>setup-pre-commit</code>). The cleanup merge rule already requires the remote's required checks; make them exist.</div></div>
+      <div class="find"><h4><span class="sev h">high</span>No retro loop for human review</h4>
+        <div class="ev">Human review comments never flow back. Today the loop is setup question D, once; the comment pass rule queue, for comments only; and CONTEXT.md growth. That misses Matt's main multiplier. Pocock's <code>retro</code> is labelled "STUB: design notes only".</div>
+        <div class="fix"><b>Fix:</b> reuse two patterns the plugin already has. A reminder hook, like the architecture review, offers <code>/retro</code> over the last week's PR review threads. Its output takes existing routes: a mechanical finding becomes a lint rule or test, a judgment call becomes a <code>CODING_STANDARDS.md</code> line in a human-merged steering PR.</div></div>
+      <div class="find"><h4><span class="sev h">high</span>Nothing catches lying tests</h4>
+        <div class="ev">Superpowers' <code>writing-good-tests.md</code> is sharper than anything we ship. By Matt's own logic, test rules in <code>tdd</code> sit in the overloaded implementer. The review side has no test rules, and <code>/code-review</code>'s smell baseline covers none of the three lies.</div>
+        <div class="fix"><b>Fix:</b> give each lie its cheapest enforcer. Structure-sensitive: a lint rule that bans reading <code>src/</code> files from tests. Cannot fail: mutation testing on changed files in CI, which kills over-mocked tests but not tautological ones. Tautological: a Tests section in the <code>CODING_STANDARDS.md</code> template, wording borrowed from Superpowers with credit.</div></div>
+      <div class="find"><h4><span class="sev m">medium</span>The code reviewer reports; the overloaded implementer fixes</h4>
+        <div class="ev">Only <code>comment-review</code> commits. <code>/code-review</code> reports, and <code>/implement</code> fixes the findings in its own full context, the pattern Matt argues against.</div>
+        <div class="fix"><b>Fix:</b> a review-fix sub-agent commits behaviour-preserving fixes under the same gate style as comment-review: <code>check</code> green, no test file touched, unresolved findings into the PR body. Pocock's in-progress <code>implement-spec</code> moves this way.</div></div>
+      <div class="find"><h4><span class="sev m">medium</span>The gate trusts the agent</h4>
+        <div class="ev">The push hook reads <code>.git/comment-review-ok</code>. An agent blocked by the hook can write <code>git rev-parse HEAD</code> into it without a review. <code>/code-review</code> has no gate at all.</div>
+        <div class="fix"><b>Fix:</b> make the stamp carry a hash of the review report, and let CI check that the PR body has the <code>## Comment review</code> section for the head commit.</div></div>
+      <div class="find"><h4><span class="sev m">medium</span>Re-review cost after a small fix</h4>
+        <div class="ev">Any commit clears the stamp, and the scope is the whole branch diff from the merge base. A one-line fix after review dispatches one Opus writer per file on the branch again.</div>
+        <div class="fix"><b>Fix:</b> keep the last stamped commit and scope a re-run to files changed since then.</div></div>
+      <div class="find"><h4><span class="sev m">medium</span>PR bodies lack merge danger</h4>
+        <div class="ev"><code>afk-handback.md</code> has goal, decisions, not done, verification, least sure. No door, no blast radius, no visual summary. So feature PRs all get the same review depth.</div>
+        <div class="fix"><b>Fix:</b> add a Merge danger section to the template now, a steering diff; switch to <code>/pr</code> when it graduates. Later, a team decision: widen agent self-merge to two-way, localized PRs with green checks.</div></div>
+      <div class="find"><h4><span class="sev l">low</span>The migration itself is a bottleneck PR</h4>
+        <div class="ev">Full migration ends in one steering PR over many files (175 docs in scope on the trial repo). Approvals during the run help, but a reviewer who was not in the session faces the whole diff.</div>
+        <div class="fix"><b>Fix:</b> give that PR a merge-danger line and a routing summary diagram; recommend Blocks mode for teams with several reviewers.</div></div>
+      <div class="find"><h4><span class="sev l">low</span>Comment pass churn</h4>
+        <div class="ev">About 230 agent-merged PRs on the trial repo rewrite comments across the codebase. That buries <code>git blame</code>.</div>
+        <div class="fix"><b>Fix:</b> list comment-pass commits in <code>.git-blame-ignore-revs</code>, which GitHub honours, and measure 10 files before <code>cleanup_comments</code> defaults to on.</div></div>
+    </div>
+  </section>
+
+  <!-- QUESTIONS -->
+  <section id="questions">
+    <span class="pill p-violet">Open questions</span>
+    <h2>Before the next version of the deck</h2>
+    <div class="q">1. English or German for the presentation?</div>
+    <div class="q">2. Audience and slot: developers only, or leads too, and how many minutes?</div>
+    <div class="q">3. Is there a Teclead template or brand colours the deck must use?</div>
+    <div class="q">4. How many coworkers use Superpowers today? That decides how much time part 2 gets.</div>
+    <div class="q">5. Should the install slide keep the personal repo, or will the plugin move to the Teclead org first?</div>
+  </section>
+
+  <footer>
+    Sources: Matt Pocock, "Fixing the PR bottleneck", AI Engineer Paris 2026 (transcript in <code>docs/research/pocock-pr-bottleneck-talk.md</code>); obra/superpowers v6.4.2, commit 8ca22db, 2026-09-25; mattpocock/skills v1.2.3 and main c55ee46; agent-ready main at 5a14ae6, 2026-09-27. Generated 2026-09-28.
+  </footer>
+</div>
+</body>
+</html>
